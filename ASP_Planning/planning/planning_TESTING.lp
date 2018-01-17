@@ -75,7 +75,7 @@ is_used_class_of_operation(A):- operation_class(A), occur(A, T), T<=n.
    X != Y,
    not match(Y,O,T2,O,T1+1).
 
-:- match(A,I,T,O,T1), match(A,I,T,O,T2), T1 != T2.
+%:- match(A,I,T,O,T1), match(A,I,T,O,T2), T1 != T2.
 
 :- used_class_of_operation(X), not match(X,_,_,_,_).
 
@@ -85,6 +85,16 @@ is_used_class_of_operation(A):- operation_class(A), occur(A, T), T<=n.
 % :- used_operation(A), not is_used_operation(A).
 
 % Extend Part : Require involved class of operation C executed before class of operation D
+is_ordered_class_of_service(C,D) :- operation_class(C),
+                                    operation_class(D),
+                                    occur(C,T1),
+                                    occur(D,T2),
+                                    T1 < T2.
+:- ordered_class_of_service(C,D), not is_ordered_class_of_service(C,D).
+used_class_of_operation(C) :- ordered_class_of_service(C,D), 
+                              operation_class(C).
+used_class_of_operation(D) :- ordered_class_of_service(C,D), 
+                              operation_class(C).
 
 % Extend Part : Remove un-need or fail service
 :- executable(A,T), step(T), fail_operation(A), operation(A), T<=n.
