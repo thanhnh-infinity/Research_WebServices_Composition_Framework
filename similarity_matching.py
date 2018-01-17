@@ -9,15 +9,17 @@ from nltk.stem.porter import PorterStemmer
 from classes.plans import Abtract_Planning,InitialState,GoalState,Concrete_Planning
 from classes.services import Service_Class,Service_Instance,DataFormatObject,Match_Object
 import os
-import subprocess
 import sys
 import json
-import random
 import utility
 import pprint
-import time
 import planning_algorithms
 import configuration
+import composite_response
+
+
+##########TEST DATA#########################
+import test
 
 ############################################
 ########NODE SIMILARITY MATCHING############
@@ -83,4 +85,6 @@ def calSim_2Edges(edge_1, edge_2):
 ############################################
 ########MAIN########
 ############################################
+print "Thanh NH : " + str(calSimNodes_btw_2_descriptions("Thanh Nguyen","Thanh Hai nguyen"))
+print test.WORKFLOW_2
 
