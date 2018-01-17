@@ -193,6 +193,7 @@ def read_a_abstract_workflow_detail(json_a_workflow_object):
         service_class_name,step = composite_parser.parse_a_occur_service_class(x)
         service_class['service_class_index'] = step
         service_class['service_class_name'] = service_class_name
+        service_class['service_class_description'] = ""
         service_class['service_class_uri'] = "%s%s" %(str(CDAO_URL_ONTOLOGY),str(service_class_name))
         service_class['service_class_parameters'] = {}
         input_obj = MultipleLevelsOfDictionary()

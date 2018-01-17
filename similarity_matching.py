@@ -9,6 +9,7 @@ from nltk.stem.porter import PorterStemmer
 
 from classes.plans import Abtract_Planning,InitialState,GoalState,Concrete_Planning
 from classes.services import Service_Class,Service_Instance,DataFormatObject,Match_Object
+from OWL_Ontology_App import OWLEngine
 import os
 import sys
 import json
@@ -54,11 +55,20 @@ def calSimNodes_btw_2_descriptions(ServiceClassObj_1, ServiceClassObj_2):
     des_1 = ServiceClassObj_1['service_class_description']
     des_2 = ServiceClassObj_2['service_class_description']
 
+    if ((des_1 is None or not des_1) and (des_2 is None or not des_2)):
+        return float(0)
+
+    if (des_1 is None or not des_1):
+        des_1 = ""
+
+    if (des_2 is None or not des_2):
+        des_2 = ""
+
     vect  = TfidfVectorizer(tokenizer=tokenize, stop_words='english')
     tfidf = vect.fit_transform([preprocessing(des_1),preprocessing(des_2)])
     #print tfidf
     pairwise_similarity = (tfidf * tfidf.T).A
-    print pairwise_similarity
+    #print pairwise_similarity
     return pairwise_similarity[0][1]
 
 def calSimNodes_btw_2_InputSets(ServiceClassObj_1, ServiceClassObj_2):
@@ -162,4 +172,15 @@ print "Similarity Matching works"
 def sim_workflows(WF_1,WF_2):
     return 1
 
-print calSimNodes_btw_2_OutputSets(test.SERVICE_CLASS_1, test.SERVICE_CLASS_2)
+'''
+for i in range(0,3):
+   for j in range(i+1,4):
+      print "======================================"
+      print test.SERVICE_CLASSES[i]['service_class_name']
+      print test.SERVICE_CLASSES[j]['service_class_name']
+      print "------------------"
+      print "Input same : " + str(calSimNodes_btw_2_InputSets(test.SERVICE_CLASSES[i],test.SERVICE_CLASSES[j]))
+      print "Output same : " + str(calSimNodes_btw_2_OutputSets(test.SERVICE_CLASSES[i],test.SERVICE_CLASSES[j]))
+      print "Des same :" + str(calSimNodes_btw_2_descriptions(test.SERVICE_CLASSES[i],test.SERVICE_CLASSES[j]))
+'''
+print (OWLEngine.get_hierarchy_subclasses_of_class("http://www.cs.nmsu.edu/~epontell/Ontologies/phylogenetic_methods.owl#operationClassification","0"))      

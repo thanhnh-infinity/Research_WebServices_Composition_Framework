@@ -18,3 +18,4 @@ WEIGHT_QoS_DATA = {
   "availability" : 0.2,
   "reliability" : 0.1
 }
+

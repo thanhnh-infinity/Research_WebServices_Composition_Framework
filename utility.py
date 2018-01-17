@@ -4,6 +4,7 @@ from classes.states import InitialState,GoalState,CommonAsset_DataFormat
 import collections
 import json
 
+
 # occur serivce class
 OCCUR_SERVICE_CLASS_ABTRACT_LEVEL = 'occur({},{:d})'
 GOAL_PREDICATE = 'goal({:d})'
