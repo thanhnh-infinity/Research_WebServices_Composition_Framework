@@ -18,6 +18,7 @@ import pprint
 import planning_algorithms
 import configuration
 import composite_response
+import graph
 
 
 ##########TEST DATA#########################
@@ -145,11 +146,29 @@ def calSimNodes_btw_2_OutputSets(ServiceClassObj_1, ServiceClassObj_2):
     except:
         return float(0)
 
+def distNodes_Ontology(ServiceClassObj_1, ServiceClassObj_2):
+    ontClassName_1 = ServiceClassObj_1['service_class_name']
+    ontClassName_2 = ServiceClassObj_2['service_class_name']
+
+    if (ontClassName_1 and not ontClassName_2):
+        return float(9999)
+
+    if (ontClassName_2 and not ontClassName_1):
+        return float(9999)
+
+    shortestPathOverLCA = graph.find_shortest_path(graph.SERVICE_CLASSES_GRAPH,ontClassName_1,ontClassName_2)
+    
+    if (not shortestPathOverLCA or shortestPathOverLCA is None or len(shortestPathOverLCA) <= 0):
+        return float(9999)
+
+    return len(shortestPathOverLCA)       
+
 def calSimNodes_Ontology(ServiceClassObj_1, ServiceClassObj_2):
-    return 1
+    distNodes_Ontology_Value = distNodes_Ontology(ServiceClassObj_1, ServiceClassObj_2)
+    return 1 / (1 + float(distNodes_Ontology_Value))
 
 def simNodes(ServiceClassObj_1, ServiceClassObj_2):
-    return 1
+    return configuration.WEIGHT_SIMILARITY_NODES['semantic_ontology']*calSimNodes_Ontology(ServiceClassObj_1, ServiceClassObj_2) + configuration.WEIGHT_SIMILARITY_NODES['input_output']*(calSimNodes_btw_2_InputSets(ServiceClassObj_1, ServiceClassObj_2) + calSimNodes_btw_2_OutputSets(ServiceClassObj_1, ServiceClassObj_2)) + configuration.WEIGHT_SIMILARITY_NODES['service_description']*calSimNodes_btw_2_descriptions(ServiceClassObj_1, ServiceClassObj_2)
 
 ############################################
 ########EDGE SIMILARITY MATCHING############
@@ -172,7 +191,7 @@ print "Similarity Matching works"
 def sim_workflows(WF_1,WF_2):
     return 1
 
-'''
+
 for i in range(0,3):
    for j in range(i+1,4):
       print "======================================"
@@ -182,5 +201,10 @@ for i in range(0,3):
       print "Input same : " + str(calSimNodes_btw_2_InputSets(test.SERVICE_CLASSES[i],test.SERVICE_CLASSES[j]))
       print "Output same : " + str(calSimNodes_btw_2_OutputSets(test.SERVICE_CLASSES[i],test.SERVICE_CLASSES[j]))
       print "Des same :" + str(calSimNodes_btw_2_descriptions(test.SERVICE_CLASSES[i],test.SERVICE_CLASSES[j]))
-'''
-print (OWLEngine.get_hierarchy_subclasses_of_class("http://www.cs.nmsu.edu/~epontell/Ontologies/phylogenetic_methods.owl#operationClassification","0"))      
+      print "Onto Nodes same : " + str(calSimNodes_Ontology(test.SERVICE_CLASSES[i],test.SERVICE_CLASSES[j]))
+      print "------------------"
+      print "TOtal Sim : " + str(simNodes(test.SERVICE_CLASSES[i],test.SERVICE_CLASSES[j]))
+
+
+
+#print (OWLEngine.get_hierarchy_subclasses_of_class("http://www.cs.nmsu.edu/~epontell/Ontologies/phylogenetic_methods.owl#operationClassification","0"))      

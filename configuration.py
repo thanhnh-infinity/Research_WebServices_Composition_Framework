@@ -19,3 +19,8 @@ WEIGHT_QoS_DATA = {
   "reliability" : 0.1
 }
 
+WEIGHT_SIMILARITY_NODES = {
+  "semantic_ontology" : 0.7,
+  "input_output" : 0.2,
+  "service_description" : 0.1 
+}
