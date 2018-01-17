@@ -2,13 +2,44 @@ from OWL_Ontology_App import OWLEngine
 import json
 import os
 import sys
+from zss import simple_distance, Node
 
 #graph = {'A': ['B', 'C'],
 #         'B': ['C', 'D'],
 #         'C': ['D'],
 #         'D': ['C'],
 #         'E': ['F'],
-#         'F': ['C']}
+#         'F': ['C
+
+A = (
+    Node("f")
+        .addkid(Node("a")
+            .addkid(Node("h"))
+            .addkid(Node("c")
+                .addkid(Node("l"))))
+        .addkid(Node("e"))
+    )
+B = (
+    Node("1")
+        .addkid(Node("2")
+            .addkid(Node("3"))
+            .addkid(Node("4")
+                .addkid(Node("5"))))
+        .addkid(Node("6"))
+    )
+C = (
+    Node("f")
+        .addkid(Node("a")
+            .addkid(Node("d"))
+            .addkid(Node("c")
+                .addkid(Node("b"))))
+        .addkid(Node("e"))
+    )
+#c = Node('c', [])
+##b = Node('b', [])
+#a = Node('a', [b, c])
+
+#a2 = Node('a', [Node('c', [])])
 
 SERVICE_CLASSES_GRAPH = {                        
     'operationClassification': ['species_operation', 'look_up_operation', 'names_operation','taxon_operation','list_operation','convert_operation','tree_operation'],
@@ -75,6 +106,12 @@ SERVICE_CLASSES_GRAPH = {
 
 }
 
+def buildUp_ZSSGraph(WorkflowGraph):
+    return None
+
+def distance_topology(Graph_1, Graph_2):
+  return simple_distance(Graph_1,Graph_2)
+
 def convert_OntologyJSONGraph_to_BasicGraph(ontServiceClassesGraphJSON):
     return None
 
@@ -118,14 +155,12 @@ def find_shortest_path(graph, start, end, path=[]):
                         shortest = newpath
         return shortest
 
+print distance_topology(A,C)
+#print ("Shortest path")
+#print(find_shortest_path(SERVICE_CLASSES_GRAPH,'common_name_to_scientific_name','names_extraction_web'))
 
-
-
-print ("Shortest path")
-print(find_shortest_path(SERVICE_CLASSES_GRAPH,'common_name_to_scientific_name','names_extraction_web'))
-
-print ("All path")
-print(find_all_paths(SERVICE_CLASSES_GRAPH,'common_name_to_scientific_name','names_extraction_web'))
+#print ("All path")
+#print(find_all_paths(SERVICE_CLASSES_GRAPH,'common_name_to_scientific_name','names_extraction_web'))
 
 
 

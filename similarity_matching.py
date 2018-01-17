@@ -23,7 +23,6 @@ import graph
 
 ##########TEST DATA#########################
 import test
-
 ############################################
 ########NODE SIMILARITY MATCHING############
 ############################################
@@ -186,8 +185,6 @@ def calSim_2Edges(edge_1, edge_2):
 ############################################
 ########MAIN########
 ############################################
-print "Similarity Matching works"
-
 def sim_workflows(WF_1,WF_2):
     return 1
 
