@@ -204,6 +204,8 @@ for i in range(0,3):
       print "------------------"
       print "TOtal Sim : " + str(simNodes(test.SERVICE_CLASSES[i],test.SERVICE_CLASSES[j]))
 
+print "================================="
+print "Topo matching : " + str(sim_topologies(test.WORKFLOW_1, test.WORKFLOW_4))
 
 
 #print (OWLEngine.get_hierarchy_subclasses_of_class("http://www.cs.nmsu.edu/~epontell/Ontologies/phylogenetic_methods.owl#operationClassification","0"))      

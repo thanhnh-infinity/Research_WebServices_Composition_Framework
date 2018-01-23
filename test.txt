@@ -1,0 +1,46 @@
+ Node(initial_state,[
+                      Node(gene_based_extraction,[
+                                                   Node(gene_tree_scaling,[
+                                                                             Node(tree_reconciliation,[])
+                                                                          ]
+                                                       )
+                                                    ,
+                                                    Node(names_extraction_tree,[
+                                                                                 Node(names_resolution_operation,[
+                                                                                                                   Node(phylogeny_based_extraction,[
+                                                                                                                                                     [<zss.simple_tree.Node object at 0x107556b50 tree_reconciliation>]
+                                                                                                                                                    ]
+                                                                                                                       )
+                                                                                                                 ]
+                                                                                     )
+                                                                               ]
+                                                        )
+                                                 ]
+                          )
+                    ]
+     )
+
+
+
+
+ Node(initial_state,[
+                      Node(gene_based_extraction,[
+                                                   Node(gene_tree_scaling,[
+                                                                             Node(tree_reconciliation,[])
+                                                                          ]
+                                                       )
+                                                   ,
+                                                   Node(names_extraction_tree,[
+                                                                                 Node(names_resolution_operation,[
+                                                                                                                    Node(taxonomy_based_extraction,[
+                                                                                                                                                      [<zss.simple_tree.Node object at 0x107556b50 tree_reconciliation>]
+                                                                                                                                                    ]
+                                                                                                                         )
+                                                                                                                  ]
+                                                                                     )
+                                                                              ]
+                                                      )
+                                                 ]
+                          )
+                    ]
+      )
