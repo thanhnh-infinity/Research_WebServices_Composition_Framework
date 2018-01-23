@@ -36,10 +36,13 @@ C = (
         .addkid(Node("e"))
     )
 #c = Node('c', [])
-##b = Node('b', [])
+#b = Node('b', [])
 #a = Node('a', [b, c])
 
 #a2 = Node('a', [Node('c', [])])
+
+X = Node('f',[Node("a",[Node("h",[]),Node("c",[Node("l",[])])]), Node("e",[])])
+Y = Node('f',[Node("a",[Node("h",[Node("l",[])]),Node("c",[Node("e",[])])]) ])
 
 SERVICE_CLASSES_GRAPH = {                        
     'operationClassification': ['species_operation', 'look_up_operation', 'names_operation','taxon_operation','list_operation','convert_operation','tree_operation'],
@@ -106,12 +109,15 @@ SERVICE_CLASSES_GRAPH = {
 
 }
 
+# Should be take time to implement this one overnight
 def buildUp_ZSSGraph(WorkflowGraph):
-    return None
+    Root = Node("initial",[])
+    return Root
 
 def distance_topology(Graph_1, Graph_2):
-  return simple_distance(Graph_1,Graph_2)
+    return simple_distance(Graph_1,Graph_2)
 
+# Have to be done so far
 def convert_OntologyJSONGraph_to_BasicGraph(ontServiceClassesGraphJSON):
     return None
 
@@ -155,7 +161,8 @@ def find_shortest_path(graph, start, end, path=[]):
                         shortest = newpath
         return shortest
 
-print distance_topology(A,C)
+print Y
+print distance_topology(X,Y)
 #print ("Shortest path")
 #print(find_shortest_path(SERVICE_CLASSES_GRAPH,'common_name_to_scientific_name','names_extraction_web'))
 

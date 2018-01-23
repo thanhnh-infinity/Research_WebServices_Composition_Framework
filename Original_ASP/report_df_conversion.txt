@@ -1,0 +1,157 @@
+====================================================
+Encoding for conversion service
+====================================================
+% Data format resource classes encoded
+class(phylotastic_data_format).
+
+subClass(treeFormat,phylotastic_data_format).
+class(tree_format_1).
+class(tree_format_2).
+class(tree_format_3).
+class(tree_format_4).
+class(nmsu_tree_format).
+subClass(tree_format_1,treeFormat).
+subClass(tree_format_2,treeFormat).
+subClass(tree_format_3,treeFormat).
+subClass(tree_format_4,treeFormat).
+subClass(nmsu_tree_format,treeFormat).
+
+
+subClass(data_format_A,phylotastic_data_format).
+class(data_format_A).
+subClass(data_format_A_1,phylotastic_data_format).
+subClass(data_format_A_3,phylotastic_data_format).
+class(data_format_A_1).
+class(data_format_A_2).
+class(data_format_A_3).
+class(data_format_unknown).
+subClass(data_format_A_1,data_format_A).
+subClass(data_format_A_2,data_format_A_1).
+
+subClass(names_format,phylotastic_data_format).
+class(names_format_1).
+class(names_format_2).
+class(names_format_3).
+class(names_format_4).
+class(names_format_5).
+class(names_format_6).
+class(names_format_resolved_GNR).
+class(names_format_resolved_OT).
+subClass(names_format_1, names_format).
+subClass(names_format_2, names_format).
+subClass(names_format_3, names_format).
+subClass(names_format_4, names_format).
+subClass(names_format_5, names_format).
+subClass(names_format_6, names_format).
+subClass(names_format_resolved_GNR, names_format).
+subClass(names_format_resolved_OT, names_format).
+
+class(data_format_B).
+class(data_format_C).
+class(data_format_C_1).
+class(data_format_C_2).
+subClass(data_format_C_1, data_format_C).
+subClass(data_format_C_2, data_format_C_1).
+class(data_format_D).
+class(data_format_E).
+class(data_format_F).
+subClass(data_format_B,phylotastic_data_format).
+subClass(data_format_C,phylotastic_data_format).
+subClass(data_format_D,phylotastic_data_format).
+subClass(data_format_E,phylotastic_data_format).
+subClass(data_format_F,phylotastic_data_format).
+
+% Conversion Service Classes with Input/Output
+class(names_format_conversion).
+input(names_format_conversion,df_1,names_format).
+output(names_format_conversion,df_2,names_format).
+
+class(trees_format_conversion).
+input(tree_format_conversion,df_1,treeFormat).
+output(tree_format_conversion,df_2,treeFormat).
+
+class(common_df_format_conversion).
+input(common_df_format_conversion,df_1,phylotastic_data_format).
+output(common_df_format_conversion,df_2,phylotastic_data_format).
+
+% Conversion service instance 
+convertion_operation_instance(example_convertForm_A_to_B_GET).
+convertion_operation_instance(example_convertForm_A1_to_B_GET).
+convertion_operation_instance(example_convertForm_B_to_C_GET).
+convertion_operation_instance(example_convertForm_B_to_C2_GET).
+convertion_operation_instance(example_convertForm_C_to_D_GET).
+convertion_operation_instance(example_convertForm_C2_to_E_GET).
+convertion_operation_instance(example_convertForm_C_to_Plain_Text_GET).
+convertion_operation_instance(example_convert_names_format_from_1_to_3).
+convertion_operation_instance(example_convert_names_format_from_3_to_5).
+convertion_operation_instance(example_convert_names_format_from_3_to_7).
+convertion_operation_instance(example_convert_names_format_from_5_to_names_format_resolved_GNR).
+convertion_operation_instance(example_convert_names_format_from_2_to_4).
+convertion_operation_instance(example_convert_names_format_from_4_to_6).
+convertion_operation_instance(example_convert_names_format_from_6_to_names_format_resolved_OT).
+convertion_operation_instance(example_convertTreeFormat_r_to_NewickTree).
+convertion_operation_instance(ex_convertTreeFormat_1_to_2).
+convertion_operation_instance(ex_convertTreeFormat_2_to_3).
+convertion_operation_instance(ex_convertTreeFormat_3_to_Newick).
+convertion_operation_instance(ex_convertTreeFormat_3_to_Phylo4Tree).
+
+isInstanceOf(example_convertForm_A_to_B_GET,common_df_format_conversion).
+isInstanceOf(example_convertForm_A_to_B_GET,common_df_format_conversion).
+isInstanceOf(example_convertForm_A1_to_B_GET,common_df_format_conversion).
+isInstanceOf(example_convertForm_B_to_C_GET,common_df_format_conversion).
+isInstanceOf(example_convertForm_B_to_C2_GET,common_df_format_conversion).
+isInstanceOf(example_convertForm_C_to_D_GET,common_df_format_conversion).
+isInstanceOf(example_convertForm_C2_to_E_GET,common_df_format_conversion).
+isInstanceOf(example_convertForm_C_to_Plain_Text_GET,common_df_format_conversion).
+isInstanceOf(example_convert_names_format_from_1_to_3,names_format_conversion).
+isInstanceOf(example_convert_names_format_from_3_to_5,names_format_conversion).
+isInstanceOf(example_convert_names_format_from_3_to_7,names_format_conversion).
+isInstanceOf(example_convert_names_format_from_5_to_names_format_resolved_GNR,names_format_conversion).
+isInstanceOf(example_convert_names_format_from_2_to_4,names_format_conversion).
+isInstanceOf(example_convert_names_format_from_4_to_6,names_format_conversion).
+isInstanceOf(example_convert_names_format_from_6_to_names_format_resolved_OT,names_format_conversion).
+isInstanceOf(example_convertTreeFormat_r_to_NewickTree,trees_format_conversion).
+isInstanceOf(ex_convertTreeFormat_1_to_2,trees_format_conversion).
+isInstanceOf(ex_convertTreeFormat_2_to_3,trees_format_conversion).
+isInstanceOf(ex_convertTreeFormat_3_to_Newick,trees_format_conversion).
+isInstanceOf(ex_convertTreeFormat_3_to_Phylo4Tree,trees_format_conversion).
+
+convert_op_instance_has_in_df(example_convertForm_A_to_B_GET,data_format_A).
+convert_op_instance_has_out_df(example_convertForm_A_to_B_GET,data_format_B).
+convert_op_instance_has_in_df(example_convertForm_A1_to_B_GET,data_format_A_1).
+convert_op_instance_has_out_df(example_convertForm_A1_to_B_GET,data_format_B).
+convert_op_instance_has_in_df(example_convertForm_B_to_C_GET,data_format_B).
+convert_op_instance_has_out_df(example_convertForm_B_to_C_GET,data_format_C).
+convert_op_instance_has_in_df(example_convertForm_B_to_C2_GET,data_format_B).
+convert_op_instance_has_out_df(example_convertForm_B_to_C2_GET,data_format_C_2).
+convert_op_instance_has_in_df(example_convertForm_C_to_D_GET,data_format_C).
+convert_op_instance_has_out_df(example_convertForm_C_to_D_GET,data_format_D).
+convert_op_instance_has_in_df(example_convertForm_C_to_Plain_Text_GET,data_format_C).
+convert_op_instance_has_out_df(example_convertForm_C_to_Plain_Text_GET,plain_text).
+convert_op_instance_has_in_df(example_convertForm_C2_to_E_GET,data_format_C_2).
+convert_op_instance_has_out_df(example_convertForm_C2_to_E_GET,data_format_E).
+convert_op_instance_has_in_df(example_convert_names_format_from_1_to_3,names_format_1).
+convert_op_instance_has_out_df(example_convert_names_format_from_1_to_3,names_format_3).
+convert_op_instance_has_in_df(example_convert_names_format_from_3_to_5,names_format_3).
+convert_op_instance_has_out_df(example_convert_names_format_from_3_to_5,names_format_5).
+convert_op_instance_has_in_df(example_convert_names_format_from_3_to_7,names_format_3).
+convert_op_instance_has_out_df(example_convert_names_format_from_3_to_7,names_format_7).
+convert_op_instance_has_in_df(example_convert_names_format_from_5_to_names_format_resolved_GNR,names_format_5).
+convert_op_instance_has_out_df(example_convert_names_format_from_5_to_names_format_resolved_GNR,names_format_resolved_GNR).
+convert_op_instance_has_in_df(example_convert_names_format_from_2_to_4,names_format_2).
+convert_op_instance_has_out_df(example_convert_names_format_from_2_to_4,names_format_4).
+convert_op_instance_has_in_df(example_convert_names_format_from_4_to_6,names_format_4).
+convert_op_instance_has_out_df(example_convert_names_format_from_4_to_6,names_format_6).
+convert_op_instance_has_in_df(example_convert_names_format_from_6_to_names_format_resolved_OT, names_format_6).
+convert_op_instance_has_out_df(example_convert_names_format_from_6_to_names_format_resolved_OT, names_format_resolved_OT).
+convert_op_instance_has_in_df(example_convertTreeFormat_r_to_NewickTree, nmsu_tree_format).
+convert_op_instance_has_out_df(example_convertTreeFormat_r_to_NewickTree, newickTree).
+convert_op_instance_has_in_df(ex_convertTreeFormat_1_to_2, tree_format_1).
+convert_op_instance_has_out_df(ex_convertTreeFormat_1_to_2, tree_format_2).
+convert_op_instance_has_in_df(ex_convertTreeFormat_2_to_3, tree_format_2).
+convert_op_instance_has_out_df(ex_convertTreeFormat_2_to_3, tree_format_3).
+convert_op_instance_has_in_df(ex_convertTreeFormat_3_to_Newick, tree_format_3).
+convert_op_instance_has_out_df(ex_convertTreeFormat_3_to_Newick, newickTree).
+convert_op_instance_has_in_df(ex_convertTreeFormat_3_to_Phylo4Tree, tree_format_3).
+convert_op_instance_has_out_df(ex_convertTreeFormat_3_to_Phylo4Tree, phylo4Tree).
+

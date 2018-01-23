@@ -166,7 +166,6 @@ def main(prg):
 
     # Load another components
     load_asp()
-
     # Configuration for the ASP solver
     # prg.configuration.solve.models = 0
     base_program = [("base", [])]
@@ -255,14 +254,14 @@ check_add_abstract_ok(0).
 %#show run/2.
 %#show map/2.
 %#show service/1.
-#show occur_concrete/2.
-#show occur/2.
+%#show occur_concrete/2.
+%#show occur/2.
 %#show possible_occur_concrete/2.
 %#show finally_data_format/3.
 %#show initially_data_format/3.
 %#show match/5.
 %#show consider_abtract_step/1.
-#show occur_convert_op_instance/4.
+%#show occur_convert_op_instance/4.
 %#show mpID/2.
 %#show map_df/8.
 %#show match/5.

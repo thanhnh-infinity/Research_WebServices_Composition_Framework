@@ -1,0 +1,40 @@
+
+====================================================
+% Possible concrete plan == Generate from Python module
+  include : run_concrete_operation(S,X,T) : execute service S of class X in abstract step T
+            For some concrete services that have to be converted data format, use_data_format_conversion has to be run
+            before execute these services
+====================================================
+
+1 : run_concrete_operation(phylotastic_GenerateGeneTree_From_Genes,gene_based_extraction,0)
+
+2 : use_data_format_conversion(ex_convertTreeFormat_1_to_2,1,0)
+3 : use_data_format_conversion(ex_convertTreeFormat_2_to_3,1,1)
+4 : use_data_format_conversion(ex_convertTreeFormat_3_to_Newick,1,2)
+5 : run_concrete_operation(phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET,names_extraction_tree,1)
+
+6 : use_data_format_conversion(ex_convertTreeFormat_1_to_2,2,0)
+7 : use_data_format_conversion(ex_convertTreeFormat_2_to_3,2,1)
+8 : use_data_format_conversion(ex_convertTreeFormat_3_to_Newick,2,2)
+9 : run_concrete_operation(phylotastic_GeneTree_Scaling,gene_tree_scaling,2)
+
+10 : use_data_format_conversion(example_convert_names_format_from_2_to_4,3,0)
+11 : use_data_format_conversion(example_convert_names_format_from_4_to_6,3,1)
+12 : use_data_format_conversion(example_convert_names_format_from_6_to_names_format_resolved_OT,3,2)
+13 : run_concrete_operation(phylotastic_ResolvedScientificNames_OT_TNRS_GET,names_resolution_operation,3)
+
+14 : run_concrete_operation(phylotastic_GetPhylogeneticTree_OT_GET,taxonomy_based_extraction,4)
+
+15 : use_data_format_conversion(ex_convertTreeFormat_2_to_3,5,0)
+16 : use_data_format_conversion(ex_convertTreeFormat_2_to_3,5,1)
+17 : use_data_format_conversion(ex_convertTreeFormat_3_to_Newick,5,2)
+18 : use_data_format_conversion(example_convertTreeFormat_r_to_NewickTree,5,0)
+19 : run_concrete_operation(phylotastic_GetReconciliationTree_GET,tree_reconciliation,5)
+
+=============================================================
+Example : In order to run phylotastic_GetReconciliationTree_GET at abstract step 5 (concrete step from 15 to 19)
+          before that, system has to run conversion:
+           1. conversion service (1) ex_convertTreeFormat_2_to_3 (2) ex_convertTreeFormat_3_to_Newick 
+              to convert resouce_GeneTree from tree_format_2 to newick format
+           2. conversion service example_convertTreeFormat_r_to_NewickTree to convert resource_speciesTree
+              from nmsu_tree_format to newick format

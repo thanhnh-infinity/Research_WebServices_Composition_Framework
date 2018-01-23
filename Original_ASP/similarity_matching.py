@@ -7,18 +7,19 @@ from sets import Set
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.stem.porter import PorterStemmer
 
-from classes.plans import Abtract_Planning,InitialState,GoalState,Concrete_Planning
-from classes.services import Service_Class,Service_Instance,DataFormatObject,Match_Object
-from OWL_Ontology_App import OWLEngine
+#from classes.plans import Abtract_Planning,InitialState,GoalState,Concrete_Planning
+#from classes.services import Service_Class,Service_Instance,DataFormatObject,Match_Object
+#from OWL_Ontology_App import OWLEngine
 import os
 import sys
 import json
-import utility
+#import utility
 import pprint
-import planning_algorithms
-import configuration
-import composite_response
-import graph
+#import planning_algorithms
+#import configuration
+#import composite_response
+#import graph
+from random import *
 
 
 ##########TEST DATA#########################
@@ -188,9 +189,9 @@ def sim_topologies(WF_JSON_1, WF_JSON_2):
 ########MAIN########
 ############################################
 def sim_workflows(WF_1,WF_2):
-    return 1
+    return randint(100,999)
 
-
+'''
 for i in range(0,3):
    for j in range(i+1,4):
       print "======================================"
@@ -203,7 +204,7 @@ for i in range(0,3):
       print "Onto Nodes same : " + str(calSimNodes_Ontology(test.SERVICE_CLASSES[i],test.SERVICE_CLASSES[j]))
       print "------------------"
       print "TOtal Sim : " + str(simNodes(test.SERVICE_CLASSES[i],test.SERVICE_CLASSES[j]))
-
+'''
 
 
 #print (OWLEngine.get_hierarchy_subclasses_of_class("http://www.cs.nmsu.edu/~epontell/Ontologies/phylogenetic_methods.owl#operationClassification","0"))      

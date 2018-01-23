@@ -1,0 +1,117 @@
+goal_data_format(5,match_problem(tree_reconciliation,resource_geneTree,5,resource_geneTree,3),3) 
+
+occur_convert_op_instance(ex_convertTreeFormat_1_to_2,
+                          5,
+                          match_problem(tree_reconciliation,resource_geneTree,5,resource_geneTree,3),
+                          0) 
+
+occur_convert_op_instance(ex_convertTreeFormat_2_to_3,
+                          5,
+                          match_problem(tree_reconciliation,resource_geneTree,5,resource_geneTree,3),
+                          1) 
+
+occur_convert_op_instance(ex_convertTreeFormat_3_to_Newick,
+                           5,
+                           match_problem(tree_reconciliation,resource_geneTree,5,resource_geneTree,3),
+                           2) 
+
+ 
+
+
+goal_data_format(5,match_problem(tree_reconciliation,resource_speciesTree,5,resource_speciesTree,4),3)
+
+occur_convert_op_instance(ex_convertTreeFormat_1_to_2,
+                          5,
+                          match_problem(tree_reconciliation,resource_speciesTree,5,resource_speciesTree,4),
+                          0)
+occur_convert_op_instance(ex_convertTreeFormat_2_to_3,
+                          5,
+                          match_problem(tree_reconciliation,resource_speciesTree,5,resource_speciesTree,4),
+                          1)
+occur_convert_op_instance(ex_convertTreeFormat_3_to_Newick,
+                          5,
+                          match_problem(tree_reconciliation,resource_speciesTree,5,resource_speciesTree,4),
+                          2)
+
+====================================================
+goal_data_format(5,match_problem(tree_reconciliation,resource_speciesTree,5,resource_speciesTree,4),1) 
+
+occur_convert_op_instance(example_convertTreeFormat_r_to_NewickTree,
+                          5,
+                          match_problem(tree_reconciliation,resource_speciesTree,5,resource_speciesTree,4),
+                          0)
+
+goal_data_format(5,match_problem(tree_reconciliation,resource_geneTree,5,resource_geneTree,3),3) 
+
+occur_convert_op_instance(ex_convertTreeFormat_1_to_2,
+                          5,
+                          match_problem(tree_reconciliation,resource_geneTree,5,resource_geneTree,3),
+                          0) 
+ 
+occur_convert_op_instance(ex_convertTreeFormat_2_to_3,
+                          5,
+                          match_problem(tree_reconciliation,resource_geneTree,5,resource_geneTree,3),
+                          1) 
+occur_convert_op_instance(ex_convertTreeFormat_3_to_Newick,
+                          5,
+                          match_problem(tree_reconciliation,resource_geneTree,5,resource_geneTree,3),
+                          2) 
+
+====================================================
+
+initially_data_format(names_format_2,2,mpID(phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET,resource_SetOfSciName,1,phylotastic_ResolvedScientificNames_OT_TNRS_POST,resource_SetOfSciName,2))
+finally_data_format(names_format_resolved_OT,2,mpID(phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET,resource_SetOfSciName,1,phylotastic_ResolvedScientificNames_OT_TNRS_POST,resource_SetOfSciName,2))
+
+
+initially_data_format(list_of_strings,
+                      3,
+                      mpID(phylotastic_ResolvedScientificNames_OT_TNRS_POST,resource_SetOfTaxon,2,phylotastic_GetPhylogeneticTree_OT_POST,resource_SetOfTaxon,3))
+finally_data_format(list_of_strings,
+                      3,
+                      mpID(phylotastic_ResolvedScientificNames_OT_TNRS_POST,resource_SetOfTaxon,2,phylotastic_GetPhylogeneticTree_OT_POST,resource_SetOfTaxon,3))
+
+initially_data_format(tree_format_1,
+                      1,
+                      mpID(phylotastic_GenerateGeneTree_From_Genes,resource_geneTree,0,phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET,resource_geneTree,1))
+finally_data_format(newickTree,
+                      1,
+                      mpID(phylotastic_GenerateGeneTree_From_Genes,resource_geneTree,0,phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET,resource_geneTree,1))
+
+initially_data_format(tree_format_2,
+                      5,
+                      mpID(phylotastic_GeneTree_Scaling,resource_geneTree,4,phylotastic_GetReconciliationTree_GET,resource_geneTree,5))
+finally_data_format(newickTree,
+                      5,
+                      mpID(phylotastic_GeneTree_Scaling,resource_geneTree,4,phylotastic_GetReconciliationTree_GET,resource_geneTree,5))
+
+
+initially_data_format(nmsu_tree_format,
+                      5,
+                      mpID(phylotastic_GetPhylogeneticTree_OT_POST,resource_speciesTree,3,phylotastic_GetReconciliationTree_GET,resource_speciesTree,5))
+finally_data_format(newickTree,
+                      5,
+                      mpID(phylotastic_GetPhylogeneticTree_OT_POST,resource_speciesTree,3,phylotastic_GetReconciliationTree_GET,resource_speciesTree,5))
+
+initially_data_format(tree_format_1,
+                      4,
+                      mpID(phylotastic_GenerateGeneTree_From_Genes,resource_geneTree,0,phylotastic_GeneTree_Scaling,resource_geneTree,4))
+finally_data_format(newickTree,
+                      4,
+                      mpID(phylotastic_GenerateGeneTree_From_Genes,resource_geneTree,0,phylotastic_GeneTree_Scaling,resource_geneTree,4))
+
+initially_data_format(list_of_strings,
+                      0,
+                      mpID(initial_state,resource_SetOfGeneStrings,-1,phylotastic_GenerateGeneTree_From_Genes,resource_SetOfGeneStrings,0))
+finally_data_format(list_of_strings,
+                      0,
+                      mpID(initial_state,resource_SetOfGeneStrings,-1,phylotastic_GenerateGeneTree_From_Genes,resource_SetOfGeneStrings,0))
+
+
+=====================================================
+
+
+
+
+
+
+

@@ -5,7 +5,8 @@
 used_class_of_operation(gene_tree_scaling).
 
 % Extend Part : Require ordering of classes of operations in the workflow
-ordered_class_of_service(phylogeny_based_extraction,gene_tree_scaling).
+% Demo for professors about re-planning
+%ordered_class_of_service(phylogeny_based_extraction,gene_tree_scaling).
 
 % Extend Part : Require involved concrete operation
 %used_operation(phylotastic_ResolvedScientificNames_GNR_TNRS_GET).
