@@ -1,0 +1,7 @@
+- on_model working , interact clingo when in-generateing model by "on_model" in solve. Maybe good for improve performance ???
+
+- Re-planning
+
+- Optimization
+
+- Sim
