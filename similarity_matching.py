@@ -192,12 +192,48 @@ def simNodes_workflow(WF_JSON_1, WF_JSON_2):
 ############################################
 ########EDGE SIMILARITY MATCHING############
 ############################################
-def simEdges(edgesWF1, edgesWG2):
-  return 1
+def simEdges_workflow(WF_JSON_1, WF_JSON_2):
+    list_edges_1,set_edges_1 = generate_EdgesCollection_FromWF(WF_JSON_1)
+    list_edges_2,set_edges_2 = generate_EdgesCollection_FromWF(WF_JSON_2)
+    edges_intersection = set_edges_1.intersection(set_edges_2)
+    return (2* float(len(edges_intersection)) / (float(len(set_edges_1)) + float(len(set_edges_2))))
 
-def calSim_2Edges(edge_1, edge_2):
-  return 1 
+def generate_EdgesCollection_FromWF(WF_JSON):
+    list_edges = []
+    set_edges = Set([])
+    if (WF_JSON and len(WF_JSON) > 0):
+        for service_class_obj in WF_JSON:
+            #print "Chay day ko"
+            child_node_name = service_class_obj['service_class_name']
+            child_node_input_components = service_class_obj['service_class_parameters']['input']['components']
+            if (child_node_input_components and len(child_node_input_components) > 0):  
+                for service_com_obj in child_node_input_components:
+                    edge = {}
+                    child_node_resource = service_com_obj['resource_ontology_id']
+                    parent_node_name = service_com_obj['map']['from']
+                    parent_node_resource = service_com_obj['map']['resource_ontology_id']
 
+                    edge['source'] = parent_node_name
+                    edge['resource_source_ex'] = parent_node_resource
+                    edge['resource_des_ex'] = child_node_resource
+                    edge['destination'] = child_node_name
+                    list_edges.append(edge) 
+
+                    edge_label = generateEdgeLabel(edge)
+                    set_edges.add(edge_label)
+        return list_edges,set_edges           
+    else:
+        return None,None
+
+# This will be advanced in future
+def simEdges(edge_1, edge_2):
+    return 1 
+
+def generateEdgeLabel(edgeJSON):
+    if (edgeJSON):
+       return edgeJSON['source'] + "_" + edgeJSON['resource_source_ex'] + "_" +  edgeJSON['resource_des_ex'] +"_"+ edgeJSON['destination'] 
+    else:
+       return None  
 ############################################
 ########TOPOLOGY SIMILARITY MATCHING########
 ############################################
@@ -228,12 +264,16 @@ for i in range(0,3):
 print "============1-4====================="
 print "Nodes matching : " + str(simNodes_workflow(test.WORKFLOW_1, test.WORKFLOW_4))
 print "Topo matching : " + str(sim_topologies(test.WORKFLOW_1, test.WORKFLOW_4))
+print "Edge matching : " + str(simEdges_workflow(test.WORKFLOW_1, test.WORKFLOW_4))
 print "============1-2====================="
 print "Nodes matching : " + str(simNodes_workflow(test.WORKFLOW_1, test.WORKFLOW_2))
 print "Topo matching : " + str(sim_topologies(test.WORKFLOW_1, test.WORKFLOW_2))
+print "Edge matching : " + str(simEdges_workflow(test.WORKFLOW_1, test.WORKFLOW_2))
 print "============1-3====================="
 print "Nodes matching : " + str(simNodes_workflow(test.WORKFLOW_1, test.WORKFLOW_3))
 print "Topo matching : " + str(sim_topologies(test.WORKFLOW_1, test.WORKFLOW_3))
+print "Edge matching : " + str(simEdges_workflow(test.WORKFLOW_1, test.WORKFLOW_3))
+
 
 
 #print (OWLEngine.get_hierarchy_subclasses_of_class("http://www.cs.nmsu.edu/~epontell/Ontologies/phylogenetic_methods.owl#operationClassification","0"))      
