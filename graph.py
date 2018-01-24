@@ -272,12 +272,14 @@ def find_shortest_path(graph, start, end, path=[]):
 #print ("All path")
 #print(find_all_paths(SERVICE_CLASSES_GRAPH,'common_name_to_scientific_name','names_extraction_web'))
 
-
-
-#print "=========="
-#print "Workflow 4"
-#print_ZSSNode(buildUp_ZSSGraph(test.WORKFLOW_4))
-
+'''
+print "=========="
+print "Workflow 1"
+print_ZSSNode(buildUp_ZSSGraph(test.WORKFLOW_1))
+print "=========="
+print "Workflow 4"
+print_ZSSNode(buildUp_ZSSGraph(test.WORKFLOW_4))
+'''
 
 #items = A.iter()
 

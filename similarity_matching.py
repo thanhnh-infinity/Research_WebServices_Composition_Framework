@@ -52,8 +52,16 @@ def calSimNodes_btw_2_descriptions(ServiceClassObj_1, ServiceClassObj_2):
     #    print item
     #print des_1
     #print des_2
-    des_1 = ServiceClassObj_1['service_class_description']
-    des_2 = ServiceClassObj_2['service_class_description']
+    if (ServiceClassObj_1['service_class_description']):
+        des_1 = ServiceClassObj_1['service_class_description']
+    else:
+        des_1 = None
+
+    if (ServiceClassObj_2['service_class_description']):    
+        des_2 = ServiceClassObj_2['service_class_description']
+    else:
+        des_2 = None
+
 
     if ((des_1 is None or not des_1) and (des_2 is None or not des_2)):
         return float(0)
@@ -169,6 +177,18 @@ def calSimNodes_Ontology(ServiceClassObj_1, ServiceClassObj_2):
 def simNodes(ServiceClassObj_1, ServiceClassObj_2):
     return configuration.WEIGHT_SIMILARITY_NODES['semantic_ontology']*calSimNodes_Ontology(ServiceClassObj_1, ServiceClassObj_2) + configuration.WEIGHT_SIMILARITY_NODES['input_output']*(calSimNodes_btw_2_InputSets(ServiceClassObj_1, ServiceClassObj_2) + calSimNodes_btw_2_OutputSets(ServiceClassObj_1, ServiceClassObj_2)) + configuration.WEIGHT_SIMILARITY_NODES['service_description']*calSimNodes_btw_2_descriptions(ServiceClassObj_1, ServiceClassObj_2)
 
+def simNodes_workflow(WF_JSON_1, WF_JSON_2):
+    number_of_nodes_1 = len(WF_JSON_1)
+    number_of_nodes_2 = len(WF_JSON_2)
+
+    total_sim_nodes = 0
+    for node_1 in WF_JSON_1:
+        for node_2 in WF_JSON_2:
+            single_sim_nodes = simNodes(node_1,node_2)
+            total_sim_nodes = total_sim_nodes + single_sim_nodes
+
+    return 2*float(total_sim_nodes) / (number_of_nodes_1 + number_of_nodes_2)
+
 ############################################
 ########EDGE SIMILARITY MATCHING############
 ############################################
@@ -183,6 +203,7 @@ def calSim_2Edges(edge_1, edge_2):
 ############################################
 def sim_topologies(WF_JSON_1, WF_JSON_2):
     dist_topology = graph.distance_topology(WF_JSON_1,WF_JSON_2)
+    print dist_topology
     return 1 / (1 + float(dist_topology))
 ############################################
 ########MAIN########
@@ -190,7 +211,7 @@ def sim_topologies(WF_JSON_1, WF_JSON_2):
 def sim_workflows(WF_1,WF_2):
     return 1
 
-
+'''
 for i in range(0,3):
    for j in range(i+1,4):
       print "======================================"
@@ -203,9 +224,16 @@ for i in range(0,3):
       print "Onto Nodes same : " + str(calSimNodes_Ontology(test.SERVICE_CLASSES[i],test.SERVICE_CLASSES[j]))
       print "------------------"
       print "TOtal Sim : " + str(simNodes(test.SERVICE_CLASSES[i],test.SERVICE_CLASSES[j]))
-
-print "================================="
+'''
+print "============1-4====================="
+print "Nodes matching : " + str(simNodes_workflow(test.WORKFLOW_1, test.WORKFLOW_4))
 print "Topo matching : " + str(sim_topologies(test.WORKFLOW_1, test.WORKFLOW_4))
+print "============1-2====================="
+print "Nodes matching : " + str(simNodes_workflow(test.WORKFLOW_1, test.WORKFLOW_2))
+print "Topo matching : " + str(sim_topologies(test.WORKFLOW_1, test.WORKFLOW_2))
+print "============1-3====================="
+print "Nodes matching : " + str(simNodes_workflow(test.WORKFLOW_1, test.WORKFLOW_3))
+print "Topo matching : " + str(sim_topologies(test.WORKFLOW_1, test.WORKFLOW_3))
 
 
 #print (OWLEngine.get_hierarchy_subclasses_of_class("http://www.cs.nmsu.edu/~epontell/Ontologies/phylogenetic_methods.owl#operationClassification","0"))      
