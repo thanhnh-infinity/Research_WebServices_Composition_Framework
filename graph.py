@@ -1,4 +1,4 @@
-from OWL_Ontology_App import OWLEngine
+#from OWL_Ontology_App import OWLEngine
 import json
 import os
 import sys

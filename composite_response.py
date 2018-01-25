@@ -1,7 +1,7 @@
 import os
 import sys
 import json
-import utility
+#import utility
 import pprint
 import composite_parser
 import urllib2

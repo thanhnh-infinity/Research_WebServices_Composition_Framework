@@ -7,18 +7,19 @@ from sets import Set
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.stem.porter import PorterStemmer
 
-from classes.plans import Abtract_Planning,InitialState,GoalState,Concrete_Planning
-from classes.services import Service_Class,Service_Instance,DataFormatObject,Match_Object
-from OWL_Ontology_App import OWLEngine
+#from classes.plans import Abtract_Planning,InitialState,GoalState,Concrete_Planning
+#from classes.services import Service_Class,Service_Instance,DataFormatObject,Match_Object
+#from OWL_Ontology_App import OWLEngine
 import os
 import sys
 import json
-import utility
+#import utility
 import pprint
-import planning_algorithms
+#import planning_algorithms
 import configuration
 import composite_response
 import graph
+from random import *
 
 
 ##########TEST DATA#########################
@@ -244,8 +245,31 @@ def sim_topologies(WF_JSON_1, WF_JSON_2):
 ############################################
 ########MAIN########
 ############################################
-def sim_workflows(WF_1,WF_2):
-    return 1
+def sim_workflows_graphStructure(WF_JSON_1,WF_JSON_2):
+    return randint(1000,3000)
+def sim_workflows(WF_1,WF_2,type):
+    if (type is None or not type):
+        return None
+    else:
+        if ("CLINGO_MODELS" in type):
+            WF_JSON_1 =  convert_From_ClingoModels_toBasicGraphStructure(WF_1)
+            WF_JSON_2 =  convert_From_ClingoModels_toBasicGraphStructure(WF_2)
+            #print WF_JSON_1
+            #print "---"
+            #print WF_JSON_1
+            return sim_workflows_graphStructure(WF_JSON_1,WF_JSON_2) 
+        elif ("WF_JSON_GRAPH_STRUCTURE" in type):
+            WF_JSON_1 = WF_1
+            WF_JSON_2 = WF_2
+            return sim_workflows_graphStructure(WF_JSON_1,WF_JSON_2)    
+
+    return None
+
+def convert_From_ClingoModels_toBasicGraphStructure(Clingo_Models_WF):
+    new_list = []
+    for item in Clingo_Models_WF:
+        new_list.append(str(item))
+    return json.dumps(composite_response.read_a_abstract_workflow_detail(new_list))
 
 '''
 for i in range(0,3):
@@ -273,7 +297,10 @@ print "============1-3====================="
 print "Nodes matching : " + str(simNodes_workflow(test.WORKFLOW_1, test.WORKFLOW_3))
 print "Topo matching : " + str(sim_topologies(test.WORKFLOW_1, test.WORKFLOW_3))
 print "Edge matching : " + str(simEdges_workflow(test.WORKFLOW_1, test.WORKFLOW_3))
+print "===================================="
 
-
+#print "Graph of Workflow 1"
+#print convert_From_ClingoModels_toBasicGraphStructure(test.WORKFLOW_3_RAW_BEAUTY)
+print sim_workflows(test.WORKFLOW_1_RAW_BEAUTY,test.WORKFLOW_2_RAW_BEAUTY,"CLINGO_MODELS")
 
 #print (OWLEngine.get_hierarchy_subclasses_of_class("http://www.cs.nmsu.edu/~epontell/Ontologies/phylogenetic_methods.owl#operationClassification","0"))      
