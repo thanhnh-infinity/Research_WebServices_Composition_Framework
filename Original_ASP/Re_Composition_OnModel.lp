@@ -132,6 +132,7 @@ def main(prg):
 
       def real_time_check_model(clingo_model):
           print ("----------> new model")
+          # Have to calculate similiarity index here and find the best one
           #print clingo_model
 
       clingo_control = clingo.Control()

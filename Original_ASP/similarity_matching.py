@@ -248,8 +248,6 @@ def sim_topologies(WF_JSON_1, WF_JSON_2):
 def sim_workflows_graphStructure(WF_JSON_1,WF_JSON_2):
     return randint(1000,3000)
 def sim_workflows(WF_1,WF_2,type):
-    #print WF_1
-    #print WF_2
     if (type is None or not type):
         return None
     else:
