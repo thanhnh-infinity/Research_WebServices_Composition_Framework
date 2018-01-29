@@ -254,6 +254,11 @@ def sim_workflows(WF_1,WF_2,type):
         if ("CLINGO_MODELS" in type):
             WF_JSON_1 =  convert_From_ClingoModels_toBasicGraphStructure(WF_1)
             WF_JSON_2 =  convert_From_ClingoModels_toBasicGraphStructure(WF_2)
+
+            #print WF_JSON_1
+            #print "ThanhNH"
+            #print WF_JSON_2
+
             return sim_workflows_graphStructure(WF_JSON_1,WF_JSON_2) 
         elif ("WF_JSON_GRAPH_STRUCTURE" in type):
             WF_JSON_1 = WF_1

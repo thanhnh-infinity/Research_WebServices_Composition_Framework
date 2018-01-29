@@ -29,7 +29,8 @@ def build_no_op_rule_for_predicate_With_Active(answer_set_symbols,predicate_name
     component_rule = component_rule[:len(component_rule)-2]
     return contrains_distince_wf_rule %(component_rule,index)
 #----------------------------------------------------------    
-
+GLOBAL_BEST_MATCH_WORKFLOW = []
+GLOBAL_HIGHEST_SIM_INDEX = -9999999
 #-------------FOR RE PLANNING-------------------------
 def sim_matching(WF_1,WF_2):
   return similarity_matching.sim_workflows(WF_1,WF_2,"CLINGO_MODELS")
@@ -48,13 +49,6 @@ def generateBeautyString(symbol):
     return name
 
 def convertListOccursToPredicate_2(list_of_atoms):
-  # Limit atoms appear in list to easy to view
-  '''
-  final_list = []
-  for atom in list_of_atoms:
-      if ("occur(" in atom or "occur_concrete" in atom):
-          final_list.append(clingo.Function(atom))
-  '''        
   return clingo.Function("workflow",list_of_atoms)
 
 def convertListOccursToPredicate(list):
@@ -93,11 +87,10 @@ def generateFunctionListOfAction(string):
 def get_CurrentModifying_Workflow():
    return ["occur(a,1)", "occur(b,2)", "occur(c,3)"]
    #return WORKFLOW_1_RAW_BEAUTY
-
 #---------------------------------------------------------- 
-
 def main(prg):
-  def run_original_planning():
+
+  def run_original_planning_with_sim_index():
       final_answer_set_result = []
       def load_asp(clingo_control):
             clingo_control.load("main_program.lp")
@@ -131,9 +124,23 @@ def main(prg):
           return symbols
 
       def real_time_check_model(clingo_model):
-          print ("----------> new model")
-          # Have to calculate similiarity index here and find the best one
-          #print clingo_model
+          global GLOBAL_BEST_MATCH_WORKFLOW
+          global GLOBAL_HIGHEST_SIM_INDEX
+          old_workflow = get_CurrentModifying_Workflow()
+          new_workflow = []
+          for atom in clingo_model.symbols(shown=True):
+              new_workflow.append(atom)
+          sim_index = sim_matching(old_workflow,new_workflow)
+          current_highest_sim = GLOBAL_HIGHEST_SIM_INDEX
+          if (sim_index > current_highest_sim):
+              GLOBAL_HIGHEST_SIM_INDEX = sim_index
+              GLOBAL_BEST_MATCH_WORKFLOW = new_workflow
+  
+          print new_workflow 
+          print "current sim index : " + str(sim_index)
+         
+          print "\n=================================================="
+              
 
       clingo_control = clingo.Control()
       # Load another components
@@ -230,69 +237,24 @@ def main(prg):
       print("--> Start Re-Composition : \n")
       answer_sets = []
       print("---->Original Planning + New Preference : START------")
-      answer_sets = run_original_planning()
-      print (len(answer_sets))
-      for set in answer_sets:
-          print set
-          print "\n"
-      print "\n"
+      answer_sets = run_original_planning_with_sim_index()
       print("---->Original Planning + New Preference : DONE------\n")
+
+      print("===========================Result======================================\n")
+      print("-----> Result \n")
+      print("-----> Best Matched Workflow : ")
+      print GLOBAL_BEST_MATCH_WORKFLOW
+      print("\n-----> Highest Sim Index : " + str(GLOBAL_HIGHEST_SIM_INDEX)) 
+      print("=======================================================================\n")
+
       # Read the final results : RE-composision collection to work on Similarity
-      return answer_sets
-
-  def build_sim_selection_choice_rule():
-      content_rule = ""
-      
-      # Step 1 : Read OLD (Current displayed workflow in WCM) under specific format (JSON + NMSU_CS format)
-      old_workflow = get_CurrentModifying_Workflow()
-      
-      # Step 2 : Star composittion = Run original planning + new preference for re-composition (DOING)
-      new_set_workflows = re_composition_with_preference(prg)
-
-      # Simulate data
-      
-      new_set_workflows = [["occur(x,1)", "occur(y,2)", "occur(z,3)"],
-                           ["occur(m,1)", "occur(n,2)", "occur(p,3)"],
-                           ["occur(h,1)", "occur(i,2)", "occur(k,3)"],
-                          ]
-      
-
-
-      index = 0
-      for new_workflow in new_set_workflows:
-          sim_index = sim_matching(old_workflow,new_workflow)
-          str_predicate_old_workflow = generateBeautyString(convertListOccursToPredicate(old_workflow))
-          str_predicate_new_workflow = generateBeautyString(convertListOccursToPredicate(new_workflow))
-          
-          rule_sim_index = "sim_index(%s,%s,%d)" %(str(str_predicate_old_workflow),str(str_predicate_new_workflow),int(sim_index)) 
-          if (index == 0):
-               content_rule = rule_sim_index  
-          else:
-               content_rule = content_rule + ";" + rule_sim_index  
-          index = index + 1
-              
-
-      constrain_rule = "1{%s}1."
-      constrain_rule = constrain_rule %(content_rule)
-      return constrain_rule
-  #Register base program    
-  base_program = [("base", [])]
-  prg.ground(base_program)
-
-  #Register program working with sim index
-  program = "test"
-  constraint_rule = build_sim_selection_choice_rule()
-  print "---->Added Choice Rule : " + constraint_rule
-  prg.add(program, [], constraint_rule + "\n#maximize{Z:sim_index(X,Y,Z)}.") 
-  
-  # Ground all programs to find Answer Set
-  prg.ground([("base", []),(program, [])])
-  prg.solve()
+      return GLOBAL_BEST_MATCH_WORKFLOW,GLOBAL_HIGHEST_SIM_INDEX
   #----------------------------------------
+
+  re_composition_with_preference(prg)
 #end.
 
-selected_sim_workflow(Y) :- sim_index(X,Y,Z).
-hightest_sim_index(Z) :- sim_index(X,Y,Z).
+
 
 #show selected_sim_workflow/1.
 #show hightest_sim_index/1.
