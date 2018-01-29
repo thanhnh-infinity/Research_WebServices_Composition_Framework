@@ -48,5 +48,5 @@ match_occur_service_class(A,I,T,initial_state,O,0) :- occur(A,T),
 %#show has_qos_throughput_involved_concrete/2.
 %#show has_qos_reliability_involved_concrete/2.
 %#show has_qos_availability_involved_concrete/2.
-
+%#show check_sim_active/1.
 

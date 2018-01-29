@@ -1,0 +1,11 @@
+1. Performance is very bad
+   Only 3 or 4 steps are ok, there are more than 4 => Super bad
+   That are for abstract only (consider "occur" only), if consider both abstract and concrete => much worser
+   If consider match => super bad
+
+2. How to consider n in : n is maximum of lenght
+   sim(Z) :- old_occur(...),old_occur(...),old_occur(m,k),occur(A0,0),occur(A1,1),...,occur(An,n), Z= sim(...)
+   Because we do not know length of new workflow. So in the case that n > k, sim(Z) will not be generated because at lease occur(An,n) is not existed 
+
+3. Old question ? How about match for new
+
