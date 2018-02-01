@@ -9,3 +9,13 @@
 
 3. Old question ? How about match for new
 
+===========================================================
+
+1. #sum for set , not for a list => doublicate data cannot be included to calculate sum
+
+2. #sum to calculate for big integer is super slow > 500 . tried to generate random int for sim between 2 nodes from 100 - 1000. With 6 Nodes per workflow.
+Generate single_sim is very quick
+=> But time to calculate #sum is very slow
+
+3. 
+

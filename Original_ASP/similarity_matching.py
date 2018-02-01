@@ -153,7 +153,22 @@ def calSimNodes_btw_2_OutputSets(ServiceClassObj_1, ServiceClassObj_2):
             return float(0)
     except:
         return float(0)
+def distNodes_Ontology_RawClingo(node_1,index_1,node_2,index_2):
+    ontClassName_1 = node_1
+    ontClassName_2 = node_2
 
+    if (ontClassName_1 and not ontClassName_2):
+        return float(9999)
+
+    if (ontClassName_2 and not ontClassName_1):
+        return float(9999)
+
+    shortestPathOverLCA = graph.find_shortest_path(graph.SERVICE_CLASSES_GRAPH,ontClassName_1,ontClassName_2)
+    
+    if (not shortestPathOverLCA or shortestPathOverLCA is None or len(shortestPathOverLCA) <= 0):
+        return float(9999)
+
+    return len(shortestPathOverLCA)
 def distNodes_Ontology(ServiceClassObj_1, ServiceClassObj_2):
     ontClassName_1 = ServiceClassObj_1['service_class_name']
     ontClassName_2 = ServiceClassObj_2['service_class_name']
@@ -174,6 +189,16 @@ def distNodes_Ontology(ServiceClassObj_1, ServiceClassObj_2):
 def calSimNodes_Ontology(ServiceClassObj_1, ServiceClassObj_2):
     distNodes_Ontology_Value = distNodes_Ontology(ServiceClassObj_1, ServiceClassObj_2)
     return 1 / (1 + float(distNodes_Ontology_Value))
+
+def calSimNodes_Ontology_RawClingo(node_1,index_1,node_2,index_2):
+    distNodes_Ontology_Value = distNodes_Ontology_RawClingo(node_1,index_1,node_2,index_2)
+    return 1 / (1 + float(distNodes_Ontology_Value)) 
+
+def sim_between_2_nodes_raw_clingo(node_1,index_1,node_2,index_2):
+    sim_nodes_ontology = calSimNodes_Ontology_RawClingo(str(node_1),index_1,str(node_2),index_2)
+    final_value = sim_nodes_ontology
+    #print final_value
+    return int(round(final_value*10000))
 
 def simNodes(ServiceClassObj_1, ServiceClassObj_2):
     return configuration.WEIGHT_SIMILARITY_NODES['semantic_ontology']*calSimNodes_Ontology(ServiceClassObj_1, ServiceClassObj_2) + configuration.WEIGHT_SIMILARITY_NODES['input_output']*(calSimNodes_btw_2_InputSets(ServiceClassObj_1, ServiceClassObj_2) + calSimNodes_btw_2_OutputSets(ServiceClassObj_1, ServiceClassObj_2)) + configuration.WEIGHT_SIMILARITY_NODES['service_description']*calSimNodes_btw_2_descriptions(ServiceClassObj_1, ServiceClassObj_2)

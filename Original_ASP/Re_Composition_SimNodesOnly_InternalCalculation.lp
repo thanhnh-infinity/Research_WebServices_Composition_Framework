@@ -33,8 +33,10 @@ def build_no_op_rule_for_predicate_With_Active(answer_set_symbols,predicate_name
 #-------------FOR RE PLANNING-------------------------
 def sim_matching(WF_1,WF_2):
   return similarity_matching.sim_workflows(WF_1,WF_2,"CLINGO_MODELS")
-def calculate_sim_matching(WF_1,WF_2):
-  return randint(100,500)
+def calculate_sim_matching_WF(WF_1,WF_2):
+  return randint(0,200)
+def calculate_sim_between_2_nodes(occur_node_1,index_1,occur_node_2,index_2):
+  return similarity_matching.sim_between_2_nodes_raw_clingo(occur_node_1,index_1,occur_node_2,index_2)
 def generateBeautyString(symbol):
     name = symbol.name + "("
     arguments = symbol.arguments
@@ -58,17 +60,30 @@ def convertListOccursToPredicate_2(list_of_atoms):
   '''        
   return clingo.Function("workflow",list_of_atoms)
 
+def isConsideredPredicate(str_predicate,limits):
+    for item in limits:
+        if (item in str_predicate):
+            return True
+    return False
 
-def get_CurrentModifying_Workflow():
-   return ["occur(a,0)", "occur(b,1)", "occur(c,2)"]
-   #return ["occur(a,0)", "occur(b,1)", "occur(c,2)","occur(d,3)"]
+def get_CurrentModifying_Workflow(limits):
+   # limits is list of predicate that want to store for new workflow
+   '''
+   result_list = []
+   if (not limits):
+       return WORKFLOW_1_RAW_BEAUTY
+   for str_predicate in WORKFLOW_1_RAW_BEAUTY:
+       if (isConsideredPredicate(str_predicate,limits)):
+            result_list.append(str_predicate)
+   return result_list
+   '''
+   return ["occur(common_name_to_scientific_name,0)", "occur(taxon_to_species_by_country,1)", "occur(names_extraction_document,2)","occur(names_resolution_operation,3)","occur(phylogeny_based_extraction,4)","occur(tree_comparison,5)"]
+   #return ["occur(a,0)", "occur(b,1)", "occur(c,2)"]
    #return ["occur(a,0)", "occur(b,1)", "occur(c,2)","occur(d,3)","occur(e,4)","occur(f,5)"]
-   #return WORKFLOW_1_RAW_BEAUTY
-
 #---------------------------------------------------------- 
 
 def main(prg):
-  def run_original_planning(str_group_sim_rules):
+  def run_original_planning(str_group_sim_nodes_rules):
       final_answer_set_result = []
       def load_asp(prg):
             prg.load("main_program.lp")
@@ -79,7 +94,6 @@ def main(prg):
             prg.load("configuration.lp")
             prg.load("planning_preference.lp")
             prg.load("re_planning_preference.lp")
-
       def enable_active_rule_for_subprogram(prg,multishot_id,level):
           external_name = ""
           if ("concrete" in level):
@@ -126,7 +140,7 @@ def main(prg):
       answer_set_abstract = []
 
       # Add SIMILARITY INDEX RULE to active Internal Optimization
-      prg.add("similarity_index_calculation", [], str_group_sim_rules)
+      prg.add("similarity_index_calculation", [], str_group_sim_nodes_rules)
       prg.ground([("similarity_index_calculation", [])])
 
       enable_active_rule_for_subprogram(prg,1,"abstract")
@@ -200,139 +214,43 @@ def main(prg):
       return final_answer_set_result
 
   #-----------FOR RE-COMPOSITION-----------
-  ## Build Up the cach 1
-  #----------------------------------------
-  def build_up_old_workflow_represent(old_workflow):
-      fomulation_string = "old_workflow(wf_data(%s))"
-      wf_data = ""
-      index = 0
-      for atom in old_workflow:
-          if (index == 0):
-              wf_data = str(atom)
-          else:
-              wf_data = wf_data + "," + str(atom)
-          index = index + 1
-      return fomulation_string %(str(wf_data))
+  def build_up_group_similarity_nodes_rules_C1():  #Simple occur and description only
+      # Get old worklfow for occur only
+      old_workflow = get_CurrentModifying_Workflow(limits=["occur("]) 
+      generate_old_occur = ""
+      for old_item in old_workflow:
+          if "occur(" in old_item:
+              generate_item = old_item.replace("occur(","old_occur(")
+              generate_old_occur = generate_old_occur + "\n%s." %(str(generate_item))          
 
-  def get_number_steps_old_workflow_pre(old_workflow):
-      number = 0
-      for atom in old_workflow:
-          if atom.name() == "occur":
-             number = number + 1
-      return number    
+      single_sim_nodes_rule = "\nsingle_sim_2_nodes(X,Y,Z) :- old_occur(X,I1), occur(Y,I2), Z = @calculate_sim_between_2_nodes(X,I1,Y,I2)."       
+
+      sum_sim_nodes_rule = "\nsum_single_sim_2_nodes(T) :- T = #sum {Z : single_sim_2_nodes(X,Y,Z)}."
       
-  def get_number_steps_old_workflow_str(old_workflow):
-      number = 0
-      for atom in old_workflow:
-          if ("occur(" in str(atom)):
-             number = number + 1
-      return number
+      #sum_sim_nodes_rule = "\nsum_single_sim_2_nodes(0)."
+      #sum_sim_nodes_rule = sum_sim_nodes_rule + "\nsum_single_sim_2_nodes(R) :- sum_single_sim_2_nodes(E), single_sim_2_nodes(X,Y,Z), R = E + Z."
+      #sum_sim_nodes_rule = "\nsum_single_sim_2_nodes(T) :- T = #sum {Z,X,Y : single_sim_2_nodes(X,Y,Z)}."  
 
-  def generate_Predicates_for_New_Workflow(number_of_steps_in_old,max_steps,type):
-      if (type == "FIT_OLD_STEPS_INDEXES"):
-        predicates_content = ""
-        for step in range(0,number_of_steps_in_old):
-            if (step == 0):
-                predicates_content = "occur(A%s,%s)" %(str(step),str(step))
-                #predicates_content = "occur_concrete(A%s,%s)" %(str(step),str(step))
-                #predicates_content = "occur(A%s,%s),occur_concrete(O%s,%s)" %(str(step),str(step),str(step),str(step))
-            else:
-                predicates_content = predicates_content + ",occur(A%s,%s)" %(str(step),str(step))
-                #predicates_content = predicates_content + ",occur_concrete(A%s,%s)" %(str(step),str(step))
-                #predicates_content = predicates_content + ",occur(A%s,%s),occur_concrete(O%s,%s)" %(str(step),str(step),str(step),str(step))
-        formula_generatedPredicates_data = "new_workflow(wf_data(%s),%s) :- %s." %(str(predicates_content),str(number_of_steps_in_old),str(predicates_content))        
-        return formula_generatedPredicates_data
-      elif (type == "PERMUTE_0_TO_MAX_STEPS"):
-        full_formula_predicates_content = ""
-        for step_index in range(1,max_steps + 1):
-            for step in range(0,step_index):
-              if (step == 0):
-                  predicates_content = "occur(A%s,%s)" %(str(step),str(step))
-              else:
-                  predicates_content = predicates_content + ",occur(A%s,%s)" %(str(step),str(step))
-            formula_generatedPredicates_data = "\nnew_workflow(wf_data(%s),%s) :- %s." %(str(predicates_content),str(step_index),str(predicates_content))
-            full_formula_predicates_content += formula_generatedPredicates_data
-        return full_formula_predicates_content        
-      else:
-        return ""   
+      sim_nodes_workflow_rule = "\nsim_nodes_workflows(R) :- sum_single_sim_2_nodes(T), N_Old_Nodes = #count {X: old_occur(X,I1)}, N_New_Nodes = #count {Y : occur(Y,I2)}, R = 2*T / (N_Old_Nodes + N_New_Nodes)."  
 
-  def build_up_group_similarity_rules():
-       # For old workflow
-       old_workflow = get_CurrentModifying_Workflow()
-       old_workflow_predicate = build_up_old_workflow_represent(old_workflow)
-       old_workflow_fact = old_workflow_predicate + "."
-
-       # For new workflow
-       generatedPredicates_data = generate_Predicates_for_New_Workflow(get_number_steps_old_workflow_str(old_workflow),0,"FIT_OLD_STEPS_INDEXES")
-       #generatedPredicates_data = generate_Predicates_for_New_Workflow(get_number_steps_old_workflow_str(old_workflow),6,"PERMUTE_0_TO_MAX_STEPS")
-
-       # Rule for similarity calculation
-       formula_sim_cal_rule = "sim_index(Y,Z) :- old_workflow(X), new_workflow(Y,Number_Steps), Z = @calculate_sim_matching(X,Y)."
-
-       return "%s\n%s\n%s" % (str(old_workflow_fact),str(generatedPredicates_data),str(formula_sim_cal_rule))
-
-  #------------------------------     
-  ## Build up theo cach 2
-  #------------------------------
-  def build_up_old_workflow_represent_2(old_workflow):
-      fomulation_string = "%s"
-      wf_data = ""
-      index = 0
-      for atom in old_workflow:
-          if (index == 0):
-              wf_data = "old_" + str(atom)
-          else:
-              wf_data = wf_data + "," + "old_" + str(atom)
-          index = index + 1
-      return fomulation_string %(str(wf_data))     
-
-  def generate_Predicates_for_New_Workflow_2(number_of_steps_in_old,max_steps,type):
-      if (type == "FIT_OLD_STEPS_INDEXES"):
-        predicates_content = ""
-        for step in range(0,number_of_steps_in_old):
-            if (step == 0):
-                predicates_content = "occur(A%s,%s)" %(str(step),str(step))
-            else:
-                predicates_content = predicates_content + ",occur(A%s,%s)" %(str(step),str(step))
-        formula_generatedPredicates_data = predicates_content      
-        return formula_generatedPredicates_data
-      elif (type == "PERMUTE_0_TO_MAX_STEPS"):
-        return ""       
-      else:
-        return ""   
-            
-  def build_up_group_similarity_rules_2():
-       # For old workflow
-       old_workflow = get_CurrentModifying_Workflow()
-       old_workflow_predicate = build_up_old_workflow_represent_2(old_workflow)
-       old_workflow_fact = ""
-       for atom in old_workflow:
-           old_workflow_fact = old_workflow_fact + "\n" +  "old_" + str(atom) + "."
-
-       # For new workflow
-       generatedPredicates_data = generate_Predicates_for_New_Workflow_2(get_number_steps_old_workflow_str(old_workflow),0,"FIT_OLD_STEPS_INDEXES")
-       #generatedPredicates_data = generate_Predicates_for_New_Workflow(get_number_steps_old_workflow_str(old_workflow),6,"PERMUTE_0_TO_MAX_STEPS")
-
-       # Rule for similarity calculation
-       #formula_sim_cal_rule = "sim_index((%s),Z) :- %s,%s,Z = @calculate_sim_matching((%s),(%s))." %(str(generatedPredicates_data),str(old_workflow_predicate),str(generatedPredicates_data),str(old_workflow_predicate),str(generatedPredicates_data))
-
-       formula_sim_cal_rule = "sim_index((%s),Z) :- %s,%s,Z = @calculate_sim_matching((%s),(%s))." %(str(generatedPredicates_data),str(old_workflow_predicate),str(generatedPredicates_data),str(old_workflow_predicate),str(generatedPredicates_data))
-
-       return "%s\n%s" % (str(old_workflow_fact),str(formula_sim_cal_rule))    
+      full_sim_nodes_cal = generate_old_occur + single_sim_nodes_rule + sum_sim_nodes_rule  + sim_nodes_workflow_rule
+      
+      return full_sim_nodes_cal
+  
   #################################################
   def re_composition_with_preference(prg):
       print("--> Start Re-Composition : \n")
       answer_sets = []
       
-      str_group_sim_rules = build_up_group_similarity_rules_2()
-      #str_group_sim_rules = build_up_group_similarity_rules()
+      str_group_sim_nodes_rules = build_up_group_similarity_nodes_rules_C1()
+      
       
       print "\n"
-      print str_group_sim_rules
+      print str_group_sim_nodes_rules
       print "\n"
 
       print("---->Original Planning + New Preference : START------")
-      answer_sets = run_original_planning(str_group_sim_rules)
+      answer_sets = run_original_planning(str_group_sim_nodes_rules)
       print("---->Original Planning + New Preference : DONE------\n")
       # Read the final results : RE-composision collection to work on Similarity
       return answer_sets
@@ -340,14 +258,6 @@ def main(prg):
   re_composition_with_preference(prg)
 #end.
 
-%selected_sim_workflow(Y) :- sim_index(X,Y,Z).
-%hightest_sim_index(Z) :- sim_index(X,Y,Z).
-
-%#show selected_sim_workflow/1.
-%#show hightest_sim_index/1.
-
-%#maximize{Z:sim_index(Y,Z)}.
-
-#show sim_index/2.
-%#show new_workflow/2.
-
+#show single_sim_2_nodes/3.
+#show sum_single_sim_2_nodes/1.
+#show sim_nodes_workflows/1.
