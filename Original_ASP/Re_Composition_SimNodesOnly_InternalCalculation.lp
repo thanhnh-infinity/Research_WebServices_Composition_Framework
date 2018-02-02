@@ -37,28 +37,6 @@ def calculate_sim_matching_WF(WF_1,WF_2):
   return randint(0,200)
 def calculate_sim_between_2_nodes(occur_node_1,index_1,occur_node_2,index_2):
   return similarity_matching.sim_between_2_nodes_raw_clingo(occur_node_1,index_1,occur_node_2,index_2)
-def generateBeautyString(symbol):
-    name = symbol.name + "("
-    arguments = symbol.arguments
-    index = 0
-    for arg in arguments:
-        if (index == 0):
-          name = name + arg.name
-        else:
-          name = name + "," + arg.name 
-        index = index + 1  
-    name = name + ")"
-    return name
-
-def convertListOccursToPredicate_2(list_of_atoms):
-  # Limit atoms appear in list to easy to view
-  '''
-  final_list = []
-  for atom in list_of_atoms:
-      if ("occur(" in atom or "occur_concrete" in atom):
-          final_list.append(clingo.Function(atom))
-  '''        
-  return clingo.Function("workflow",list_of_atoms)
 
 def isConsideredPredicate(str_predicate,limits):
     for item in limits:
@@ -77,7 +55,11 @@ def get_CurrentModifying_Workflow(limits):
             result_list.append(str_predicate)
    return result_list
    '''
-   return ["occur(common_name_to_scientific_name,0)", "occur(taxon_to_species_by_country,1)", "occur(names_extraction_document,2)","occur(names_resolution_operation,3)","occur(phylogeny_based_extraction,4)","occur(tree_comparison,5)"]
+   #return ["occur(common_name_to_scientific_name,0)", "occur(taxon_to_species_by_country,1)", "occur(names_extraction_document,2)","occur(names_resolution_operation,3)","occur(phylogeny_based_extraction,4)","occur(tree_comparison,5)"]
+
+   return ["occur(common_name_to_scientific_name,0)", "occur(taxon_to_species_by_country,1)", "occur(names_extraction_document,2)","occur(tree_comparison,3)"]
+
+
    #return ["occur(a,0)", "occur(b,1)", "occur(c,2)"]
    #return ["occur(a,0)", "occur(b,1)", "occur(c,2)","occur(d,3)","occur(e,4)","occur(f,5)"]
 #---------------------------------------------------------- 
@@ -226,14 +208,15 @@ def main(prg):
       single_sim_nodes_rule = "\nsingle_sim_2_nodes(X,Y,Z) :- old_occur(X,I1), occur(Y,I2), Z = @calculate_sim_between_2_nodes(X,I1,Y,I2)."       
 
       sum_sim_nodes_rule = "\nsum_single_sim_2_nodes(T) :- T = #sum {Z : single_sim_2_nodes(X,Y,Z)}."
-      
-      #sum_sim_nodes_rule = "\nsum_single_sim_2_nodes(0)."
-      #sum_sim_nodes_rule = sum_sim_nodes_rule + "\nsum_single_sim_2_nodes(R) :- sum_single_sim_2_nodes(E), single_sim_2_nodes(X,Y,Z), R = E + Z."
       #sum_sim_nodes_rule = "\nsum_single_sim_2_nodes(T) :- T = #sum {Z,X,Y : single_sim_2_nodes(X,Y,Z)}."  
 
-      sim_nodes_workflow_rule = "\nsim_nodes_workflows(R) :- sum_single_sim_2_nodes(T), N_Old_Nodes = #count {X: old_occur(X,I1)}, N_New_Nodes = #count {Y : occur(Y,I2)}, R = 2*T / (N_Old_Nodes + N_New_Nodes)."  
+      sim_nodes_workflow_rule = "\nsim_nodes_workflows(R) :- sum_single_sim_2_nodes(T), N_Old_Nodes = #count {X,I1: old_occur(X,I1)}, N_New_Nodes = #count {Y,I2 : occur(Y,I2)}, R = 2*T / (N_Old_Nodes + N_New_Nodes)."
+
+      #sim_nodes_workflow_rule = "\nsim_nodes_workflows(R) :- T = #sum {P,M,N : single_sim_2_nodes(M,N,P)}, N_Old_Nodes = #count {X,I1: old_occur(X,I1)}, N_New_Nodes = #count {,I2 : occur(Y,I2)}, R = 2*T / (N_Old_Nodes + N_New_Nodes)."  
 
       full_sim_nodes_cal = generate_old_occur + single_sim_nodes_rule + sum_sim_nodes_rule  + sim_nodes_workflow_rule
+
+      #full_sim_nodes_cal = generate_old_occur + single_sim_nodes_rule  + sim_nodes_workflow_rule
       
       return full_sim_nodes_cal
   
@@ -241,9 +224,7 @@ def main(prg):
   def re_composition_with_preference(prg):
       print("--> Start Re-Composition : \n")
       answer_sets = []
-      
       str_group_sim_nodes_rules = build_up_group_similarity_nodes_rules_C1()
-      
       
       print "\n"
       print str_group_sim_nodes_rules
