@@ -170,6 +170,7 @@ def distNodes_Ontology_RawClingo(node_1,index_1,node_2,index_2):
 
     return len(shortestPathOverLCA)
 def distNodes_Ontology(ServiceClassObj_1, ServiceClassObj_2):
+
     ontClassName_1 = ServiceClassObj_1['service_class_name']
     ontClassName_2 = ServiceClassObj_2['service_class_name']
 
@@ -206,9 +207,10 @@ def simNodes(ServiceClassObj_1, ServiceClassObj_2):
 def simNodes_workflow(WF_JSON_1, WF_JSON_2):
     number_of_nodes_1 = len(WF_JSON_1)
     number_of_nodes_2 = len(WF_JSON_2)
-
+    
     total_sim_nodes = 0
     for node_1 in WF_JSON_1:
+        
         for node_2 in WF_JSON_2:
             single_sim_nodes = simNodes(node_1,node_2)
             total_sim_nodes = total_sim_nodes + single_sim_nodes
@@ -271,7 +273,9 @@ def sim_topologies(WF_JSON_1, WF_JSON_2):
 ########MAIN########
 ############################################
 def sim_workflows_graphStructure(WF_JSON_1,WF_JSON_2):
-    return randint(1000,3000)
+    JSON_WF_1 = json.loads(WF_JSON_1)
+    JSON_WF_2 = json.loads(WF_JSON_2)
+    return 0.7*simNodes_workflow(JSON_WF_1,JSON_WF_2) + 0.3*sim_topologies(JSON_WF_1,JSON_WF_2)
 def sim_workflows(WF_1,WF_2,type):
     if (type is None or not type):
         return None

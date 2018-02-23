@@ -1,0 +1,10 @@
+init_availability_wf(1).
+iter_availability_wf(NV,0) :- has_qos_av_involved(X,0,V), 
+                              init_availability_wf(Start),
+                              NV = Start*V.
+iter_availability_wf(NV,T+1) :- has_qos_av_involved(X,T+1,V),
+                                iter_availability_wf(Current,T),
+                                NV = Current*V.
+qos_av_wf(Final) :- iter_availability_wf(Last,T), 
+                    count_items_av(N), 
+                    T = N - 1.

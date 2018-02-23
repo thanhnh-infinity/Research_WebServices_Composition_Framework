@@ -60,8 +60,8 @@ def convertListOccursToPredicate_2(list_of_atoms):
 
 
 def get_CurrentModifying_Workflow():
-   return ["occur(a,0)", "occur(b,1)", "occur(c,2)"]
-   #return ["occur(a,0)", "occur(b,1)", "occur(c,2)","occur(d,3)"]
+   #return ["occur(a,0)", "occur(b,1)", "occur(c,2)"]
+   return ["occur(a,0)", "occur(b,1)", "occur(c,2)","occur(d,3)"]
    #return ["occur(a,0)", "occur(b,1)", "occur(c,2)","occur(d,3)","occur(e,4)","occur(f,5)"]
    #return WORKFLOW_1_RAW_BEAUTY
 

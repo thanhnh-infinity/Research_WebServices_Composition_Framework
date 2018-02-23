@@ -85,8 +85,8 @@ def generateFunctionListOfAction(string):
   return clingo.Function("workflow",list)
 
 def get_CurrentModifying_Workflow():
-   return ["occur(a,1)", "occur(b,2)", "occur(c,3)"]
-   #return WORKFLOW_1_RAW_BEAUTY
+   #return ["occur(a,1)", "occur(b,2)", "occur(c,3)"]
+   return WORKFLOW_1_RAW_BEAUTY
 #---------------------------------------------------------- 
 def main(prg):
 
