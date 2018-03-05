@@ -12,6 +12,7 @@ occur_concrete(phylotastic_GetReconciliationTree_GET,5).
 % Simulate all qos data
 % Copy from Ontology_TESTING
 % Change ASP QoS value = real value *1000
+% Response time will be milliseconds
 %-------------For Response Time-----------------------------------------
 has_qos_response_time(phylotastic_ResolvedScientificNames_GNR_TNRS_GET,680).
 has_qos_response_time(phylotastic_ResolvedScientificNames_GNR_TNRS_POST,710).
@@ -54,7 +55,7 @@ has_qos_throughput(phylotastic_GetPhylogeneticTree_OT_POST,4330).
 has_qos_throughput(phylotastic_GetPhylogeneticTree_PhyloT_GET,1250).
 has_qos_throughput(phylotastic_GetPhylogeneticTree_PhyloT_POST,1250).
 has_qos_throughput(phylotastic_GetPhylogeneticTree_Phylomatic_GET,5620).
-has_qos_throughput(phylotastic_GetPhylogeneticTree_Phylomatic_POST,620).
+has_qos_throughput(phylotastic_GetPhylogeneticTree_Phylomatic_POST,6200).
 has_qos_throughput(phylotastic_GetInformationURLsOfSpecies_EOL_POST,2292).
 has_qos_throughput(phylotastic_GetInformationURLsOfSpecies_EOL_GET,2292).
 has_qos_throughput(phylotastic_GetImageURLsOfSpecies_EOL_GET,5550).
@@ -137,7 +138,7 @@ has_qos_availability(openTree_GetTaxonomyNameFromSciName_GET,1000).
 has_qos_availability(openTree_GetScientificNameFromAName_GET,1000).
 
 % ---------------------------------------
-% Logic for QoS
+% Logic for QoS based on WEIGHT
 % ---------------------------------------
 weight_response_time(4).
 weight_throughput(3).
@@ -146,47 +147,28 @@ weight_reliability(2).
 % ---------------------------------------
 % Working for Response Time (smaller is better)
 % ---------------------------------------
-has_qos_response_time_cal(X,Z) :- has_qos_response_time(X,Y), Z = (1000000 / Y).
-has_qos_response_time_involved_concrete(X,T,RT_V) :- occur_concrete(X,T), has_qos_response_time_cal(X,RT_V).
+has_qos_response_time_involved_concrete(X,T,R_RT_V) :- occur_concrete(X,T), has_qos_response_time(X,RT_V), R_RT_V = 1000000/RT_V.
 qos_response_time_workflow(RT_S) :- RT_S = #sum{RT_V,T : has_qos_response_time_involved_concrete(X,T,RT_V)}.
 % ---------------------------------------
 % Working for Throughput (bigger is better)
 % ---------------------------------------
-has_qos_throughput_involved_concrete(X,T,TP_V) :- occur_concrete(X,T), has_qos_throughput(X,TP_V).
+has_qos_throughput_involved_concrete(X,T,TP_V) :- occur_concrete(X,T), 
+                                                  has_qos_throughput(X,TP_V).
 qos_throughput_workflow(TP_S) :- S = #sum{TP_V,T : has_qos_throughput_involved_concrete(X,T,TP_V)}, 
-                                 N_TP = #count{Y,X,T : has_qos_throughput_involved_concrete(X,T,Y)},
+                                 N_TP = #count{T : has_qos_throughput_involved_concrete(X,T,Y)},
                                  TP_S = S / N_TP.
 % ---------------------------------------
-% Working for Availability (probability) (bigger is better) - Using multiplication
-%%% Solution 1
-%%% Problem : 1) Too big nunber : 1000*1000*1000*1000*1000 => ASP cannot store value
-%%%           2) There is no aggregates evaluation => Has to do search
+% Working for Availability (probability) (bigger is better) - Using MIN
 % ---------------------------------------
-%has_qos_availability_involved_concrete(X,T,AV_V) :- occur_concrete(X,T), has_qos_availability(X,AV_V).
-%init_availability_wf(1).
-%iter_availability_wf(New_Value,0) :- has_qos_availability_involved_concrete(X,0,Added_Value), 
-%                                     init_availability_wf(Current),
-%                                     New_Value = Current*Added_Value.
-%iter_availability_wf(New_Value,T+1) :- has_qos_availability_involved_concrete(X,T+1,Added_Value), 
-%                                       iter_availability_wf(Current,T),
-%                                       New_Value = Current*Added_Value.
-%qos_availability_workflow(AV_S) :- iter_availability_wf(AV_S,T),
-%                                   N_AV = #count{Y,X,T : has_qos_availability_involved_concrete(X,T,Y)}, 
-%                                   T = N_AV - 1.
-% ---------------------------------------
-% Working for Availability (probability) (bigger is better) 
-%%% Solution 2 : Calculate AVG of availability
-% ---------------------------------------
-has_qos_availability_involved_concrete(X,T,AV_V) :- occur_concrete(X,T), has_qos_availability(X,AV_V).
-qos_availability_workflow(AV_S) :- S = #sum{AV_V,T : has_qos_availability_involved_concrete(X,T,AV_V)}, 
-                                   N_AV = #count{Y,X,T : has_qos_availability_involved_concrete(X,T,Y)},
-                                   AV_S = S / N_AV.
+has_qos_availability_involved_concrete(X,T,AV_V) :- occur_concrete(X,T), 
+                                                    has_qos_availability(X,AV_V).
+qos_availability_workflow(AV_W) :- AV_W = #min {AV_V : has_qos_availability_involved_concrete(X,T,AV_V)}.
 % ---------------------------------------
 % Working for Reliability (bigger is better)
 % ---------------------------------------
 has_qos_reliability_involved_concrete(X,T,RE_V) :- occur_concrete(X,T), has_qos_reliability(X,RE_V).
 qos_reliability_workflow(RE_S) :- S = #sum{RE_V,T : has_qos_reliability_involved_concrete(X,T,RE_V)}, 
-                                  N_RE = #count{Y,X,T : has_qos_reliability_involved_concrete(X,T,Y)},
+                                  N_RE = #count{T : has_qos_reliability_involved_concrete(X,T,Y)},
                                   RE_S = S / N_RE.
 %-----------------------------------------------
 score_qos_workflow(Final_Score) :- qos_response_time_workflow(RT), weight_response_time(W_RT),
@@ -195,13 +177,11 @@ score_qos_workflow(Final_Score) :- qos_response_time_workflow(RT), weight_respon
                                    qos_availability_workflow(AV), weight_availability(W_AV),
                                    Final_Score = RT*W_RT/10 + TP*W_TP/10 + RE*W_RE/10 + AV*W_AV/10.
 
-%#maximize{Final_Score:score_qos_workflow(Final_Score)}.
+#maximize{Final_Score:score_qos_workflow(Final_Score)}.
 %-----------------------------------------------
 #show qos_response_time_workflow/1.
 #show qos_throughput_workflow/1.
 #show qos_reliability_workflow/1.
 #show qos_availability_workflow/1.
 #show score_qos_workflow/1.
-
-%#show iter_availability_wf/2.
-%#show has_qos_throughput_involved_concrete/3.
+%#show has_qos_response_time_involved_concrete/3.

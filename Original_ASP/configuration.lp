@@ -38,15 +38,18 @@ match_occur_service_class(A,I,T,initial_state,O,0) :- occur(A,T),
 %#show active_rule_concrete/1.
 %#show check_add_abstract_ok/1.
 %#show active_rule_abstract/1.
-#show has_input_occur_service_class/3.
+%#show has_input_occur_service_class/3.
 %#show has_input/3.
-#show has_output_occur_service_class/3.
+%#show has_output_occur_service_class/3.
 %#show has_output/3.
-#show match_occur_service_class/6.
+%#show match_occur_service_class/6.
 %#show match/5.
-%#show has_qos_response_time_involved_concrete/2.
-%#show has_qos_throughput_involved_concrete/2.
-%#show has_qos_reliability_involved_concrete/2.
-%#show has_qos_availability_involved_concrete/2.
+%#show has_qos_response_time_involved_concrete/3.
+%#show has_qos_throughput_involved_concrete/3.
+%#show has_qos_reliability_involved_concrete/3.
+%#show has_qos_availability_involved_concrete/3.
 %#show check_sim_active/1.
+%#show score_qos_workflow/1.
+%#show qos_availability_workflow/1.
+%#show qos_response_time_workflow/1.
 

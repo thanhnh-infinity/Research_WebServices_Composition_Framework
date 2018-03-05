@@ -624,155 +624,295 @@ instance_operation_has_output_has_data_format(phylotastic_GeneTree_Scaling, reso
 
 %-------------For Response Time-----------------------------------------
 
-has_qos_response_time(phylotastic_ResolvedScientificNames_GNR_TNRS_GET,"0.68").
-has_qos_response_time(phylotastic_ResolvedScientificNames_GNR_TNRS_POST,"0.68").
-has_qos_response_time(phylotastic_ResolvedScientificNames_OT_TNRS_GET,"0.44").
-has_qos_response_time(phylotastic_ResolvedScientificNames_OT_TNRS_POST,"0.44").
-has_qos_response_time(phylotastic_GetAllSpeciesFromTaxon_OT_GET,"0.33").
-% Tree Extraction
-has_qos_response_time(phylotastic_GetPhylogeneticTree_OT_GET,"4.04").
-has_qos_response_time(phylotastic_GetPhylogeneticTree_OT_POST,"4.04").
-has_qos_response_time(phylotastic_GetPhylogeneticTree_PhyloT_GET,"3.99").
-has_qos_response_time(phylotastic_GetPhylogeneticTree_PhyloT_POST,"3.99").
-has_qos_response_time(phylotastic_GetPhylogeneticTree_Phylomatic_GET,"2.03").
-has_qos_response_time(phylotastic_GetPhylogeneticTree_Phylomatic_POST,"2.03").
+%has_qos_response_time(phylotastic_ResolvedScientificNames_GNR_TNRS_GET,"0.68").
+%has_qos_response_time(phylotastic_ResolvedScientificNames_GNR_TNRS_POST,"0.68").
+%has_qos_response_time(phylotastic_ResolvedScientificNames_OT_TNRS_GET,"0.44").
+%has_qos_response_time(phylotastic_ResolvedScientificNames_OT_TNRS_POST,"0.44").
+%has_qos_response_time(phylotastic_GetAllSpeciesFromTaxon_OT_GET,"0.33").
 
-has_qos_response_time(phylotastic_GetInformationURLsOfSpecies_EOL_POST,"0.31").
-has_qos_response_time(phylotastic_GetInformationURLsOfSpecies_EOL_GET,"0.31").
-has_qos_response_time(phylotastic_GetImageURLsOfSpecies_EOL_GET,"1.69").
-has_qos_response_time(phylotastic_GetImageURLsOfSpecies_EOL_POST,"1.69").
-has_qos_response_time(phylotastic_FindScientificNamesFromWeb_GNRD_GET,"4.81").
-has_qos_response_time(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,"0.45").
-has_qos_response_time(phylotastic_GetSpeciesOfTaxon_Genome_NCBI_GET,"2.1").
-has_qos_response_time(phylotastic_GetAllSpeciesFromTaxon_Country_OT_GET,"0.32").
-has_qos_response_time(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,"2.0").
-has_qos_response_time(phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST,"3.56").
+has_qos_response_time(phylotastic_ResolvedScientificNames_GNR_TNRS_GET,710).
+has_qos_response_time(phylotastic_ResolvedScientificNames_GNR_TNRS_POST,680).
+has_qos_response_time(phylotastic_ResolvedScientificNames_OT_TNRS_GET,480).
+has_qos_response_time(phylotastic_ResolvedScientificNames_OT_TNRS_POST,440).
+has_qos_response_time(phylotastic_GetAllSpeciesFromTaxon_OT_GET,330).
+
+% Tree Extraction
+%has_qos_response_time(phylotastic_GetPhylogeneticTree_OT_GET,"4.04").
+%has_qos_response_time(phylotastic_GetPhylogeneticTree_OT_POST,"4.04").
+%has_qos_response_time(phylotastic_GetPhylogeneticTree_PhyloT_GET,"3.99").
+%has_qos_response_time(phylotastic_GetPhylogeneticTree_PhyloT_POST,"3.99").
+%has_qos_response_time(phylotastic_GetPhylogeneticTree_Phylomatic_GET,"2.03").
+%has_qos_response_time(phylotastic_GetPhylogeneticTree_Phylomatic_POST,"2.03").
+
+has_qos_response_time(phylotastic_GetPhylogeneticTree_OT_GET,4210).
+has_qos_response_time(phylotastic_GetPhylogeneticTree_OT_POST,4040).
+has_qos_response_time(phylotastic_GetPhylogeneticTree_PhyloT_GET,3990).
+has_qos_response_time(phylotastic_GetPhylogeneticTree_PhyloT_POST,4010).
+has_qos_response_time(phylotastic_GetPhylogeneticTree_Phylomatic_GET,2133).
+has_qos_response_time(phylotastic_GetPhylogeneticTree_Phylomatic_POST,2030).
+
+%has_qos_response_time(phylotastic_GetInformationURLsOfSpecies_EOL_POST,"0.31").
+%has_qos_response_time(phylotastic_GetInformationURLsOfSpecies_EOL_GET,"0.31").
+%has_qos_response_time(phylotastic_GetImageURLsOfSpecies_EOL_GET,"1.69").
+%has_qos_response_time(phylotastic_GetImageURLsOfSpecies_EOL_POST,"1.69").
+%has_qos_response_time(phylotastic_FindScientificNamesFromWeb_GNRD_GET,"4.81").
+%has_qos_response_time(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,"0.45").
+%has_qos_response_time(phylotastic_GetSpeciesOfTaxon_Genome_NCBI_GET,"2.1").
+%has_qos_response_time(phylotastic_GetAllSpeciesFromTaxon_Country_OT_GET,"0.32").
+%has_qos_response_time(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,"2.0").
+%has_qos_response_time(phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST,"3.56").
+
+has_qos_response_time(phylotastic_GetInformationURLsOfSpecies_EOL_POST,310).
+has_qos_response_time(phylotastic_GetInformationURLsOfSpecies_EOL_GET,320).
+has_qos_response_time(phylotastic_GetImageURLsOfSpecies_EOL_GET,1690).
+has_qos_response_time(phylotastic_GetImageURLsOfSpecies_EOL_POST,1710).
+has_qos_response_time(phylotastic_FindScientificNamesFromWeb_GNRD_GET,4810).
+has_qos_response_time(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,450).
+has_qos_response_time(phylotastic_GetSpeciesOfTaxon_Genome_NCBI_GET,2100).
+has_qos_response_time(phylotastic_GetAllSpeciesFromTaxon_Country_OT_GET,320).
+has_qos_response_time(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,2000).
+has_qos_response_time(phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST,3560).
 
 % Add for test - Co trong Ontoloy - But Do not have real services
-has_qos_response_time(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET,"5.1").
-has_qos_response_time(phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET,"15.67").
-has_qos_response_time(phylotastic_GetReconciliationTree_GET,"6.12").
-has_qos_response_time(phylotastic_GenerateGeneTree_From_Genes,"5.05").
-has_qos_response_time(phylotastic_GeneTree_Scaling,"4.2").
+%has_qos_response_time(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET,"5.1").
+%has_qos_response_time(phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET,"15.67").
+%has_qos_response_time(phylotastic_GetReconciliationTree_GET,"6.12").
+%has_qos_response_time(phylotastic_GenerateGeneTree_From_Genes,"5.05").
+%has_qos_response_time(phylotastic_GeneTree_Scaling,"4.2").
+
+has_qos_response_time(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET,5100).
+has_qos_response_time(phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET,15670).
+has_qos_response_time(phylotastic_GetReconciliationTree_GET,6120).
+has_qos_response_time(phylotastic_GenerateGeneTree_From_Genes,5050).
+has_qos_response_time(phylotastic_GeneTree_Scaling,4200).
 
 % Add more for testing = CHUA CO TRONG OWL
-has_qos_response_time(google_ConvertCountryCodeToName_GET,"0").
-has_qos_response_time(openTree_GetTaxonomyNameFromSciName_GET,"0").
-has_qos_response_time(openTree_GetScientificNameFromAName_GET,"0").
+%has_qos_response_time(google_ConvertCountryCodeToName_GET,"0").
+%has_qos_response_time(openTree_GetTaxonomyNameFromSciName_GET,"0").
+%has_qos_response_time(openTree_GetScientificNameFromAName_GET,"0").
+
+has_qos_response_time(google_ConvertCountryCodeToName_GET,1000).
+has_qos_response_time(openTree_GetTaxonomyNameFromSciName_GET,2000).
+has_qos_response_time(openTree_GetScientificNameFromAName_GET,300).
 
 %-------------For Throughput--------------------------------------------
+%has_qos_throughput(phylotastic_ResolvedScientificNames_GNR_TNRS_GET,"19.41").
+%has_qos_throughput(phylotastic_ResolvedScientificNames_GNR_TNRS_POST,"19.41").
+%has_qos_throughput(phylotastic_ResolvedScientificNames_OT_TNRS_GET,"27.49").
+%has_qos_throughput(phylotastic_ResolvedScientificNames_OT_TNRS_POST,"27.49").
+%has_qos_throughput(phylotastic_GetAllSpeciesFromTaxon_OT_GET,"28.92").
 
-has_qos_throughput(phylotastic_ResolvedScientificNames_GNR_TNRS_GET,"19.41").
-has_qos_throughput(phylotastic_ResolvedScientificNames_GNR_TNRS_POST,"19.41").
-has_qos_throughput(phylotastic_ResolvedScientificNames_OT_TNRS_GET,"27.49").
-has_qos_throughput(phylotastic_ResolvedScientificNames_OT_TNRS_POST,"27.49").
-has_qos_throughput(phylotastic_GetAllSpeciesFromTaxon_OT_GET,"28.92").
+has_qos_throughput(phylotastic_ResolvedScientificNames_GNR_TNRS_GET,19410).
+has_qos_throughput(phylotastic_ResolvedScientificNames_GNR_TNRS_POST,20000).
+has_qos_throughput(phylotastic_ResolvedScientificNames_OT_TNRS_GET,27490).
+has_qos_throughput(phylotastic_ResolvedScientificNames_OT_TNRS_POST,28000).
+has_qos_throughput(phylotastic_GetAllSpeciesFromTaxon_OT_GET,28920).
+
 % Tree Extraction
-has_qos_throughput(phylotastic_GetPhylogeneticTree_OT_GET,"4.33").
-has_qos_throughput(phylotastic_GetPhylogeneticTree_OT_POST,"4.33").
-has_qos_throughput(phylotastic_GetPhylogeneticTree_PhyloT_GET,"1.25").
-has_qos_throughput(phylotastic_GetPhylogeneticTree_PhyloT_POST,"1.25").
-has_qos_throughput(phylotastic_GetPhylogeneticTree_Phylomatic_GET,"5.62").
-has_qos_throughput(phylotastic_GetPhylogeneticTree_Phylomatic_POST,"5.62").
+%has_qos_throughput(phylotastic_GetPhylogeneticTree_OT_GET,"4.33").
+%has_qos_throughput(phylotastic_GetPhylogeneticTree_OT_POST,"4.33").
+%has_qos_throughput(phylotastic_GetPhylogeneticTree_PhyloT_GET,"1.25").
+%has_qos_throughput(phylotastic_GetPhylogeneticTree_PhyloT_POST,"1.25").
+%has_qos_throughput(phylotastic_GetPhylogeneticTree_Phylomatic_GET,"5.62").
+%has_qos_throughput(phylotastic_GetPhylogeneticTree_Phylomatic_POST,"5.62").
 
-has_qos_throughput(phylotastic_GetInformationURLsOfSpecies_EOL_POST,"22.92").
-has_qos_throughput(phylotastic_GetInformationURLsOfSpecies_EOL_GET,"22.92").
-has_qos_throughput(phylotastic_GetImageURLsOfSpecies_EOL_GET,"5.55").
-has_qos_throughput(phylotastic_GetImageURLsOfSpecies_EOL_POST,"5.55").
-has_qos_throughput(phylotastic_FindScientificNamesFromWeb_GNRD_GET,"5.56").
-has_qos_throughput(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,"27.17").
-has_qos_throughput(phylotastic_GetSpeciesOfTaxon_Genome_NCBI_GET,"6.6").
-has_qos_throughput(phylotastic_GetAllSpeciesFromTaxon_Country_OT_GET,"28.56").
-has_qos_throughput(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,"12.5").
-has_qos_throughput(phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST,"0.91").
+has_qos_throughput(phylotastic_GetPhylogeneticTree_OT_GET,4330).
+has_qos_throughput(phylotastic_GetPhylogeneticTree_OT_POST,4330).
+has_qos_throughput(phylotastic_GetPhylogeneticTree_PhyloT_GET,1250).
+has_qos_throughput(phylotastic_GetPhylogeneticTree_PhyloT_POST,1250).
+has_qos_throughput(phylotastic_GetPhylogeneticTree_Phylomatic_GET,5620).
+has_qos_throughput(phylotastic_GetPhylogeneticTree_Phylomatic_POST,6200).
+
+%has_qos_throughput(phylotastic_GetInformationURLsOfSpecies_EOL_POST,"22.92").
+%has_qos_throughput(phylotastic_GetInformationURLsOfSpecies_EOL_GET,"22.92").
+%has_qos_throughput(phylotastic_GetImageURLsOfSpecies_EOL_GET,"5.55").
+%has_qos_throughput(phylotastic_GetImageURLsOfSpecies_EOL_POST,"5.55").
+%has_qos_throughput(phylotastic_FindScientificNamesFromWeb_GNRD_GET,"5.56").
+%has_qos_throughput(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,"27.17").
+%has_qos_throughput(phylotastic_GetSpeciesOfTaxon_Genome_NCBI_GET,"6.6").
+%has_qos_throughput(phylotastic_GetAllSpeciesFromTaxon_Country_OT_GET,"28.56").
+%has_qos_throughput(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,"12.5").
+%has_qos_throughput(phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST,"0.91").
+
+has_qos_throughput(phylotastic_GetInformationURLsOfSpecies_EOL_POST,2292).
+has_qos_throughput(phylotastic_GetInformationURLsOfSpecies_EOL_GET,2292).
+has_qos_throughput(phylotastic_GetImageURLsOfSpecies_EOL_GET,5550).
+has_qos_throughput(phylotastic_GetImageURLsOfSpecies_EOL_POST,5550).
+has_qos_throughput(phylotastic_FindScientificNamesFromWeb_GNRD_GET,5560).
+has_qos_throughput(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,27170).
+has_qos_throughput(phylotastic_GetSpeciesOfTaxon_Genome_NCBI_GET,6600).
+has_qos_throughput(phylotastic_GetAllSpeciesFromTaxon_Country_OT_GET,28560).
+has_qos_throughput(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,12500).
+has_qos_throughput(phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST,910).
 
 % Add for test - Co trong Ontoloy - But Do not have real services
-has_qos_throughput(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET,"23.8").
-has_qos_throughput(phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET,"27.78").
-has_qos_throughput(phylotastic_GetReconciliationTree_GET,"15.12").
-has_qos_throughput(phylotastic_GenerateGeneTree_From_Genes,"1.78").
-has_qos_throughput(phylotastic_GeneTree_Scaling,"6.3").
+%has_qos_throughput(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET,"23.8").
+%has_qos_throughput(phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET,"27.78").
+%has_qos_throughput(phylotastic_GetReconciliationTree_GET,"15.12").
+%has_qos_throughput(phylotastic_GenerateGeneTree_From_Genes,"1.78").
+%has_qos_throughput(phylotastic_GeneTree_Scaling,"6.3").
+
+has_qos_throughput(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET,23800).
+has_qos_throughput(phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET,27780).
+has_qos_throughput(phylotastic_GetReconciliationTree_GET,15120).
+has_qos_throughput(phylotastic_GenerateGeneTree_From_Genes,1780).
+has_qos_throughput(phylotastic_GeneTree_Scaling,6300).
 
 % Add more for testing = CHUA CO TRONG OWL
-has_qos_throughput(google_ConvertCountryCodeToName_GET,"0").
-has_qos_throughput(openTree_GetTaxonomyNameFromSciName_GET,"0").
-has_qos_throughput(openTree_GetScientificNameFromAName_GET,"0").
+%has_qos_throughput(google_ConvertCountryCodeToName_GET,"0").
+%has_qos_throughput(openTree_GetTaxonomyNameFromSciName_GET,"0").
+%has_qos_throughput(openTree_GetScientificNameFromAName_GET,"0").
+
+has_qos_throughput(google_ConvertCountryCodeToName_GET,0).
+has_qos_throughput(openTree_GetTaxonomyNameFromSciName_GET,0).
+has_qos_throughput(openTree_GetScientificNameFromAName_GET,0).
 
 %-------------For Reliability-------------------------------------------
 
-has_qos_reliability(phylotastic_ResolvedScientificNames_GNR_TNRS_GET,"576.44").
-has_qos_reliability(phylotastic_ResolvedScientificNames_GNR_TNRS_POST,"576.44").
-has_qos_reliability(phylotastic_ResolvedScientificNames_OT_TNRS_GET,"576.48").
-has_qos_reliability(phylotastic_ResolvedScientificNames_OT_TNRS_POST,"576.48").
-has_qos_reliability(phylotastic_GetAllSpeciesFromTaxon_OT_GET,"577.76").
-% Tree Extraction
-has_qos_reliability(phylotastic_GetPhylogeneticTree_OT_GET,"577.45").
-has_qos_reliability(phylotastic_GetPhylogeneticTree_OT_POST,"577.45").
-has_qos_reliability(phylotastic_GetPhylogeneticTree_PhyloT_GET,"586.09").
-has_qos_reliability(phylotastic_GetPhylogeneticTree_PhyloT_POST,"586.09").
-has_qos_reliability(phylotastic_GetPhylogeneticTree_Phylomatic_GET,"586.08").
-has_qos_reliability(phylotastic_GetPhylogeneticTree_Phylomatic_POST,"586.08").
+%has_qos_reliability(phylotastic_ResolvedScientificNames_GNR_TNRS_GET,"576.44").
+%has_qos_reliability(phylotastic_ResolvedScientificNames_GNR_TNRS_POST,"576.44").
+%has_qos_reliability(phylotastic_ResolvedScientificNames_OT_TNRS_GET,"576.48").
+%has_qos_reliability(phylotastic_ResolvedScientificNames_OT_TNRS_POST,"576.48").
+%has_qos_reliability(phylotastic_GetAllSpeciesFromTaxon_OT_GET,"577.76").
 
-has_qos_reliability(phylotastic_GetInformationURLsOfSpecies_EOL_POST,"577.93").
-has_qos_reliability(phylotastic_GetInformationURLsOfSpecies_EOL_GET,"577.93").
-has_qos_reliability(phylotastic_GetImageURLsOfSpecies_EOL_GET,"577.84").
-has_qos_reliability(phylotastic_GetImageURLsOfSpecies_EOL_POST,"577.84").
-has_qos_reliability(phylotastic_FindScientificNamesFromWeb_GNRD_GET,"576.3").
-has_qos_reliability(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,"576.34").
-has_qos_reliability(phylotastic_GetSpeciesOfTaxon_Genome_NCBI_GET,"577.81").
-has_qos_reliability(phylotastic_GetAllSpeciesFromTaxon_Country_OT_GET,"577.78").
-has_qos_reliability(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,"520.12").
-has_qos_reliability(phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST,"1173.06").
+has_qos_reliability(phylotastic_ResolvedScientificNames_GNR_TNRS_GET,576440).
+has_qos_reliability(phylotastic_ResolvedScientificNames_GNR_TNRS_POST,576440).
+has_qos_reliability(phylotastic_ResolvedScientificNames_OT_TNRS_GET,576480).
+has_qos_reliability(phylotastic_ResolvedScientificNames_OT_TNRS_POST,576480).
+has_qos_reliability(phylotastic_GetAllSpeciesFromTaxon_OT_GET,577760).
+
+% Tree Extraction
+%has_qos_reliability(phylotastic_GetPhylogeneticTree_OT_GET,"577.45").
+%has_qos_reliability(phylotastic_GetPhylogeneticTree_OT_POST,"577.45").
+%has_qos_reliability(phylotastic_GetPhylogeneticTree_PhyloT_GET,"586.09").
+%has_qos_reliability(phylotastic_GetPhylogeneticTree_PhyloT_POST,"586.09").
+%has_qos_reliability(phylotastic_GetPhylogeneticTree_Phylomatic_GET,"586.08").
+%has_qos_reliability(phylotastic_GetPhylogeneticTree_Phylomatic_POST,"586.08").
+
+has_qos_reliability(phylotastic_GetPhylogeneticTree_OT_GET,577450).
+has_qos_reliability(phylotastic_GetPhylogeneticTree_OT_POST,575450).
+has_qos_reliability(phylotastic_GetPhylogeneticTree_PhyloT_GET,586090).
+has_qos_reliability(phylotastic_GetPhylogeneticTree_PhyloT_POST,588090).
+has_qos_reliability(phylotastic_GetPhylogeneticTree_Phylomatic_GET,583080).
+has_qos_reliability(phylotastic_GetPhylogeneticTree_Phylomatic_POST,586080).
+
+%has_qos_reliability(phylotastic_GetInformationURLsOfSpecies_EOL_POST,"577.93").
+%has_qos_reliability(phylotastic_GetInformationURLsOfSpecies_EOL_GET,"577.93").
+%has_qos_reliability(phylotastic_GetImageURLsOfSpecies_EOL_GET,"577.84").
+%has_qos_reliability(phylotastic_GetImageURLsOfSpecies_EOL_POST,"577.84").
+%has_qos_reliability(phylotastic_FindScientificNamesFromWeb_GNRD_GET,"576.3").
+%has_qos_reliability(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,"576.34").
+%has_qos_reliability(phylotastic_GetSpeciesOfTaxon_Genome_NCBI_GET,"577.81").
+%has_qos_reliability(phylotastic_GetAllSpeciesFromTaxon_Country_OT_GET,"577.78").
+%has_qos_reliability(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,"520.12").
+%has_qos_reliability(phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST,"1173.06").
+
+
+has_qos_reliability(phylotastic_GetInformationURLsOfSpecies_EOL_POST,572930).
+has_qos_reliability(phylotastic_GetInformationURLsOfSpecies_EOL_GET,577930).
+has_qos_reliability(phylotastic_GetImageURLsOfSpecies_EOL_GET,577840).
+has_qos_reliability(phylotastic_GetImageURLsOfSpecies_EOL_POST,580840).
+has_qos_reliability(phylotastic_FindScientificNamesFromWeb_GNRD_GET,576300).
+has_qos_reliability(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,576340).
+has_qos_reliability(phylotastic_GetSpeciesOfTaxon_Genome_NCBI_GET,577810).
+has_qos_reliability(phylotastic_GetAllSpeciesFromTaxon_Country_OT_GET,577780).
+has_qos_reliability(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,520120).
+has_qos_reliability(phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST,1173060).
 
 % Add for test - Co trong Ontoloy - But Do not have real services
-has_qos_reliability(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET,"600.0").
-has_qos_reliability(phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET,"576.41").
-has_qos_reliability(phylotastic_GetReconciliationTree_GET,"580.87").
-has_qos_reliability(phylotastic_GenerateGeneTree_From_Genes,"300.98").
-has_qos_reliability(phylotastic_GeneTree_Scaling,"577.23").
+%has_qos_reliability(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET,"600.0").
+%has_qos_reliability(phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET,"576.41").
+%has_qos_reliability(phylotastic_GetReconciliationTree_GET,"580.87").
+%has_qos_reliability(phylotastic_GenerateGeneTree_From_Genes,"300.98").
+%has_qos_reliability(phylotastic_GeneTree_Scaling,"577.23").
+
+has_qos_reliability(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET,600000).
+has_qos_reliability(phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET,576410).
+has_qos_reliability(phylotastic_GetReconciliationTree_GET,580870).
+has_qos_reliability(phylotastic_GenerateGeneTree_From_Genes,300980).
+has_qos_reliability(phylotastic_GeneTree_Scaling,577230).
 
 % Add more for testing = CHUA CO TRONG OWL
-has_qos_reliability(google_ConvertCountryCodeToName_GET,"0.0").
-has_qos_reliability(openTree_GetTaxonomyNameFromSciName_GET,"0.0").
-has_qos_reliability(openTree_GetScientificNameFromAName_GET,"0.0").
+%has_qos_reliability(google_ConvertCountryCodeToName_GET,"0.0").
+%has_qos_reliability(openTree_GetTaxonomyNameFromSciName_GET,"0.0").
+%has_qos_reliability(openTree_GetScientificNameFromAName_GET,"0.0").
+
+has_qos_reliability(google_ConvertCountryCodeToName_GET,0).
+has_qos_reliability(openTree_GetTaxonomyNameFromSciName_GET,0).
+has_qos_reliability(openTree_GetScientificNameFromAName_GET,0).
 
 %-------------For Availability------------------------------------------
 
-has_qos_availability(phylotastic_ResolvedScientificNames_GNR_TNRS_GET,"1.0").
-has_qos_availability(phylotastic_ResolvedScientificNames_GNR_TNRS_POST,"1.0").
-has_qos_availability(phylotastic_ResolvedScientificNames_OT_TNRS_GET,"1.0").
-has_qos_availability(phylotastic_ResolvedScientificNames_OT_TNRS_POST,"1.0").
-has_qos_availability(phylotastic_GetAllSpeciesFromTaxon_OT_GET,"1.0").
-% Tree Extraction
-has_qos_availability(phylotastic_GetPhylogeneticTree_OT_GET,"1.0").
-has_qos_availability(phylotastic_GetPhylogeneticTree_OT_POST,"1.0").
-has_qos_availability(phylotastic_GetPhylogeneticTree_PhyloT_GET,"1.0").
-has_qos_availability(phylotastic_GetPhylogeneticTree_PhyloT_POST,"1.0").
-has_qos_availability(phylotastic_GetPhylogeneticTree_Phylomatic_GET,"1.0").
-has_qos_availability(phylotastic_GetPhylogeneticTree_Phylomatic_POST,"1.0").
+%has_qos_availability(phylotastic_ResolvedScientificNames_GNR_TNRS_GET,"1.0").
+%has_qos_availability(phylotastic_ResolvedScientificNames_GNR_TNRS_POST,"1.0").
+%has_qos_availability(phylotastic_ResolvedScientificNames_OT_TNRS_GET,"1.0").
+%has_qos_availability(phylotastic_ResolvedScientificNames_OT_TNRS_POST,"1.0").
+%has_qos_availability(phylotastic_GetAllSpeciesFromTaxon_OT_GET,"1.0").
 
-has_qos_availability(phylotastic_GetInformationURLsOfSpecies_EOL_POST,"1.0").
-has_qos_availability(phylotastic_GetInformationURLsOfSpecies_EOL_GET,"1.0").
-has_qos_availability(phylotastic_GetImageURLsOfSpecies_EOL_GET,"1.0").
-has_qos_availability(phylotastic_GetImageURLsOfSpecies_EOL_POST,"1.0").
-has_qos_availability(phylotastic_FindScientificNamesFromWeb_GNRD_GET,"1.0").
-has_qos_availability(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,"1.0").
-has_qos_availability(phylotastic_GetSpeciesOfTaxon_Genome_NCBI_GET,"1.0").
-has_qos_availability(phylotastic_GetAllSpeciesFromTaxon_Country_OT_GET,"1.0").
-has_qos_availability(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,"1.0").
-has_qos_availability(phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST,"1.0").
+has_qos_availability(phylotastic_ResolvedScientificNames_GNR_TNRS_GET,1000).
+has_qos_availability(phylotastic_ResolvedScientificNames_GNR_TNRS_POST,1000).
+has_qos_availability(phylotastic_ResolvedScientificNames_OT_TNRS_GET,1000).
+has_qos_availability(phylotastic_ResolvedScientificNames_OT_TNRS_POST,1000).
+has_qos_availability(phylotastic_GetAllSpeciesFromTaxon_OT_GET,1000).
+
+% Tree Extraction
+%has_qos_availability(phylotastic_GetPhylogeneticTree_OT_GET,"1.0").
+%has_qos_availability(phylotastic_GetPhylogeneticTree_OT_POST,"1.0").
+%has_qos_availability(phylotastic_GetPhylogeneticTree_PhyloT_GET,"1.0").
+%has_qos_availability(phylotastic_GetPhylogeneticTree_PhyloT_POST,"1.0").
+%has_qos_availability(phylotastic_GetPhylogeneticTree_Phylomatic_GET,"1.0").
+%has_qos_availability(phylotastic_GetPhylogeneticTree_Phylomatic_POST,"1.0").
+
+has_qos_availability(phylotastic_GetPhylogeneticTree_OT_GET,1000).
+has_qos_availability(phylotastic_GetPhylogeneticTree_OT_POST,1000).
+has_qos_availability(phylotastic_GetPhylogeneticTree_PhyloT_GET,1000).
+has_qos_availability(phylotastic_GetPhylogeneticTree_PhyloT_POST,1000).
+has_qos_availability(phylotastic_GetPhylogeneticTree_Phylomatic_GET,1000).
+has_qos_availability(phylotastic_GetPhylogeneticTree_Phylomatic_POST,1000).
+
+%has_qos_availability(phylotastic_GetInformationURLsOfSpecies_EOL_POST,"1.0").
+%has_qos_availability(phylotastic_GetInformationURLsOfSpecies_EOL_GET,"1.0").
+%has_qos_availability(phylotastic_GetImageURLsOfSpecies_EOL_GET,"1.0").
+%has_qos_availability(phylotastic_GetImageURLsOfSpecies_EOL_POST,"1.0").
+%has_qos_availability(phylotastic_FindScientificNamesFromWeb_GNRD_GET,"1.0").
+%has_qos_availability(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,"1.0").
+%has_qos_availability(phylotastic_GetSpeciesOfTaxon_Genome_NCBI_GET,"1.0").
+%has_qos_availability(phylotastic_GetAllSpeciesFromTaxon_Country_OT_GET,"1.0").
+%has_qos_availability(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,"1.0").
+%has_qos_availability(phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST,"1.0").
+
+has_qos_availability(phylotastic_GetInformationURLsOfSpecies_EOL_POST,1000).
+has_qos_availability(phylotastic_GetInformationURLsOfSpecies_EOL_GET,1000).
+has_qos_availability(phylotastic_GetImageURLsOfSpecies_EOL_GET,1000).
+has_qos_availability(phylotastic_GetImageURLsOfSpecies_EOL_POST,1000).
+has_qos_availability(phylotastic_FindScientificNamesFromWeb_GNRD_GET,1000).
+has_qos_availability(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,1000).
+has_qos_availability(phylotastic_GetSpeciesOfTaxon_Genome_NCBI_GET,1000).
+has_qos_availability(phylotastic_GetAllSpeciesFromTaxon_Country_OT_GET,1000).
+has_qos_availability(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,1000).
+has_qos_availability(phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST,1000).
 
 % Add for test - Co trong Ontoloy - But Do not have real services
-has_qos_availability(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET,"0.75").
-has_qos_availability(phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET,"1.0").
-has_qos_availability(phylotastic_GetReconciliationTree_GET,"1.0").
-has_qos_availability(phylotastic_GenerateGeneTree_From_Genes,"1.0").
-has_qos_availability(phylotastic_GeneTree_Scaling,"1.0").
+%has_qos_availability(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET,"0.75").
+%has_qos_availability(phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET,"1.0").
+%has_qos_availability(phylotastic_GetReconciliationTree_GET,"1.0").
+%has_qos_availability(phylotastic_GenerateGeneTree_From_Genes,"1.0").
+%has_qos_availability(phylotastic_GeneTree_Scaling,"1.0").
+
+has_qos_availability(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET,1000).
+has_qos_availability(phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET,1000).
+has_qos_availability(phylotastic_GetReconciliationTree_GET,1000).
+has_qos_availability(phylotastic_GenerateGeneTree_From_Genes,1000).
+has_qos_availability(phylotastic_GeneTree_Scaling,1000).
 
 % Add more for testing = CHUA CO TRONG OWL
-has_qos_availability(google_ConvertCountryCodeToName_GET,"0").
-has_qos_availability(openTree_GetTaxonomyNameFromSciName_GET,"0").
-has_qos_availability(openTree_GetScientificNameFromAName_GET,"0").
+%has_qos_availability(google_ConvertCountryCodeToName_GET,"0").
+%has_qos_availability(openTree_GetTaxonomyNameFromSciName_GET,"0").
+%has_qos_availability(openTree_GetScientificNameFromAName_GET,"0").
+
+has_qos_availability(google_ConvertCountryCodeToName_GET,1000).
+has_qos_availability(openTree_GetTaxonomyNameFromSciName_GET,1000).
+has_qos_availability(openTree_GetScientificNameFromAName_GET,1000).
 
 %=======================================================================
 % PART 5 : Define classes operation has INPUT and OUTPUT class

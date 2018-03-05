@@ -140,7 +140,8 @@ def main(prg):
         prg.load("concrete_TESTING.lp")
         prg.load("concrete_DF_convert.lp")
         prg.load("configuration.lp")
-        #prg.load("composite_qos.lp")
+        prg.load("composite_qos_weight.lp")
+        #prg.load("composite_qos_ranking.lp")
         prg.load("planning_preference.lp")
 
     def enable_active_rule_for_subprogram(prg,multishot_id,level):

@@ -61,7 +61,11 @@ def convertListOccursToPredicate_2(list_of_atoms):
 
 def get_CurrentModifying_Workflow():
    #return ["occur(a,0)", "occur(b,1)", "occur(c,2)"]
-   return ["occur(a,0)", "occur(b,1)", "occur(c,2)","occur(d,3)"]
+   return ["occur(a,0)", "occur(b,1)", "occur(c,2)","occur(d,3)",
+           "match_occur_service_class(b,ib,1,a,oa,0)",
+           "match_occur_service_class(a,ia,0,initial_state,init_data,0)",
+           "match_occur_service_class(c,ic,2,b,ob,1)",
+           "match_occur_service_class(d,id,3,c,oc,2)"]
    #return ["occur(a,0)", "occur(b,1)", "occur(c,2)","occur(d,3)","occur(e,4)","occur(f,5)"]
    #return WORKFLOW_1_RAW_BEAUTY
 
@@ -279,22 +283,31 @@ def main(prg):
       wf_data = ""
       index = 0
       for atom in old_workflow:
-          if (index == 0):
-              wf_data = "old_" + str(atom)
-          else:
-              wf_data = wf_data + "," + "old_" + str(atom)
-          index = index + 1
+          if ("occur(" in str(atom)) or ("match_occur_service_class(" in str(atom)):
+            if (index == 0):
+                wf_data = "old_" + str(atom)
+            else:
+                wf_data = wf_data + "," + "old_" + str(atom)
+            index = index + 1
       return fomulation_string %(str(wf_data))     
+  
 
   def generate_Predicates_for_New_Workflow_2(number_of_steps_in_old,max_steps,type):
       if (type == "FIT_OLD_STEPS_INDEXES"):
         predicates_content = ""
+
         for step in range(0,number_of_steps_in_old):
             if (step == 0):
-                predicates_content = "occur(A%s,%s)" %(str(step),str(step))
+                #predicates_content = "occur(A%s,%s), 1{match_occur_service_class(A%s,IA%s,%s,B%s,_,_)}" %(str(step),str(step),str(step),str(step),str(step))
+                predicates_content = "occur(A%s,%s), match_occur_service_class(A%s,IA%s,%s,B%s,OB%s,TB%s)" %(str(step),str(step),str(step),str(step),str(step),str(step),str(step),str(step))
             else:
-                predicates_content = predicates_content + ",occur(A%s,%s)" %(str(step),str(step))
-        formula_generatedPredicates_data = predicates_content      
+                #predicates_content = predicates_content + ",occur(A%s,%s), 1{match_occur_service_class(A%s,_,%s,_,_,_)}" %(str(step),str(step),str(step),str(step))
+                predicates_content = predicates_content + ",occur(A%s,%s), match_occur_service_class(A%s,IA%s,%s,B%s,OB%s,TB%s)" %(str(step),str(step),str(step),str(step),str(step),str(step),str(step),str(step))
+        formula_generatedPredicates_data = predicates_content 
+
+        match_content = ""
+
+
         return formula_generatedPredicates_data
       elif (type == "PERMUTE_0_TO_MAX_STEPS"):
         return ""       
@@ -307,7 +320,10 @@ def main(prg):
        old_workflow_predicate = build_up_old_workflow_represent_2(old_workflow)
        old_workflow_fact = ""
        for atom in old_workflow:
-           old_workflow_fact = old_workflow_fact + "\n" +  "old_" + str(atom) + "."
+           if ("occur(" in str(atom)) or ("match_occur_service_class(" in str(atom)):
+              old_workflow_fact = old_workflow_fact + "\n" +  "old_" + str(atom) + "."
+
+
 
        # For new workflow
        generatedPredicates_data = generate_Predicates_for_New_Workflow_2(get_number_steps_old_workflow_str(old_workflow),0,"FIT_OLD_STEPS_INDEXES")
@@ -316,7 +332,9 @@ def main(prg):
        # Rule for similarity calculation
        #formula_sim_cal_rule = "sim_index((%s),Z) :- %s,%s,Z = @calculate_sim_matching((%s),(%s))." %(str(generatedPredicates_data),str(old_workflow_predicate),str(generatedPredicates_data),str(old_workflow_predicate),str(generatedPredicates_data))
 
-       formula_sim_cal_rule = "sim_index((%s),Z) :- %s,%s,Z = @calculate_sim_matching((%s),(%s))." %(str(generatedPredicates_data),str(old_workflow_predicate),str(generatedPredicates_data),str(old_workflow_predicate),str(generatedPredicates_data))
+       formula_sim_cal_rule = ""
+
+       formula_sim_cal_rule = "sim_index(Z) :- %s,%s,Z = @calculate_sim_matching((%s),(%s))." %(str(old_workflow_predicate),str(generatedPredicates_data),str(old_workflow_predicate),str(generatedPredicates_data))
 
        return "%s\n%s" % (str(old_workflow_fact),str(formula_sim_cal_rule))    
   #################################################
