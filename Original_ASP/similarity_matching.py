@@ -220,6 +220,9 @@ def simNodes_workflow(WF_JSON_1, WF_JSON_2):
 ############################################
 ########EDGE SIMILARITY MATCHING############
 ############################################
+'''
+Ket thuc ngay 5/3/2018 : Phai update lai cai nay EDGE MATCHING
+'''
 def simEdges_workflow(WF_JSON_1, WF_JSON_2):
     list_edges_1,set_edges_1 = generate_EdgesCollection_FromWF(WF_JSON_1)
     list_edges_2,set_edges_2 = generate_EdgesCollection_FromWF(WF_JSON_2)

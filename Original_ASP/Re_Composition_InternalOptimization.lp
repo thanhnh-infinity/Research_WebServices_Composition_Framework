@@ -305,6 +305,7 @@ def main(prg):
                 predicates_content = predicates_content + ",occur(A%s,%s), match_occur_service_class(A%s,IA%s,%s,B%s,OB%s,TB%s)" %(str(step),str(step),str(step),str(step),str(step),str(step),str(step),str(step))
         formula_generatedPredicates_data = predicates_content 
 
+
         match_content = ""
 
 
@@ -336,7 +337,10 @@ def main(prg):
 
        formula_sim_cal_rule = "sim_index(Z) :- %s,%s,Z = @calculate_sim_matching((%s),(%s))." %(str(old_workflow_predicate),str(generatedPredicates_data),str(old_workflow_predicate),str(generatedPredicates_data))
 
-       return "%s\n%s" % (str(old_workflow_fact),str(formula_sim_cal_rule))    
+       #maximize sim_index
+       max_optimization = "#maximize{Z:sim_index(Z)}."
+
+       return "%s\n%s\n%s" % (str(old_workflow_fact),str(formula_sim_cal_rule),str(max_optimization))    
   #################################################
   def re_composition_with_preference(prg):
       print("--> Start Re-Composition : \n")
@@ -357,15 +361,6 @@ def main(prg):
   #----------------------------------------
   re_composition_with_preference(prg)
 #end.
+#show sim_index/1.
 
-%selected_sim_workflow(Y) :- sim_index(X,Y,Z).
-%hightest_sim_index(Z) :- sim_index(X,Y,Z).
-
-%#show selected_sim_workflow/1.
-%#show hightest_sim_index/1.
-
-%#maximize{Z:sim_index(Y,Z)}.
-
-#show sim_index/2.
-%#show new_workflow/2.
 
