@@ -14,7 +14,7 @@ exists(R, 0) :- initially(R,DF),
 
 % Basic part : Encode operation A can be executed at time T
 %% Update Input and Output
-{executable(A,T)} :- operation_class(A),
+{executable(A,T)} :- operation(A),
                      step(T),
                      meaning_operation(A).
 

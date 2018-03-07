@@ -576,8 +576,8 @@ instance_operation_has_output_has_data_format(phylotastic_GetSpeciesScientificNa
 instance_operation_has_output_has_data_format(phylotastic_GetSpeciesScientificNameFromCommonName_NCBI_GET, resource_WebURL, http_url).
 
 
-instance_operation_has_input_has_data_format(phylotastic_ComparePhylogeneticTrees_Symmetric_POST, resource_Tree, newickTree).
-instance_operation_has_input_has_data_format(phylotastic_ComparePhylogeneticTrees_Symmetric_POST, resource_Tree, newickTree).
+instance_operation_has_input_has_data_format(phylotastic_ComparePhylogeneticTrees_Symmetric_POST, resource_speciesTree, newickTree).
+instance_operation_has_input_has_data_format(phylotastic_ComparePhylogeneticTrees_Symmetric_POST, resource_speciesTree, newickTree).
 instance_operation_has_output_has_data_format(phylotastic_ComparePhylogeneticTrees_Symmetric_POST, resource_AreSameTree, boolean).
 instance_operation_has_output_has_data_format(phylotastic_ComparePhylogeneticTrees_Symmetric_POST, resource_HTTPCode, integer).
 instance_operation_has_output_has_data_format(phylotastic_ComparePhylogeneticTrees_Symmetric_POST, ws_response_message, string).
@@ -591,13 +591,13 @@ instance_operation_has_output_has_data_format(phylotastic_GetChronograms_ScaledS
 %%%
 
 instance_operation_has_input_has_data_format(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET, resource_WebURL, data_format_E).
-instance_operation_has_output_has_data_format(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET, resource_SetOfSciName, names_format_2).
+instance_operation_has_output_has_data_format(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET, resource_SetOfSciName, raw_names_format_2).
 instance_operation_has_output_has_data_format(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET, resource_HTTPCode, integer).
 instance_operation_has_output_has_data_format(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET, resource_ConnectionTime, integer).
 %instance_operation_has_output_has_data_format(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET, resource_SetOfNames, list_of_strings).
 
 instance_operation_has_input_has_data_format(phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET, resource_geneTree, newickTree).
-instance_operation_has_output_has_data_format(phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET, resource_SetOfSciName, names_format_2).
+instance_operation_has_output_has_data_format(phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET, resource_SetOfSciName, raw_names_format_2).
 instance_operation_has_output_has_data_format(phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET, resource_HTTPCode, integer).
 instance_operation_has_output_has_data_format(phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET, resource_ConnectionTime, integer).
 %instance_operation_has_output_has_data_format(phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET, resource_SetOfNames, list_of_strings).
@@ -607,8 +607,8 @@ instance_operation_has_input_has_data_format(phylotastic_GetReconciliationTree_G
 instance_operation_has_output_has_data_format(phylotastic_GetReconciliationTree_GET, resource_reconcileTree, newickTree).
 
 instance_operation_has_input_has_data_format(phylotastic_GenerateGeneTree_From_Genes, resource_SetOfGeneStrings, list_of_strings).
-instance_operation_has_output_has_data_format(phylotastic_GenerateGeneTree_From_Genes, resource_geneTree, tree_format_1).
-instance_operation_has_output_has_data_format(phylotastic_GenerateGeneTree_From_Genes, resource_geneTree, tree_format_1).
+instance_operation_has_output_has_data_format(phylotastic_GenerateGeneTree_From_Genes, resource_geneTree, phyloTree).
+instance_operation_has_output_has_data_format(phylotastic_GenerateGeneTree_From_Genes, resource_geneTree, phyloTree).
 
 instance_operation_has_input_has_data_format(phylotastic_GeneTree_Scaling, resource_geneTree, newickTree).
 instance_operation_has_output_has_data_format(phylotastic_GeneTree_Scaling, resource_geneTree, tree_format_2).
@@ -1018,6 +1018,9 @@ instance(convert_df_taxons_format_2_to_4).
 instance(convert_df_taxons_format_4_to_6).
 instance(convert_df_taxons_format_6_to_ALL_COMBO).
 
+%% INHERITANCE ISSUE : Have to seperate to find the best ONE 
+%%%% Ultlize the inherant : Input resource_Tree ; Output : resource_speciesTree and resource_geneTree both
+%%%%                        Cannot output resource_Tree because cannot attached this output to next service with input resource_speciesTree or resource_geneTree
 instance(convert_tree_format_NewickTree_to_ALL_COMBO).
 instance(convert_tree_format_PhyloTree_to_NMSU).
 instance(convert_tree_format_NMSU_to_NewickTree).
@@ -1026,6 +1029,27 @@ instance(convert_tree_format_Phylo4Tree_to_PhyloTree).
 instance(convert_tree_format_1_to_2).
 instance(convert_tree_format_2_to_pHYLIPTree).
 instance(convert_tree_format_pHYLIPTree_to_PhyloTree).
+
+%%%% Seperate operation deal with resource_speciesTree and resource_geneTree -- Beginning : I prefer this one firstly
+% for species tree
+instance(convert_species_tree_format_NewickTree_to_ALL_COMBO).
+instance(convert_species_tree_format_PhyloTree_to_NMSU).
+instance(convert_species_tree_format_NMSU_to_NewickTree).
+instance(convert_species_tree_format_PhyloTree_to_phylo4Tree).
+instance(convert_species_tree_format_Phylo4Tree_to_PhyloTree).
+instance(convert_species_tree_format_1_to_2).
+instance(convert_species_tree_format_2_to_pHYLIPTree).
+instance(convert_species_tree_format_pHYLIPTree_to_PhyloTree).
+
+% for gene tree
+instance(convert_gene_tree_format_NewickTree_to_ALL_COMBO).
+instance(convert_gene_tree_format_PhyloTree_to_NMSU).
+instance(convert_gene_tree_format_NMSU_to_NewickTree).
+instance(convert_gene_tree_format_PhyloTree_to_phylo4Tree).
+instance(convert_gene_tree_format_Phylo4Tree_to_PhyloTree).
+instance(convert_gene_tree_format_1_to_2).
+instance(convert_gene_tree_format_2_to_pHYLIPTree).
+instance(convert_gene_tree_format_pHYLIPTree_to_PhyloTree).
 
 
 %--------------------
@@ -1065,6 +1089,9 @@ isInstanceOf(convert_df_taxons_format_4_to_6,data_format_conversion).
 isInstanceOf(convert_df_taxons_format_6_to_ALL_COMBO,data_format_conversion).
 
 
+%% INHERITANCE ISSUE : Have to seperate to find the best ONE 
+%%%% Ultlize the inherant : Input resource_Tree ; Output : resource_speciesTree and resource_geneTree both
+%%%%                        Cannot output resource_Tree because cannot attached this output to next service with input resource_speciesTree or resource_geneTree
 isInstanceOf(convert_tree_format_NewickTree_to_ALL_COMBO,data_format_conversion).
 isInstanceOf(convert_tree_format_PhyloTree_to_NMSU,data_format_conversion).
 isInstanceOf(convert_tree_format_NMSU_to_NewickTree,data_format_conversion).
@@ -1073,6 +1100,27 @@ isInstanceOf(convert_tree_format_Phylo4Tree_to_PhyloTree,data_format_conversion)
 isInstanceOf(convert_tree_format_1_to_2,data_format_conversion).
 isInstanceOf(convert_tree_format_2_to_pHYLIPTree,data_format_conversion).
 isInstanceOf(convert_tree_format_pHYLIPTree_to_PhyloTree,data_format_conversion).
+
+%%%% Seperate operation deal with resource_speciesTree and resource_geneTree -- Beginning : I prefer this one firstly
+% for species tree
+isInstanceOf(convert_species_tree_format_NewickTree_to_ALL_COMBO,data_format_conversion).
+isInstanceOf(convert_species_tree_format_PhyloTree_to_NMSU,data_format_conversion).
+isInstanceOf(convert_species_tree_format_NMSU_to_NewickTree,data_format_conversion).
+isInstanceOf(convert_species_tree_format_PhyloTree_to_phylo4Tree,data_format_conversion).
+isInstanceOf(convert_species_tree_format_Phylo4Tree_to_PhyloTree,data_format_conversion).
+isInstanceOf(convert_species_tree_format_1_to_2,data_format_conversion).
+isInstanceOf(convert_species_tree_format_2_to_pHYLIPTree,data_format_conversion).
+isInstanceOf(convert_species_tree_format_pHYLIPTree_to_PhyloTree,data_format_conversion).
+
+% for gene tree
+isInstanceOf(convert_gene_tree_format_NewickTree_to_ALL_COMBO,data_format_conversion).
+isInstanceOf(convert_gene_tree_format_PhyloTree_to_NMSU,data_format_conversion).
+isInstanceOf(convert_gene_tree_format_NMSU_to_NewickTree,data_format_conversion).
+isInstanceOf(convert_gene_tree_format_PhyloTree_to_phylo4Tree,data_format_conversion).
+isInstanceOf(convert_gene_tree_format_Phylo4Tree_to_PhyloTree,data_format_conversion).
+isInstanceOf(convert_gene_tree_format_1_to_2,data_format_conversion).
+isInstanceOf(convert_gene_tree_format_2_to_pHYLIPTree,data_format_conversion).
+isInstanceOf(convert_gene_tree_format_pHYLIPTree_to_PhyloTree,data_format_conversion).
 
 
 
@@ -1337,73 +1385,182 @@ instance_has_output(convert_df_taxons_format_6_to_ALL_COMBO,cv_taxons_3,resource
 instance_operation_has_output_has_data_format(convert_df_taxons_format_6_to_ALL_COMBO, resource_SetOfTaxon, resolved_names_format_Phylomatic).
 
 %--------------------------------------------
-%% For convert_tree_format_NewickTree_to_ALL_COMBO
+%% For convert_tree_format_NewickTree_to_ALL_COMBO - INHERITANCE ISSUE 
 %%%% Input and Data format
-instance_has_input(convert_tree_format_NewickTree_to_ALL_COMBO,tree_1,resource_speciesTree).
-instance_operation_has_input_has_data_format(convert_tree_format_NewickTree_to_ALL_COMBO, resource_speciesTree, newickTree).
+%instance_has_input(convert_tree_format_NewickTree_to_ALL_COMBO,tree_1,resource_Tree).
+%instance_operation_has_input_has_data_format(convert_tree_format_NewickTree_to_ALL_COMBO, resource_Tree, newickTree).
 %%%% Output and Data format
-instance_has_output(convert_tree_format_NewickTree_to_ALL_COMBO,tree_1,resource_speciesTree).
-instance_operation_has_output_has_data_format(convert_tree_format_NewickTree_to_ALL_COMBO, resource_speciesTree, phyloTree).
-instance_has_output(convert_tree_format_NewickTree_to_ALL_COMBO,tree_2,resource_speciesTree).
-instance_operation_has_output_has_data_format(convert_tree_format_NewickTree_to_ALL_COMBO, resource_speciesTree, phylo4Tree).
-instance_has_output(convert_tree_format_NewickTree_to_ALL_COMBO,tree_3,resource_speciesTree).
-instance_operation_has_output_has_data_format(convert_tree_format_NewickTree_to_ALL_COMBO, resource_speciesTree, pHYLIPTree).
+%instance_has_output(convert_tree_format_NewickTree_to_ALL_COMBO,tree_1,resource_speciesTree).
+%instance_operation_has_output_has_data_format(convert_tree_format_NewickTree_to_ALL_COMBO, resource_speciesTree, phyloTree).
+%instance_has_output(convert_tree_format_NewickTree_to_ALL_COMBO,tree_2,resource_speciesTree).
+%instance_operation_has_output_has_data_format(convert_tree_format_NewickTree_to_ALL_COMBO, resource_speciesTree, phylo4Tree).
+%instance_has_output(convert_tree_format_NewickTree_to_ALL_COMBO,tree_3,resource_speciesTree).
+%instance_operation_has_output_has_data_format(convert_tree_format_NewickTree_to_ALL_COMBO, resource_speciesTree, pHYLIPTree).
+%instance_has_output(convert_tree_format_NewickTree_to_ALL_COMBO,tree_1,resource_geneTree).
+%instance_operation_has_output_has_data_format(convert_tree_format_NewickTree_to_ALL_COMBO, resource_geneTree, phyloTree).
+%instance_has_output(convert_tree_format_NewickTree_to_ALL_COMBO,tree_2,resource_geneTree).
+%instance_operation_has_output_has_data_format(convert_tree_format_NewickTree_to_ALL_COMBO, resource_geneTree, phylo4Tree).
+%instance_has_output(convert_tree_format_NewickTree_to_ALL_COMBO,tree_3,resource_geneTree).
+%instance_operation_has_output_has_data_format(convert_tree_format_NewickTree_to_ALL_COMBO, resource_geneTree, pHYLIPTree).
 
-%% For convert_tree_format_PhyloTree_to_NMSU
-%%%% Input and Data format
-instance_has_input(convert_tree_format_PhyloTree_to_NMSU,tree_1,resource_speciesTree).
-instance_operation_has_input_has_data_format(convert_tree_format_PhyloTree_to_NMSU, resource_speciesTree, phyloTree).
-%%%% Output and Data format
-instance_has_output(convert_tree_format_PhyloTree_to_NMSU,tree_1,resource_speciesTree).
-instance_operation_has_output_has_data_format(convert_tree_format_PhyloTree_to_NMSU, resource_speciesTree, nmsu_tree_format).
 
-%% For convert_tree_format_NMSU_to_NewickTree
+%% For convert_species_tree_format_NewickTree_to_ALL_COMBO
 %%%% Input and Data format
-instance_has_input(convert_tree_format_NMSU_to_NewickTree,tree_1,resource_speciesTree).
-instance_operation_has_input_has_data_format(convert_tree_format_NMSU_to_NewickTree, resource_speciesTree, nmsu_tree_format).
+instance_has_input(convert_species_tree_format_NewickTree_to_ALL_COMBO,tree_1,resource_speciesTree).
+instance_operation_has_input_has_data_format(convert_species_tree_format_NewickTree_to_ALL_COMBO, resource_speciesTree, newickTree).
 %%%% Output and Data format
-instance_has_output(convert_tree_format_NMSU_to_NewickTree,tree_1,resource_speciesTree).
-instance_operation_has_output_has_data_format(convert_tree_format_NMSU_to_NewickTree, resource_speciesTree, newickTree).
+instance_has_output(convert_species_tree_format_NewickTree_to_ALL_COMBO,tree_1,resource_speciesTree).
+instance_operation_has_output_has_data_format(convert_species_tree_format_NewickTree_to_ALL_COMBO, resource_speciesTree, phyloTree).
+instance_has_output(convert_species_tree_format_NewickTree_to_ALL_COMBO,tree_2,resource_speciesTree).
+instance_operation_has_output_has_data_format(convert_species_tree_format_NewickTree_to_ALL_COMBO, resource_speciesTree, phylo4Tree).
+instance_has_output(convert_species_tree_format_NewickTree_to_ALL_COMBO,tree_3,resource_speciesTree).
+instance_operation_has_output_has_data_format(convert_species_tree_format_NewickTree_to_ALL_COMBO, resource_speciesTree, pHYLIPTree).
 
-%% For convert_tree_format_PhyloTree_to_phylo4Tree
+%% For convert_gene_tree_format_NewickTree_to_ALL_COMBO
 %%%% Input and Data format
-instance_has_input(convert_tree_format_PhyloTree_to_phylo4Tree,tree_1,resource_speciesTree).
-instance_operation_has_input_has_data_format(convert_tree_format_PhyloTree_to_phylo4Tree, resource_speciesTree, phyloTree).
+instance_has_input(convert_gene_tree_format_NewickTree_to_ALL_COMBO,tree_1,resource_geneTree).
+instance_operation_has_input_has_data_format(convert_gene_tree_format_NewickTree_to_ALL_COMBO, resource_geneTree, newickTree).
 %%%% Output and Data format
-instance_has_output(convert_tree_format_PhyloTree_to_phylo4Tree,tree_1,resource_speciesTree).
-instance_operation_has_output_has_data_format(convert_tree_format_PhyloTree_to_phylo4Tree, resource_speciesTree, phylo4Tree).
+instance_has_output(convert_gene_tree_format_NewickTree_to_ALL_COMBO,tree_1,resource_geneTree).
+instance_operation_has_output_has_data_format(convert_gene_tree_format_NewickTree_to_ALL_COMBO, resource_geneTree, phyloTree).
+instance_has_output(convert_gene_tree_format_NewickTree_to_ALL_COMBO,tree_2,resource_geneTree).
+instance_operation_has_output_has_data_format(convert_gene_tree_format_NewickTree_to_ALL_COMBO, resource_geneTree, phylo4Tree).
+instance_has_output(convert_gene_tree_format_NewickTree_to_ALL_COMBO,tree_3,resource_geneTree).
+instance_operation_has_output_has_data_format(convert_gene_tree_format_NewickTree_to_ALL_COMBO, resource_geneTree, pHYLIPTree).
 
-%% For convert_tree_format_Phylo4Tree_to_PhyloTree
-%%%% Input and Data format
-instance_has_input(convert_tree_format_Phylo4Tree_to_PhyloTree,tree_1,resource_speciesTree).
-instance_operation_has_input_has_data_format(convert_tree_format_Phylo4Tree_to_PhyloTree, resource_speciesTree, phylo4Tree).
-%%%% Output and Data format
-instance_has_output(convert_tree_format_Phylo4Tree_to_PhyloTree,tree_1,resource_speciesTree).
-instance_operation_has_output_has_data_format(convert_tree_format_Phylo4Tree_to_PhyloTree, resource_speciesTree, phyloTree).
 
-%% For convert_tree_format_1_to_2
+%% For convert_tree_format_PhyloTree_to_NMSU - INHERITANCE ISSUE
 %%%% Input and Data format
-instance_has_input(convert_tree_format_1_to_2,tree_1,resource_speciesTree).
-instance_operation_has_input_has_data_format(convert_tree_format_1_to_2, resource_speciesTree, tree_format_1).
+%instance_has_input(convert_tree_format_PhyloTree_to_NMSU,tree_1,resource_Tree).
+%instance_operation_has_input_has_data_format(convert_tree_format_PhyloTree_to_NMSU, resource_Tree, phyloTree).
 %%%% Output and Data format
-instance_has_output(convert_tree_format_1_to_2,tree_1,resource_speciesTree).
-instance_operation_has_output_has_data_format(convert_tree_format_1_to_2, resource_speciesTree, tree_format_2).
+%instance_has_output(convert_tree_format_PhyloTree_to_NMSU,tree_1,resource_speciesTree).
+%instance_operation_has_output_has_data_format(convert_tree_format_PhyloTree_to_NMSU, resource_speciesTree, nmsu_tree_format).
+%instance_has_output(convert_tree_format_PhyloTree_to_NMSU,tree_1,resource_geneTree).
+%instance_operation_has_output_has_data_format(convert_tree_format_PhyloTree_to_NMSU, resource_geneTree, nmsu_tree_format).
 
-%% For convert_tree_format_2_to_pHYLIPTree
+%% For convert_species_tree_format_PhyloTree_to_NMSU
 %%%% Input and Data format
-instance_has_input(convert_tree_format_2_to_pHYLIPTree,tree_1,resource_speciesTree).
-instance_operation_has_input_has_data_format(convert_tree_format_2_to_pHYLIPTree, resource_speciesTree, tree_format_2).
+instance_has_input(convert_species_tree_format_PhyloTree_to_NMSU,tree_1,resource_speciesTree).
+instance_operation_has_input_has_data_format(convert_species_tree_format_PhyloTree_to_NMSU, resource_speciesTree, phyloTree).
 %%%% Output and Data format
-instance_has_output(convert_tree_format_2_to_pHYLIPTree,tree_1,resource_speciesTree).
-instance_operation_has_output_has_data_format(convert_tree_format_2_to_pHYLIPTree, resource_speciesTree, pHYLIPTree).
+instance_has_output(convert_species_tree_format_PhyloTree_to_NMSU,tree_1,resource_speciesTree).
+instance_operation_has_output_has_data_format(convert_species_tree_format_PhyloTree_to_NMSU, resource_speciesTree, nmsu_tree_format).
 
-%% For convert_tree_format_pHYLIPTree_to_PhyloTree
+
+%% For convert_gene_tree_format_PhyloTree_to_NMSU
 %%%% Input and Data format
-instance_has_input(convert_tree_format_pHYLIPTree_to_PhyloTree,tree_1,resource_speciesTree).
-instance_operation_has_input_has_data_format(convert_tree_format_pHYLIPTree_to_PhyloTree, resource_speciesTree, pHYLIPTree).
+instance_has_input(convert_gene_tree_format_PhyloTree_to_NMSU,tree_1,resource_geneTree).
+instance_operation_has_input_has_data_format(convert_gene_tree_format_PhyloTree_to_NMSU, resource_geneTree, phyloTree).
 %%%% Output and Data format
-instance_has_output(convert_tree_format_pHYLIPTree_to_PhyloTree,tree_1,resource_speciesTree).
-instance_operation_has_output_has_data_format(convert_tree_format_pHYLIPTree_to_PhyloTree, resource_speciesTree, phyloTree).
+instance_has_output(convert_gene_tree_format_PhyloTree_to_NMSU,tree_1,resource_geneTree).
+instance_operation_has_output_has_data_format(convert_gene_tree_format_PhyloTree_to_NMSU, resource_geneTree, nmsu_tree_format).
+
+%% For convert_tree_format_NMSU_to_NewickTree - INHERITANCE ISSUE
+%%%% Input and Data format
+%instance_has_input(convert_tree_format_NMSU_to_NewickTree,tree_1,resource_Tree).
+%instance_operation_has_input_has_data_format(convert_tree_format_NMSU_to_NewickTree, resource_Tree, nmsu_tree_format).
+%%%% Output and Data format
+%instance_has_output(convert_tree_format_NMSU_to_NewickTree,tree_1,resource_speciesTree).
+%instance_operation_has_output_has_data_format(convert_tree_format_NMSU_to_NewickTree, resource_speciesTree, newickTree).
+%instance_has_output(convert_tree_format_NMSU_to_NewickTree,tree_1,resource_geneTree).
+%instance_operation_has_output_has_data_format(convert_tree_format_NMSU_to_NewickTree, resource_geneTree, newickTree).
+
+%% For convert_species_tree_format_NMSU_to_NewickTree
+%%%% Input and Data format
+instance_has_input(convert_species_tree_format_NMSU_to_NewickTree,tree_1,resource_speciesTree).
+instance_operation_has_input_has_data_format(convert_species_tree_format_NMSU_to_NewickTree, resource_speciesTree, nmsu_tree_format).
+%%%% Output and Data format
+instance_has_output(convert_species_tree_format_NMSU_to_NewickTree,tree_1,resource_speciesTree).
+instance_operation_has_output_has_data_format(convert_species_tree_format_NMSU_to_NewickTree, resource_speciesTree, newickTree).
+
+%% For convert_gene_tree_format_NMSU_to_NewickTree
+%%%% Input and Data format
+instance_has_input(convert_gene_tree_format_NMSU_to_NewickTree,tree_1,resource_geneTree).
+instance_operation_has_input_has_data_format(convert_gene_tree_format_NMSU_to_NewickTree, resource_geneTree, nmsu_tree_format).
+%%%% Output and Data format
+instance_has_output(convert_gene_tree_format_NMSU_to_NewickTree,tree_1,resource_geneTree).
+instance_operation_has_output_has_data_format(convert_gene_tree_format_NMSU_to_NewickTree, resource_geneTree, newickTree).
+
+%% For convert_species_tree_format_PhyloTree_to_phylo4Tree
+%%%% Input and Data format
+instance_has_input(convert_species_tree_format_PhyloTree_to_phylo4Tree,tree_1,resource_speciesTree).
+instance_operation_has_input_has_data_format(convert_species_tree_format_PhyloTree_to_phylo4Tree, resource_speciesTree, phyloTree).
+%%%% Output and Data format
+instance_has_output(convert_species_tree_format_PhyloTree_to_phylo4Tree,tree_1,resource_speciesTree).
+instance_operation_has_output_has_data_format(convert_species_tree_format_PhyloTree_to_phylo4Tree, resource_speciesTree, phylo4Tree).
+
+%% For convert_gene_tree_format_PhyloTree_to_phylo4Tree
+%%%% Input and Data format
+instance_has_input(convert_gene_tree_format_PhyloTree_to_phylo4Tree,tree_1,resource_geneTree).
+instance_operation_has_input_has_data_format(convert_gene_tree_format_PhyloTree_to_phylo4Tree, resource_geneTree, phyloTree).
+%%%% Output and Data format
+instance_has_output(convert_gene_tree_format_PhyloTree_to_phylo4Tree,tree_1,resource_geneTree).
+instance_operation_has_output_has_data_format(convert_gene_tree_format_PhyloTree_to_phylo4Tree, resource_geneTree, phylo4Tree).
+
+%% For convert_species_tree_format_Phylo4Tree_to_PhyloTree
+%%%% Input and Data format
+instance_has_input(convert_species_tree_format_Phylo4Tree_to_PhyloTree,tree_1,resource_speciesTree).
+instance_operation_has_input_has_data_format(convert_species_tree_format_Phylo4Tree_to_PhyloTree, resource_speciesTree, phylo4Tree).
+%%%% Output and Data format
+instance_has_output(convert_species_tree_format_Phylo4Tree_to_PhyloTree,tree_1,resource_speciesTree).
+instance_operation_has_output_has_data_format(convert_species_tree_format_Phylo4Tree_to_PhyloTree, resource_speciesTree, phyloTree).
+
+%% For convert_gene_tree_format_Phylo4Tree_to_PhyloTree
+%%%% Input and Data format
+instance_has_input(convert_gene_tree_format_Phylo4Tree_to_PhyloTree,tree_1,resource_geneTree).
+instance_operation_has_input_has_data_format(convert_gene_tree_format_Phylo4Tree_to_PhyloTree, resource_geneTree, phylo4Tree).
+%%%% Output and Data format
+instance_has_output(convert_gene_tree_format_Phylo4Tree_to_PhyloTree,tree_1,resource_geneTree).
+instance_operation_has_output_has_data_format(convert_gene_tree_format_Phylo4Tree_to_PhyloTree, resource_geneTree, phyloTree).
+
+%% For convert_species_tree_format_1_to_2
+%%%% Input and Data format
+instance_has_input(convert_species_tree_format_1_to_2,tree_1,resource_speciesTree).
+instance_operation_has_input_has_data_format(convert_species_tree_format_1_to_2, resource_speciesTree, tree_format_1).
+%%%% Output and Data format
+instance_has_output(convert_species_tree_format_1_to_2,tree_1,resource_speciesTree).
+instance_operation_has_output_has_data_format(convert_species_tree_format_1_to_2, resource_speciesTree, tree_format_2).
+
+%% For convert_gene_tree_format_1_to_2
+%%%% Input and Data format
+instance_has_input(convert_gene_tree_format_1_to_2,tree_1,resource_geneTree).
+instance_operation_has_input_has_data_format(convert_gene_tree_format_1_to_2, resource_geneTree, tree_format_1).
+%%%% Output and Data format
+instance_has_output(convert_gene_tree_format_1_to_2,tree_1,resource_geneTree).
+instance_operation_has_output_has_data_format(convert_gene_tree_format_1_to_2, resource_geneTree, tree_format_2).
+
+%% For convert_species_tree_format_2_to_pHYLIPTree
+%%%% Input and Data format
+instance_has_input(convert_species_tree_format_2_to_pHYLIPTree,tree_1,resource_speciesTree).
+instance_operation_has_input_has_data_format(convert_species_tree_format_2_to_pHYLIPTree, resource_speciesTree, tree_format_2).
+%%%% Output and Data format
+instance_has_output(convert_species_tree_format_2_to_pHYLIPTree,tree_1,resource_speciesTree).
+instance_operation_has_output_has_data_format(convert_species_tree_format_2_to_pHYLIPTree, resource_speciesTree, pHYLIPTree).
+
+%% For convert_gene_tree_format_2_to_pHYLIPTree
+%%%% Input and Data format
+instance_has_input(convert_gene_tree_format_2_to_pHYLIPTree,tree_1,resource_geneTree).
+instance_operation_has_input_has_data_format(convert_gene_tree_format_2_to_pHYLIPTree, resource_geneTree, tree_format_2).
+%%%% Output and Data format
+instance_has_output(convert_gene_tree_format_2_to_pHYLIPTree,tree_1,resource_geneTree).
+instance_operation_has_output_has_data_format(convert_gene_tree_format_2_to_pHYLIPTree, resource_geneTree, pHYLIPTree).
+
+%% For convert_species_tree_format_pHYLIPTree_to_PhyloTree
+%%%% Input and Data format
+instance_has_input(convert_species_tree_format_pHYLIPTree_to_PhyloTree,tree_1,resource_speciesTree).
+instance_operation_has_input_has_data_format(convert_species_tree_format_pHYLIPTree_to_PhyloTree, resource_speciesTree, pHYLIPTree).
+%%%% Output and Data format
+instance_has_output(convert_species_tree_format_pHYLIPTree_to_PhyloTree,tree_1,resource_speciesTree).
+instance_operation_has_output_has_data_format(convert_species_tree_format_pHYLIPTree_to_PhyloTree, resource_speciesTree, phyloTree).
+
+%% For convert_gene_tree_format_pHYLIPTree_to_PhyloTree
+%%%% Input and Data format
+instance_has_input(convert_gene_tree_format_pHYLIPTree_to_PhyloTree,tree_1,resource_geneTree).
+instance_operation_has_input_has_data_format(convert_gene_tree_format_pHYLIPTree_to_PhyloTree, resource_geneTree, pHYLIPTree).
+%%%% Output and Data format
+instance_has_output(convert_gene_tree_format_pHYLIPTree_to_PhyloTree,tree_1,resource_geneTree).
+instance_operation_has_output_has_data_format(convert_gene_tree_format_pHYLIPTree_to_PhyloTree, resource_geneTree, phyloTree).
 
 %=======================================================================
 % PART 5 : Define classes operation has INPUT and OUTPUT class
@@ -1540,15 +1697,15 @@ input(taxon_to_species_by_country, single_country_name_1, resource_CountryName).
 
 %%% Parent class : tree_operation/tree_comparison
 % class branch_length_comparison_operation
-input(branch_length_comparison_operation, phylo_tree_1, resource_Tree).
-input(branch_length_comparison_operation, phylo_tree_2, resource_Tree).
+input(branch_length_comparison_operation, phylo_tree_1, resource_speciesTree).
+input(branch_length_comparison_operation, phylo_tree_2, resource_speciesTree).
 output(branch_length_comparison_operation, are_same_tree, resource_AreSameTree).
 output(branch_length_comparison_operation, http_code_1, resource_HTTPCode).
 output(branch_length_comparison_operation, ws_message_1, ws_response_message).
 
 % class symmetric_comparison_operation
-input(symmetric_comparison_operation, phylo_tree_1, resource_Tree).
-input(symmetric_comparison_operation, phylo_tree_2, resource_Tree).
+input(symmetric_comparison_operation, phylo_tree_1, resource_speciesTree).
+input(symmetric_comparison_operation, phylo_tree_2, resource_speciesTree).
 output(symmetric_comparison_operation, are_same_tree, resource_AreSameTree).
 output(symmetric_comparison_operation, http_code_1, resource_HTTPCode).
 output(symmetric_comparison_operation, ws_message_1, ws_response_message).

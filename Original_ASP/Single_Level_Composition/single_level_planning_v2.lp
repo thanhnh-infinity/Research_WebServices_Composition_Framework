@@ -1,6 +1,7 @@
 %========================================================================
 % PLANNING PART : Build WorkFlow for SINGLE LEVEL OF PLANNING
 %========================================================================
+%#const n = 9.
 #const n = 9.
 step(0..n).
 %========================================================================
@@ -112,11 +113,26 @@ is_used_operation(A) :- operation(A),
 % Free-Text - Species const n = 3
 initially(resource_FreeText,raw_text).
 
+%initially(resource_SetOfGeneStrings,list_of_strings).
+
+%initially(resource_speciesTree,newickTree).
+%initially(resource_geneTree,newickTree).
 
 % Free-Text - Species const n = 3
 finally(resource_speciesTree,phylo4Tree).
 goal(I) :- exists(resource_speciesTree,phylo4Tree,I), step(I).
 
+%finally(resource_reconcileTree,newickTree).
+%goal(I) :- exists(resource_reconcileTree,newickTree,I), step(I).
+
+% Componet
+%finally(resource_speciesTree,newickTree).
+%goal(I) :- exists(resource_speciesTree,newickTree,I), step(I).
+
+%finally(resource_geneTree,newickTree).
+%goal(I) :- exists(resource_geneTree,newickTree,I), step(I).
+
+% Component
 %finally(resource_FreeText,plain_text).
 %goal(I) :- exists(resource_FreeText,plain_text,I), step(I).
 
