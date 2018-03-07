@@ -492,8 +492,8 @@ instance_operation_has_output_has_data_format(phylotastic_FindScientificNamesFro
 %instance_operation_has_output_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET, resource_SetOfNames, list_of_strings).
 
 instance_operation_has_input_has_data_format(phylotastic_ResolvedScientificNames_GNR_TNRS_GET, resource_SetOfSciName, raw_names_format_GNR).
-instance_operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_GNR_TNRS_GET, resource_SetOfTaxon, resolved_names_format_GNR).
-instance_operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_GNR_TNRS_GET, resource_SetOfResolvedName, resolved_names_format_GNR).
+instance_operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_GNR_TNRS_GET, resource_SetOfTaxon, resolved_names_format_2).
+instance_operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_GNR_TNRS_GET, resource_SetOfResolvedName, resolved_names_format_2).
 instance_operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_GNR_TNRS_GET, resource_HTTPCode, integer).
 %instance_operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_GNR_TNRS_GET, resource_SetOfNames, list_of_strings).
 
@@ -531,22 +531,22 @@ instance_operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_OT
 instance_operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_OT_POST, resource_Tree, nmsu_tree_format).
 %instance_operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_OT_POST, resource_HTTPCode, integer).
 
-instance_operation_has_input_has_data_format(phylotastic_GetPhylogeneticTree_PhyloT_GET, resource_SetOfTaxon, resolved_names_format_GNR).
+instance_operation_has_input_has_data_format(phylotastic_GetPhylogeneticTree_PhyloT_GET, resource_SetOfTaxon, resolved_names_format_PhyloT).
 instance_operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_PhyloT_GET, resource_speciesTree, newickTree).
 instance_operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_PhyloT_GET, resource_Tree, newickTree).
 %instance_operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_PhyloT_GET, resource_HTTPCode, integer).
 
-instance_operation_has_input_has_data_format(phylotastic_GetPhylogeneticTree_PhyloT_POST, resource_SetOfTaxon, resolved_names_format_GNR).
+instance_operation_has_input_has_data_format(phylotastic_GetPhylogeneticTree_PhyloT_POST, resource_SetOfTaxon, resolved_names_format_PhyloT).
 instance_operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_PhyloT_POST, resource_speciesTree, newickTree).
 instance_operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_PhyloT_POST, resource_Tree, newickTree).
 %instance_operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_PhyloT_POST, resource_HTTPCode, integer).
 
-instance_operation_has_input_has_data_format(phylotastic_GetPhylogeneticTree_Phylomatic_GET, resource_SetOfResolvedName, resolved_names_format_GNR).
+instance_operation_has_input_has_data_format(phylotastic_GetPhylogeneticTree_Phylomatic_GET, resource_SetOfResolvedName, resolved_names_format_Phylomatic).
 instance_operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_Phylomatic_GET, resource_speciesTree, nmsu_tree_format).
 instance_operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_Phylomatic_GET, resource_Tree, nmsu_tree_format).
 %instance_operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_Phylomatic_GET, resource_HTTPCode, integer).
 
-instance_operation_has_input_has_data_format(phylotastic_GetPhylogeneticTree_Phylomatic_POST, resource_SetOfResolvedName, resolved_names_format_GNR).
+instance_operation_has_input_has_data_format(phylotastic_GetPhylogeneticTree_Phylomatic_POST, resource_SetOfResolvedName, resolved_names_format_Phylomatic).
 instance_operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_Phylomatic_POST, resource_speciesTree, nmsu_tree_format).
 instance_operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_Phylomatic_POST, resource_Tree, nmsu_tree_format).
 %instance_operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_Phylomatic_POST, resource_HTTPCode, integer).
@@ -983,6 +983,8 @@ subClass(nmsu_tree_format,treeFormat).
 
 
 % INSTANCES Data format Conversion operation
+instance(convert_df_text_format_raw_to_plain).
+
 instance(convert_df_sci_names_format_1_to_3).
 instance(convert_df_sci_names_format_3_to_5).
 instance(convert_df_sci_names_format_5_to_GNR).
@@ -1002,9 +1004,7 @@ instance(convert_df_resolved_names_format_5_to_PhyloT).
 instance(convert_df_resolved_names_format_5_to_OT).
 instance(convert_df_resolved_names_format_2_to_4).
 instance(convert_df_resolved_names_format_4_to_6).
-instance(convert_df_resolved_names_format_6_to_Phylomatic).
-instance(convert_df_resolved_names_format_6_to_PhyloT).
-instance(convert_df_resolved_names_format_6_to_OT).
+instance(convert_df_resolved_names_format_6_to_ALL_COMBO).
 
 instance(convert_df_taxons_format_GNR_to_OT).
 instance(convert_df_taxons_format_GNR_to_Phylomatic).
@@ -1016,9 +1016,7 @@ instance(convert_df_taxons_format_5_to_PhyloT).
 instance(convert_df_taxons_format_5_to_OT).
 instance(convert_df_taxons_format_2_to_4).
 instance(convert_df_taxons_format_4_to_6).
-instance(convert_df_taxons_format_6_to_Phylomatic).
-instance(convert_df_taxons_format_6_to_PhyloT).
-instance(convert_df_taxons_format_6_to_OT).
+instance(convert_df_taxons_format_6_to_ALL_COMBO).
 
 instance(convert_tree_format_NewickTree_to_ALL_COMBO).
 instance(convert_tree_format_PhyloTree_to_NMSU).
@@ -1031,6 +1029,8 @@ instance(convert_tree_format_pHYLIPTree_to_PhyloTree).
 
 
 %--------------------
+isInstanceOf(convert_df_text_format_raw_to_plain,data_format_conversion).
+
 isInstanceOf(convert_df_sci_names_format_1_to_3,data_format_conversion).
 isInstanceOf(convert_df_sci_names_format_3_to_5,data_format_conversion).
 isInstanceOf(convert_df_sci_names_format_5_to_GNR,data_format_conversion).
@@ -1050,9 +1050,7 @@ isInstanceOf(convert_df_resolved_names_format_5_to_PhyloT,data_format_conversion
 isInstanceOf(convert_df_resolved_names_format_5_to_OT,data_format_conversion).
 isInstanceOf(convert_df_resolved_names_format_2_to_4,data_format_conversion).
 isInstanceOf(convert_df_resolved_names_format_4_to_6,data_format_conversion).
-isInstanceOf(convert_df_resolved_names_format_6_to_Phylomatic,data_format_conversion).
-isInstanceOf(convert_df_resolved_names_format_6_to_PhyloT,data_format_conversion).
-isInstanceOf(convert_df_resolved_names_format_6_to_OT,data_format_conversion).
+isInstanceOf(convert_df_resolved_names_format_6_to_ALL_COMBO,data_format_conversion).
 
 isInstanceOf(convert_df_taxons_format_GNR_to_OT,data_format_conversion).
 isInstanceOf(convert_df_taxons_format_GNR_to_Phylomatic,data_format_conversion).
@@ -1064,9 +1062,8 @@ isInstanceOf(convert_df_taxons_format_5_to_PhyloT,data_format_conversion).
 isInstanceOf(convert_df_taxons_format_5_to_OT,data_format_conversion).
 isInstanceOf(convert_df_taxons_format_2_to_4,data_format_conversion).
 isInstanceOf(convert_df_taxons_format_4_to_6,data_format_conversion).
-isInstanceOf(convert_df_taxons_format_6_to_Phylomatic,data_format_conversion).
-isInstanceOf(convert_df_taxons_format_6_to_PhyloT,data_format_conversion).
-isInstanceOf(convert_df_taxons_format_6_to_OT,data_format_conversion).
+isInstanceOf(convert_df_taxons_format_6_to_ALL_COMBO,data_format_conversion).
+
 
 isInstanceOf(convert_tree_format_NewickTree_to_ALL_COMBO,data_format_conversion).
 isInstanceOf(convert_tree_format_PhyloTree_to_NMSU,data_format_conversion).
@@ -1080,6 +1077,14 @@ isInstanceOf(convert_tree_format_pHYLIPTree_to_PhyloTree,data_format_conversion)
 
 
 % HAS INPUT/Output for Data Format Convertion services INSTANCES
+%--------------------------------------------
+%% For convert_df_text_format_raw_to_plain
+%%%% Input and Data format
+instance_has_input(convert_df_text_format_raw_to_plain,text_1,resource_FreeText).
+instance_operation_has_input_has_data_format(convert_df_text_format_raw_to_plain, resource_FreeText, raw_text).
+%%%% Output and Data format
+instance_has_output(convert_df_text_format_raw_to_plain,cv_names_1,resource_FreeText).
+instance_operation_has_output_has_data_format(convert_df_text_format_raw_to_plain, resource_FreeText, plain_text).
 %--------------------------------------------
 %% For convert_df_sci_names_format_1_to_3
 %%%% Input and Data format
