@@ -56,10 +56,6 @@ exists(O,DF_O,T+1) :- occur(A,T),
                       instance_has_output(A,N,O), 
                       step(T).
 
-% Basic part : Move forward for inertial fluent
-%exists(X,DF_X,T+1) :- exists(X,DF_X,T), step(T), not -exists(X,DF_X,T+1), T <= n.
-%-exists(X,DF_X,T+1) :- -exists(X,DF_X,T), step(T), not exists(X,DF_X,T+1), T <= n.
-
 % Basic part : AWC for operation
 :- operation(A1), operation(A2), occur(A1,I), occur(A2,I), A1 != A2, step(I).
 
@@ -120,14 +116,13 @@ is_used_operation(A) :- operation(A),
 %========================================================================
 % Basic part : initial and goal state (SHOULD BE IN DIFFERENT FILES - INIITAL and GOAL FILES)
 
-% Free-Text - Species const n = 3
+% Generate INPUT
 %initially(resource_FreeText,raw_text).
 %initially(resource_WebURL,http_url).
 initially(resource_SetOfGeneStrings,list_of_strings).
-
 %initially(resource_geneTree,newickTree).
 
-% Free-Text - Species const n = 3
+% Generate OUTPUT
 %finally(resource_speciesTree,phylo4Tree).
 %goal(I) :- exists(resource_speciesTree,phylo4Tree,I), step(I).
 
@@ -150,7 +145,7 @@ goal(I) :- exists(resource_reconcileTree,newickTree,I), step(I).
 %finally(resource_geneTree,newickTree).
 %goal(I) :- exists(resource_geneTree,newickTree,I), step(I).
 
-% Component
+% Constraint for Advanced Modification
 
 %used_operation(phylotastic_GetPhylogeneticTree_Phylomatic_GET).
 %used_operation(phylotastic_ResolvedScientificNames_GNR_TNRS_GET).
@@ -160,7 +155,6 @@ goal(I) :- exists(resource_reconcileTree,newickTree,I), step(I).
 %do_not_use_operation(phylotastic_ResolvedScientificNames_GNR_TNRS_POST).
 %do_not_use_operation(phylotastic_ResolvedScientificNames_OT_TNRS_GET).
 %do_not_use_operation(phylotastic_ResolvedScientificNames_OT_TNRS_POST).
-%#minimize{I:goal(I)}.
 %========================================================================
 #show occur/2.
 %#show map/8.
