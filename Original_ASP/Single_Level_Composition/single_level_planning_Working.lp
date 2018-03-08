@@ -2,9 +2,10 @@
 % PLANNING PART : Build WorkFlow for SINGLE LEVEL OF PLANNING
 %========================================================================
 %#const n = 1.
-%#const n = 5.
+%#const n = 6.
 %#const n = 9.
 #const n = 11.
+
 step(0..n).
 %========================================================================
 % 1. PLANNING ENGINE - BASIC PART
@@ -121,7 +122,7 @@ is_used_operation(A) :- operation(A),
 
 % Free-Text - Species const n = 3
 %initially(resource_FreeText,raw_text).
-
+%initially(resource_WebURL,http_url).
 initially(resource_SetOfGeneStrings,list_of_strings).
 
 %initially(resource_geneTree,newickTree).
@@ -129,6 +130,9 @@ initially(resource_SetOfGeneStrings,list_of_strings).
 % Free-Text - Species const n = 3
 %finally(resource_speciesTree,phylo4Tree).
 %goal(I) :- exists(resource_speciesTree,phylo4Tree,I), step(I).
+
+%finally(resource_SetOfTaxon,resolved_names_format_GNR).
+%goal(I) :- exists(resource_SetOfTaxon,resolved_names_format_GNR,I), step(I).
 
 finally(resource_reconcileTree,newickTree).
 goal(I) :- exists(resource_reconcileTree,newickTree,I), step(I).
@@ -138,6 +142,7 @@ goal(I) :- exists(resource_reconcileTree,newickTree,I), step(I).
 
 %finally(resource_geneTree,phylo4Tree).
 %goal(I) :- exists(resource_geneTree,phylo4Tree,I), step(I).
+
 
 % Componet
 %finally(resource_speciesTree,newickTree).
