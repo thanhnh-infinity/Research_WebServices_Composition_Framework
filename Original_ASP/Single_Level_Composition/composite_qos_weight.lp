@@ -19,7 +19,8 @@ has_qos_response_time_involved_concrete(X,T,R_RT_V) :- occur(X,T),
 %                                    RT_Max = #max{RT_V : has_qos_response_time_involved_concrete(X,T,RT_V)},
 %                                    RT_S= (RT_Min + RT_Max)/2.
 
-qos_response_time_workflow(RT_S) :- RT_S = #sum{RT_V,T : has_qos_response_time_involved_concrete(X,T,RT_V)}.
+%qos_response_time_workflow(RT_S) :- RT_S = #sum{RT_V,T : has_qos_response_time_involved_concrete(X,T,RT_V)}.
+%qos_response_time_workflow(#sum{RT_V,T : has_qos_response_time_involved_concrete(X,T,RT_V)}).
 
 % ---------------------------------------
 % Working for Throughput (bigger is better)
