@@ -34,7 +34,7 @@ def main(prg):
     def load_asp():
         prg.load("single_level_planning_Working.lp")
         prg.load("ontology_TESTING_Working.lp")
-        prg.load("configuration.lp")
+        
 
     def enable_active_rule_for_subprogram(prg,multishot_id,level):
         external_name = ""

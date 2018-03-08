@@ -5,7 +5,6 @@
 %#const n = 6.
 %#const n = 9.
 #const n = 11.
-
 step(0..n).
 %========================================================================
 % 1. PLANNING ENGINE - BASIC PART
@@ -166,3 +165,4 @@ goal(I) :- exists(resource_reconcileTree,newickTree,I), step(I).
 %#show good_match/4.
 %#show possible_match/7.
 %#show instance_has_input/3.
+#show score_qos_workflow/1.
