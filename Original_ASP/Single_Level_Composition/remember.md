@@ -1,0 +1,1 @@
+clingcon-3.3.0 single_level_planning_Working.lp ontology_TESTING_Working.lp composite_qos_weight.lp --warn=no-operation-undefined --warn=no-variable-unbounded --warn=no-atom-undefined
