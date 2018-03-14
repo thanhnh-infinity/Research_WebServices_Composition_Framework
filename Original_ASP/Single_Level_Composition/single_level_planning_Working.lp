@@ -4,7 +4,9 @@
 %#const n = 1.
 %#const n = 6.
 %#const n = 9.
-#const n = 11.
+%#const n = 11.
+%#const n = 20.
+#const n = 12.
 step(0..n).
 %========================================================================
 % 1. PLANNING ENGINE - BASIC PART
@@ -78,6 +80,7 @@ map(A,I,DF_I,T,initial_state,O,DF_O,0) :- occur(A,T),
 % Basic Part : Goal Tracker 2
 success :- goal(I), I <= n, step(I).
 :- not success.
+%stop_index(X) :- X = #min{G : goal(G)}.
 %========================================================================
 % 2. PLANNING ENGINE - EXTEND PART - PREFERENCE
 %       Define rules for operation class shoud be involved
@@ -85,20 +88,11 @@ success :- goal(I), I <= n, step(I).
 %       Define rules for concrete operation should be involved
 %       Define rules for DO NOT involve FAIL operation/service
 %========================================================================
-% Extend part : Rules for required class of operation shoud be involved
-
-is_used_class_of_operation(C):- operation_class(C), 
-                                occur(A, T), 
-                                isInstanceOf(A,C),
-                                T<=n.
-:- used_class_of_operation(A), 
-   not is_used_class_of_operation(A).
-
-
 % Extend part : Rules for required concrete operation shoud be involved
 is_used_operation(A) :- operation(A),
                         occur(A,T),
-                        T <= n.
+                        goal(G),
+                        T < G.
 :- used_operation(A), 
    not is_used_operation(A). 
 
@@ -111,6 +105,21 @@ is_used_operation(A) :- operation(A),
 
 % Extend part : avoidance concrete operation
 :- do_not_use_operation(X), is_used_operation(X).
+
+% Extend Part : Require involved operation C executed before operation D
+%%%% Super poor performance
+%is_ordered_services(C,D) :- operation(C),
+%                            operation(D),
+%                            occur(C,T1),
+%                            occur(D,T2),
+%                            goal(G),
+%                            T1 < T2,
+%                            T2 < G.
+%:- ordered_services(C,D), not is_ordered_services(C,D).
+%used_operation(C) :- ordered_services(C,D), 
+%                     operation(C).
+%used_operation(D) :- ordered_services(C,D), 
+%                     operation(C).
 
 %========================================================================
 % Basic part : initial and goal state (SHOULD BE IN DIFFERENT FILES - INIITAL and GOAL FILES)
@@ -144,16 +153,7 @@ goal(I) :- exists(resource_reconcileTree,newickTree,I), step(I).
 %finally(resource_geneTree,newickTree).
 %goal(I) :- exists(resource_geneTree,newickTree,I), step(I).
 
-% Constraint for Advanced Modification
 
-%used_operation(phylotastic_GetPhylogeneticTree_Phylomatic_GET).
-%used_operation(phylotastic_ResolvedScientificNames_GNR_TNRS_GET).
-
-%used_operation(phylotastic_GeneTree_Scaling).
-
-%do_not_use_operation(phylotastic_ResolvedScientificNames_GNR_TNRS_POST).
-%do_not_use_operation(phylotastic_ResolvedScientificNames_OT_TNRS_GET).
-%do_not_use_operation(phylotastic_ResolvedScientificNames_OT_TNRS_POST).
 %========================================================================
 #show occur/2.
 %#show map/8.
@@ -166,3 +166,5 @@ goal(I) :- exists(resource_reconcileTree,newickTree,I), step(I).
 %#show possible_match/7.
 %#show instance_has_input/3.
 %#show score_qos_workflow/1.
+#show goal/1.
+%#show stop_index/1.

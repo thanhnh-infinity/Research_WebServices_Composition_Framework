@@ -611,7 +611,7 @@ instance_operation_has_output_has_data_format(phylotastic_GenerateGeneTree_From_
 instance_operation_has_output_has_data_format(phylotastic_GenerateGeneTree_From_Genes, resource_geneTree, phyloTree).
 
 instance_operation_has_input_has_data_format(phylotastic_GeneTree_Scaling, resource_geneTree, newickTree).
-instance_operation_has_output_has_data_format(phylotastic_GeneTree_Scaling, resource_geneTree, phylo4Tree).
+instance_operation_has_output_has_data_format(phylotastic_GeneTree_Scaling, resource_geneTree, newickTree).
 
 %=======================================================================
 % PART 4.2 :  Defined QoS values for each concrete service operation which include tuple(Response Time,Throughput, Reliability, Availability)

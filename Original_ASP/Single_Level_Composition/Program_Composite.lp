@@ -5,17 +5,17 @@
 import clingo
 import time
 from random import *
+import sys
 
-#-----------------------
-def measure_QoS():
-    return randint(1000,2000) 
 #-----------------------
 def main(prg):
     def load_asp():
         prg.load("single_level_planning_Working.lp")
         prg.load("ontology_TESTING_Working.lp")
         #prg.load("composite_qos_weight.lp")
+        prg.load("composite_preference.lp")
     
+   
     load_asp()
     # prg.configuration.solve.models = 0
     base_program = [("base", [])]
