@@ -185,8 +185,10 @@ def distNodes_Ontology_RawClingo(node_1,index_1,node_2,index_2):
     if (not shortestPathOverLCA or shortestPathOverLCA is None or len(shortestPathOverLCA) <= 0):
         return float(9999)
 
+    return len(shortestPathOverLCA)      
+
 def findClassOfInstance(instance):
-    return "thanhnguyen"
+    return graph.INSTANCE_IN_CLASS_MAP[instance]
 def distNodes_Ontology(Service_Obj_1, Service_Obj_2):
 
     ontServiceName_1 = Service_Obj_1['service_name']
@@ -204,6 +206,10 @@ def distNodes_Ontology(Service_Obj_1, Service_Obj_2):
     # Find class of service from service name
     ontClassName_1 = findClassOfInstance(ontServiceName_1)
     ontClassName_2 = findClassOfInstance(ontServiceName_2)
+
+    #print "------------------"
+    #print ontServiceName_1 + " : " + ontClassName_1
+    #print ontServiceName_2 + " : " + ontClassName_2
 
     if (ontClassName_1 and not ontClassName_2):
         return float(9999)
@@ -232,7 +238,7 @@ def calSimNodes_Ontology_RawClingo(node_1,index_1,node_2,index_2):
 def sim_between_2_nodes_raw_clingo(node_1,index_1,node_2,index_2):
     sim_nodes_ontology = calSimNodes_Ontology_RawClingo(str(node_1),index_1,str(node_2),index_2)
     final_value = sim_nodes_ontology
-    #print final_value
+    #print str(node_1) + ":" + str(node_2) + ":" + str(final_value)
     return int(round(final_value*10000))
 
 def simNodes(Service_1, Service_2):
@@ -253,9 +259,6 @@ def simNodes_workflow(WF_JSON_1, WF_JSON_2):
 ############################################
 ########EDGE SIMILARITY MATCHING############
 ############################################
-'''
-Ket thuc ngay 5/3/2018 : Phai update lai cai nay EDGE MATCHING
-'''
 def simEdges_workflow(WF_JSON_1, WF_JSON_2):
     list_edges_1,set_edges_1 = generate_EdgesCollection_FromWF(WF_JSON_1)
     list_edges_2,set_edges_2 = generate_EdgesCollection_FromWF(WF_JSON_2)
@@ -289,7 +292,7 @@ def generate_EdgesCollection_FromWF(WF_JSON):
     else:
         return None,None
 
-# This will be advanced in future
+
 def simEdges(edge_1, edge_2):
     return 1 
 
@@ -311,6 +314,10 @@ def sim_topologies(WF_JSON_1, WF_JSON_2):
 def sim_workflows_graphStructure(WF_JSON_1,WF_JSON_2):
     JSON_WF_1 = json.loads(WF_JSON_1)
     JSON_WF_2 = json.loads(WF_JSON_2)
+
+    #print "Node sim : " + str(simNodes_workflow(JSON_WF_1,JSON_WF_2))
+    #print "Topo : " + str(sim_topologies(JSON_WF_1,JSON_WF_2))
+
     return 0.7*simNodes_workflow(JSON_WF_1,JSON_WF_2) + 0.3*sim_topologies(JSON_WF_1,JSON_WF_2)
 def sim_workflows(WF_1,WF_2,type):
     if (type is None or not type):

@@ -5,6 +5,7 @@
 import clingo
 import time
 import composite_parser
+import similarity_matching
 from random import *
 import sys
 #----------------------------------------------------------    
@@ -30,13 +31,11 @@ def build_no_op_rule_for_predicate_With_Active(answer_set_symbols,predicate_name
     return contrains_distince_wf_rule %(component_rule,index)
 
 #-------------FOR RE PLANNING-----------------------------
-def sim_matching(WF_1,WF_2):
-  return similarity_matching.sim_workflows(WF_1,WF_2,"CLINGO_MODELS")
 def calculate_sim_matching_WF(WF_1,WF_2):
   return randint(0,200)
 def calculate_sim_between_2_nodes(occur_node_1,index_1,occur_node_2,index_2):
-  #return similarity_matching.sim_between_2_nodes_raw_clingo(occur_node_1,index_1,occur_node_2,index_2)
-  return randint(0,100)
+  return similarity_matching.sim_between_2_nodes_raw_clingo(occur_node_1,index_1,occur_node_2,index_2)
+  #return randint(0,100)
 
 def isConsideredPredicate(str_predicate,limits):
     for item in limits:
@@ -159,6 +158,7 @@ def main(prg):
         #sim_nodes_workflow_rule = "\nsim_nodes_workflows(R) :- T = #sum {P,M,N : single_sim_2_nodes(M,N,P)}, N_Old_Nodes = #count {X,I1: old_occur(X,I1)}, N_New_Nodes = #count {,I2 : occur(Y,I2)}, R = 2*T / (N_Old_Nodes + N_New_Nodes)."  
 
         maximize_rule = "\n#maximize{R : sim_nodes_workflows(R)}."
+        #maximize_rule = ""
 
         full_sim_nodes_cal = generate_old_occur + single_sim_nodes_rule + sum_sim_nodes_rule  + sim_nodes_workflow_rule + maximize_rule
 

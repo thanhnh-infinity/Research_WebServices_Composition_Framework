@@ -76,7 +76,7 @@ SERVICE_CLASSES_GRAPH = {
                         'names_extraction_document'  : ['names_extraction_operation'],
                         'names_extraction_tree'  : ['names_extraction_operation'],
                         'names_extraction_text'  : ['names_extraction_operation'],
-                'names_conversion_operation' : ['names_operation','convert_operation','common_name_to_scientific_name'],
+                'names_conversion_operation' : ['names_operation','data_format_conversion','common_name_to_scientific_name'],
                         'common_name_to_scientific_name' : ['names_conversion_operation'],
 
         'taxon_operation' : ['operationClassification','taxon_to_species_operation'],
@@ -94,8 +94,11 @@ SERVICE_CLASSES_GRAPH = {
                 'list_creation_operation' : ['list_operation'],
                 'list_retrieval_operation' : ['list_operation'],
 
-        'convert_operation' : ['operationClassification','data_format_conversion','names_conversion_operation'],
-                'data_format_conversion' : ['convert_operation'],
+        'convert_operation' : ['operationClassification','data_format_conversion'],
+                'data_format_conversion' : ['convert_operation','names_conversion_operation','tree_format_conversion','list_scientific_names_conversion','text_conversion'],
+                          'tree_format_conversion' : ['data_format_conversion'],
+                          'list_scientific_names_conversion' : ['data_format_conversion'],
+                          'text_conversion' : ['data_format_conversion'],
 
         'tree_operation': ['operationClassification', 'tree_generation' ,'tree_information', 'tree_comparison','tree_visualization','tree_transformation'],
                 'tree_generation' : ['tree_operation','tree_retrieval_operation','tree_reconciliation','tree_extraction_operation'],
@@ -119,6 +122,101 @@ SERVICE_CLASSES_GRAPH = {
 
 }
 
+
+INSTANCE_IN_CLASS_MAP = {
+    "phylotastic_ResolvedScientificNames_GNR_TNRS_GET":"names_resolution_operation",
+    "phylotastic_ResolvedScientificNames_GNR_TNRS_POST":"names_resolution_operation",
+    "phylotastic_ResolvedScientificNames_OT_TNRS_GET":"names_resolution_operation",
+    "phylotastic_ResolvedScientificNames_OT_TNRS_POST":"names_resolution_operation",
+    "phylotastic_GetAllSpeciesFromTaxon_OT_GET":"taxon_to_species_operation",
+    "phylotastic_GetInformationURLsOfSpecies_EOL_POST":"species_url_operation",
+    "phylotastic_GetInformationURLsOfSpecies_EOL_GET":"species_url_operation",
+    "phylotastic_GetImageURLsOfSpecies_EOL_GET":"species_images_operation",
+    "phylotastic_GetImageURLsOfSpecies_EOL_POST":"species_images_operation",
+    "phylotastic_FindScientificNamesFromWeb_GNRD_GET":"names_extraction_web",
+    "phylotastic_FindScientificNamesFromFreeText_GNRD_GET":"names_extraction_text",
+    "phylotastic_GetSpeciesOfTaxon_Genome_NCBI_GET":"taxon_to_species_by_genome",
+    "phylotastic_GetAllSpeciesFromTaxon_Country_OT_GET":"taxon_to_species_by_country",
+    "phylotastic_GetPhylogeneticTree_OT_GET":"taxonomy_based_extraction",
+    "phylotastic_GetPhylogeneticTree_OT_POST":"taxonomy_based_extraction",
+    "phylotastic_GetPhylogeneticTree_Phylomatic_GET":"phylogeny_based_extraction",
+    "phylotastic_GetPhylogeneticTree_Phylomatic_POST":"phylogeny_based_extraction",
+    "phylotastic_GetPhylogeneticTree_PhyloT_GET":"taxonomy_based_extraction",
+    "phylotastic_GetPhylogeneticTree_PhyloT_POST":"taxonomy_based_extraction",
+    "phylotastic_ComparePhylogeneticTrees_Symmetric_POST":"symmetric_comparison_operation",
+    "phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST":"species_tree_scaling",
+    "phylotastic_GetSpeciesScientificNameFromCommonName_NCBI_GET":"common_name_to_scientific_name",
+    "google_ConvertCountryCodeToName_GET":"country_code_to_name",
+    "openTree_GetTaxonomyNameFromSciName_GET":"scientific_name_to_taxonomy",
+    "phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET":"names_extraction_web",
+    "phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET":"names_extraction_tree",
+    "phylotastic_GetReconciliationTree_GET":"tree_reconciliation",
+    "phylotastic_GenerateGeneTree_From_Genes":"gene_based_extraction",
+    "phylotastic_GeneTree_Scaling":"gene_tree_scaling",
+
+    "convert_df_text_format_raw_to_plain":"text_conversion",
+
+    "convert_df_sci_names_format_1_to_3":"list_scientific_names_conversion",
+    "convert_df_sci_names_format_3_to_5":"list_scientific_names_conversion",
+    "convert_df_sci_names_format_5_to_GNR":"list_scientific_names_conversion",
+    "convert_df_sci_names_format_5_to_OT":"list_scientific_names_conversion",
+    "convert_df_sci_names_format_2_to_4":"list_scientific_names_conversion",
+    "convert_df_sci_names_format_4_to_6":"list_scientific_names_conversion",
+    "convert_df_sci_names_format_6_to_GNR":"list_scientific_names_conversion",
+    "convert_df_sci_names_format_6_to_OT":"list_scientific_names_conversion",
+
+    "convert_df_resolved_names_format_GNR_to_OT":"list_scientific_names_conversion",
+    "convert_df_resolved_names_format_GNR_to_Phylomatic":"list_scientific_names_conversion",
+    "convert_df_resolved_names_format_GNR_to_PhyloT":"list_scientific_names_conversion",
+    "convert_df_resolved_names_format_1_to_3":"list_scientific_names_conversion",
+    "convert_df_resolved_names_format_3_to_5":"list_scientific_names_conversion",
+    "convert_df_resolved_names_format_5_to_Phylomatic":"list_scientific_names_conversion",
+    "convert_df_resolved_names_format_5_to_PhyloT":"list_scientific_names_conversion",
+    "convert_df_resolved_names_format_5_to_OT":"list_scientific_names_conversion",
+    "convert_df_resolved_names_format_2_to_4":"list_scientific_names_conversion",
+    "convert_df_resolved_names_format_4_to_6":"list_scientific_names_conversion",
+    "convert_df_resolved_names_format_6_to_ALL_COMBO":"list_scientific_names_conversion",
+
+    "convert_df_taxons_format_GNR_to_OT":"list_scientific_names_conversion",
+    "convert_df_taxons_format_GNR_to_Phylomatic":"list_scientific_names_conversion",
+    "convert_df_taxons_format_GNR_to_PhyloT":"list_scientific_names_conversion",
+    "convert_df_taxons_format_1_to_3":"list_scientific_names_conversion",
+    "convert_df_taxons_format_3_to_5":"list_scientific_names_conversion",
+    "convert_df_taxons_format_5_to_Phylomatic":"list_scientific_names_conversion",
+    "convert_df_taxons_format_5_to_PhyloT":"list_scientific_names_conversion",
+    "convert_df_taxons_format_5_to_OT":"list_scientific_names_conversion",
+    "convert_df_taxons_format_2_to_4":"list_scientific_names_conversion",
+    "convert_df_taxons_format_4_to_6":"list_scientific_names_conversion",
+    "convert_df_taxons_format_6_to_ALL_COMBO":"list_scientific_names_conversion",
+
+    "convert_tree_format_NewickTree_to_ALL_COMBO":"tree_format_conversion",
+    "convert_tree_format_PhyloTree_to_NMSU":"tree_format_conversion",
+    "convert_tree_format_NMSU_to_NewickTree":"tree_format_conversion",
+    "convert_tree_format_PhyloTree_to_phylo4Tree":"tree_format_conversion",
+    "convert_tree_format_Phylo4Tree_to_PhyloTree":"tree_format_conversion",
+    "convert_tree_format_1_to_2":"tree_format_conversion",
+    "convert_tree_format_2_to_pHYLIPTree":"tree_format_conversion",
+    "convert_tree_format_pHYLIPTree_to_PhyloTree":"tree_format_conversion",
+
+    "convert_species_tree_format_NewickTree_to_ALL_COMBO":"tree_format_conversion",
+    "convert_species_tree_format_PhyloTree_to_NMSU":"tree_format_conversion",
+    "convert_species_tree_format_NMSU_to_NewickTree":"tree_format_conversion",
+    "convert_species_tree_format_PhyloTree_to_phylo4Tree":"tree_format_conversion",
+    "convert_species_tree_format_Phylo4Tree_to_PhyloTree":"tree_format_conversion",
+    "convert_species_tree_format_1_to_2":"tree_format_conversion",
+    "convert_species_tree_format_2_to_pHYLIPTree":"tree_format_conversion",
+    "convert_species_tree_format_pHYLIPTree_to_PhyloTree":"tree_format_conversion",
+
+    "convert_gene_tree_format_NewickTree_to_ALL_COMBO":"tree_format_conversion",
+    "convert_gene_tree_format_PhyloTree_to_NMSU":"tree_format_conversion",
+    "convert_gene_tree_format_NMSU_to_NewickTree":"tree_format_conversion",
+    "convert_gene_tree_format_PhyloTree_to_phylo4Tree":"tree_format_conversion",
+    "convert_gene_tree_format_Phylo4Tree_to_PhyloTree":"tree_format_conversion",
+    "convert_gene_tree_format_1_to_2":"tree_format_conversion",
+    "convert_gene_tree_format_2_to_pHYLIPTree":"tree_format_conversion",
+    "convert_gene_tree_format_pHYLIPTree_to_PhyloTree":"tree_format_conversion"
+}
+
 # Should be take time to implement this one overnight
 def getZSSNode_from_ListNode(listZSS,current_node_name):
     for ZSSNode in listZSS:
@@ -134,13 +232,7 @@ def updateZSSNode_to_ListNode(listZSS,current_node):
     return listZSS
 
 def buildUp_ZSSGraph(WorkflowGraph):
-    #Root = Node("initial",[])
-
     list_ZSS_Node = []
-
-   
-    #Root = Node("initial_state",[])
-
     list_ZSS_Node.append(Node("initial_state",[]))
     for service_class_obj in WorkflowGraph:
         consider_node_name = service_class_obj['service_name']
@@ -163,6 +255,7 @@ def buildUp_ZSSGraph(WorkflowGraph):
 
     for ZSSNode in list_ZSS_Node:
         if (ZSSNode.label == "initial_state"):
+            #print_ZSSNode(ZSSNode)
             return ZSSNode    
 
     #return list_ZSS_Node
