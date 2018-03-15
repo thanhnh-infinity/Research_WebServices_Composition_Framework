@@ -156,7 +156,7 @@ goal(I) :- exists(resource_reconcileTree,newickTree,I), step(I).
 
 %========================================================================
 #show occur/2.
-%#show map/8.
+#show map/8.
 %#show executable/2.
 %#show exists/3.
 %#show executable/2.
@@ -164,7 +164,8 @@ goal(I) :- exists(resource_reconcileTree,newickTree,I), step(I).
 %#show match/7.
 %#show good_match/4.
 %#show possible_match/7.
-%#show instance_has_input/3.
+#show instance_operation_has_output_has_data_format/3.
+#show instance_operation_has_input_has_data_format/3.
 %#show score_qos_workflow/1.
 #show goal/1.
 %#show stop_index/1.
