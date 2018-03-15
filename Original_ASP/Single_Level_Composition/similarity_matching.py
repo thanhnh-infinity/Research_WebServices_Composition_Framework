@@ -260,47 +260,85 @@ def simNodes_workflow(WF_JSON_1, WF_JSON_2):
 ########EDGE SIMILARITY MATCHING############
 ############################################
 def simEdges_workflow(WF_JSON_1, WF_JSON_2):
-    list_edges_1,set_edges_1 = generate_EdgesCollection_FromWF(WF_JSON_1)
-    list_edges_2,set_edges_2 = generate_EdgesCollection_FromWF(WF_JSON_2)
-    edges_intersection = set_edges_1.intersection(set_edges_2)
-    return (2* float(len(edges_intersection)) / (float(len(set_edges_1)) + float(len(set_edges_2))))
+    list_edges_1 = generate_EdgesCollection_FromWF(WF_JSON_1)
+    list_edges_2 = generate_EdgesCollection_FromWF(WF_JSON_2)
+    
+    number_edges_1 = len(list_edges_1) if (list_edges_1 is not None) else 0
+    number_edges_2 = len(list_edges_2) if (list_edges_2 is not None) else 0
 
+    # Calculate sim_edges_workflows
+    total_sim_edges = 0
+    for edge_obj_1 in list_edges_1:
+        for edge_obj_2 in list_edges_2:
+            total_sim_edges = total_sim_edges + simEdges(edge_obj_1,edge_obj_2)
+
+    return 2*total_sim_edges / (number_edges_1 + number_edges_2) 
+def get_information_service(WF_JSON,service_name,service_index):
+    for item in WF_JSON:
+        if (service_name.strip().upper() == item['service_name'].strip().upper()) and (service_index == item['service_index']):
+            return item
 def generate_EdgesCollection_FromWF(WF_JSON):
     list_edges = []
-    set_edges = Set([])
+    #set_edges = Set([])
     if (WF_JSON and len(WF_JSON) > 0):
         for service_class_obj in WF_JSON:
             #print "Chay day ko"
-            child_node_name = service_class_obj['service_class_name']
-            child_node_input_components = service_class_obj['service_class_parameters']['input']['components']
+            child_node_name = service_class_obj['service_name']
+            child_node_input_components = service_class_obj['service_parameters']['input']['components']
             if (child_node_input_components and len(child_node_input_components) > 0):  
                 for service_com_obj in child_node_input_components:
                     edge = {}
                     child_node_resource = service_com_obj['resource_ontology_id']
-                    parent_node_name = service_com_obj['map']['from']
+                    parent_node_name = service_com_obj['map']['from_service']
                     parent_node_resource = service_com_obj['map']['resource_ontology_id']
 
-                    edge['source'] = parent_node_name
+                    parent_node = get_information_service(WF_JSON,parent_node_name,int(service_com_obj['map']['at_step']) - 1)
+                    edge['source_name'] = parent_node_name
+                    edge['source_node'] = parent_node
                     edge['resource_source_ex'] = parent_node_resource
                     edge['resource_des_ex'] = child_node_resource
-                    edge['destination'] = child_node_name
+                    edge['destination_name'] = child_node_name
+                    edge['destination_node'] = service_class_obj
                     list_edges.append(edge) 
 
-                    edge_label = generateEdgeLabel(edge)
-                    set_edges.add(edge_label)
-        return list_edges,set_edges           
+                    #edge_label = generateEdgeLabel(edge)
+                    #set_edges.add(edge_label)
+        return list_edges           
     else:
-        return None,None
+        return None
 
 
 def simEdges(edge_1, edge_2):
-    return 1 
+    if (edge_1 is None or edge_2 is None):
+        return 0
+    sim_edges_nodes_value = sim_edges_nodes(edge_1,edge_2)
+    sim_edges_re_value = 0
+    #print str(sim_edges_nodes_value) + ":" + str(sim_edges_re_value)
+    return 0.5*sim_edges_nodes_value + 0.5*sim_edges_re_value
+
+def sim_edges_nodes(edge_1,edge_2):
+
+    source_node_1 =edge_1['source_node']    
+    source_node_2 =edge_2['source_node']
+    des_node_1 =edge_1['destination_node']
+    des_node_2 =edge_2['destination_node']
+
+    if ("initial_state" not in edge_1['source_name']) and ("initial_state" not in edge_2['source_name']):
+        return 0.5*(simNodes(source_node_1,source_node_2) + simNodes(des_node_1,des_node_2))
+    else:
+        if ("initial_state" in edge_1['source_name']) and ("initial_state" in edge_2['source_name']):
+             return 0.5*(1 + simNodes(des_node_1,des_node_2))
+        elif ("initial_state" in edge_1['source_name']) and ("initial_state" not in edge_2['source_name']):
+             return 0.5*(simNodes(des_node_1,des_node_2))
+        elif ("initial_state" not in edge_1['source_name']) and ("initial_state" in edge_2['source_name']):     
+             return 0.5*(simNodes(des_node_1,des_node_2))
 
 def generateEdgeLabel(edgeJSON):
     if (edgeJSON):
        return edgeJSON['source'] + "_" + edgeJSON['resource_source_ex'] + "_" +  edgeJSON['resource_des_ex'] +"_"+ edgeJSON['destination'] 
     else:
-       return None  
+       return None
+
 ############################################
 ########TOPOLOGY SIMILARITY MATCHING########
 ############################################
@@ -318,7 +356,7 @@ def sim_workflows_graphStructure(WF_JSON_1,WF_JSON_2):
     #print "Node sim : " + str(simNodes_workflow(JSON_WF_1,JSON_WF_2))
     #print "Topo : " + str(sim_topologies(JSON_WF_1,JSON_WF_2))
 
-    return 0.7*simNodes_workflow(JSON_WF_1,JSON_WF_2) + 0.3*sim_topologies(JSON_WF_1,JSON_WF_2)
+    return 0.45*simNodes_workflow(JSON_WF_1,JSON_WF_2) + 0.35*simEdges_workflow(JSON_WF_1,JSON_WF_2) + 0.2*sim_topologies(JSON_WF_1,JSON_WF_2)
 def sim_workflows(WF_1,WF_2,type):
     if (type is None or not type):
         return None
