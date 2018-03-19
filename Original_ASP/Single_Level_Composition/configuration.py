@@ -1,7 +1,5 @@
 import json
 
-
-
 WEIGHT_QoS_DATA = {
   "response_time" : 0.4,
   "throughput" : 0.3,

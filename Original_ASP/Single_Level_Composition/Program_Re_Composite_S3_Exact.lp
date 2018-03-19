@@ -19,13 +19,11 @@ def calculate_sim_matching_WF(WF_1,WF_2):
 def calculate_sim_between_2_nodes(occur_node_1,index_1,occur_node_2,index_2):
   #return similarity_matching.sim_between_2_nodes_raw_clingo(occur_node_1,index_1,occur_node_2,index_2)
   return randint(0,100)
-
 def isConsideredPredicate(str_predicate,limits):
     for item in limits:
         if (item in str_predicate):
             return True
     return False
-
 def get_CurrentModifying_Workflow(limits):
    # limits is list of predicate that want to store for new workflow
    '''
@@ -119,13 +117,11 @@ def main(prg):
     def generate_Predicates_for_New_Workflow_2(number_of_steps_in_old,max_steps,type):
           if (type == "FIT_OLD_STEPS_INDEXES"):
             predicates_content = ""
-            for step in range(0,number_of_steps_in_old):
+            for step in range(0,number_of_steps_in_old + 1):
                 if (step == 0):
-                    #predicates_content = "occur(A%s,%s), 1{match_occur_service_class(A%s,IA%s,%s,B%s,_,_)}" %(str(step),str(step),str(step),str(step),str(step))
-                    predicates_content = "occur(A%s,%s), map(A%s,IA%s,IDF%s,%s,B%s,OB%s,ODF%s,%s)" %(str(step),str(step),str(step),str(step),str(step),str(step),str(step),str(step),str(step),str(step))
+                    predicates_content = "occur(A%s,%s), map(A%s,IA%s,IDF%s,%s,B%s,OB%s,ODF%s,Index%s) " %(str(step),str(step),str(step),str(step),str(step),str(step),str(step),str(step),str(step),str(step))
                 else:
-                    #predicates_content = predicates_content + ",occur(A%s,%s), 1{match_occur_service_class(A%s,_,%s,_,_,_)}" %(str(step),str(step),str(step),str(step))
-                    predicates_content = predicates_content + ",occur(A%s,%s), map(A%s,IA%s,IDF%s,%s,B%s,OB%s,ODF%s,%s)" %(str(step),str(step),str(step),str(step),str(step),str(step),str(step),str(step),str(step),str(step))
+                    predicates_content = predicates_content + ",occur(A%s,%s), map(A%s,IA%s,IDF%s,%s,B%s,OB%s,ODF%s,Index%s) " %(str(step),str(step),str(step),str(step),str(step),str(step),str(step),str(step),str(step),str(step))
             formula_generatedPredicates_data = predicates_content 
             match_content = ""
             return formula_generatedPredicates_data
@@ -159,6 +155,7 @@ def main(prg):
 
 
         # For new workflow
+        print str(int_goal)
         generatedPredicates_data = generate_Predicates_for_New_Workflow_2(int_goal - 1,0,"FIT_OLD_STEPS_INDEXES")
         #generatedPredicates_data = generate_Predicates_for_New_Workflow(get_number_steps_old_workflow_str(old_workflow),6,"PERMUTE_0_TO_MAX_STEPS")
 

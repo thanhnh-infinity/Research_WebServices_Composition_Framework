@@ -347,7 +347,7 @@ def sim_topologies(WF_JSON_1, WF_JSON_2):
     print dist_topology
     return 1 / (1 + float(dist_topology))
 ############################################
-########MAIN########
+####### MAIN ###############################
 ############################################
 def sim_workflows_graphStructure(WF_JSON_1,WF_JSON_2):
     JSON_WF_1 = json.loads(WF_JSON_1)

@@ -18,4 +18,6 @@ clingo single_level_planning_Working.lp ontology_TESTING_Working.lp
 clingo Program_Composite.lp --warn=no-operation-undefined --warn=no-atom-undefined
 clingo Program_Multiple_Workflows.lp
 clingo Program_Re_Composite_S1_OnModel.lp --warn=no-operation-undefined --warn=no-atom-undefined
+clingo Program_Re_Composite_S2_SimNodes.lp --warn=no-operation-undefined --warn=no-atom-undefined
+clingo Program_Re_Composite_S3_Exact.lp --warn=no-operation-undefined --warn=no-atom-undefined
 

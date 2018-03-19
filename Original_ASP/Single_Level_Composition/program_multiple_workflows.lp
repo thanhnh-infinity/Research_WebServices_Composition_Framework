@@ -8,10 +8,9 @@ import sys
 import time
 from random import *
 
-#-----------------------
+#-------------------------------------------------
 def measure_QoS():
     return randint(1000,2000) 
-
 # Generate 1{not a; not b;...}.
 def build_no_op_rule_for_predicate_With_Active(answer_set_symbols,predicate_name,index,level):
     if ("concrete" in level):
@@ -29,7 +28,7 @@ def build_no_op_rule_for_predicate_With_Active(answer_set_symbols,predicate_name
             component_rule = component_rule + "not " + str_atom + "; "
     component_rule = component_rule[:len(component_rule)-2]
     return contrains_distince_wf_rule %(component_rule,index)
-#-----------------------
+#-------------------------------------------------
 def main(prg):
     def load_asp():
         prg.load("single_level_planning_Working.lp")

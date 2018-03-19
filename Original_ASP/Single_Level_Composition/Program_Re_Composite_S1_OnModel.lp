@@ -166,7 +166,6 @@ def main(prg):
       # Read the final results : RE-composision collection to work on Similarity
       return GLOBAL_BEST_MATCH_WORKFLOW,GLOBAL_HIGHEST_SIM_INDEX
     #----------------------------------------
-
     re_composition_with_preference(prg)
 #end.
 %-----------------------------------------------

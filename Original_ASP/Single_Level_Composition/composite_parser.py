@@ -71,7 +71,6 @@ def parse_a_input_data_format(input_data_format_predicate):
             data_format = parsed[2]
             return operation_name,resource_name,data_format
     return None
-
 def parse_a_output_data_format(output_data_format_predicate):
     parsed = parse.parse(INSTANCE_OP_OUPUT_HAS_DATA_FORMAT, output_data_format_predicate.strip())
     if (parsed is not None):
@@ -81,7 +80,6 @@ def parse_a_output_data_format(output_data_format_predicate):
             data_format = parsed[2]
             return operation_name,resource_name,data_format
     return None
-
 def parse_a_service_has_input(has_input_predicate):
     parsed = parse.parse(SERVICE_HAS_INPUT, has_input_predicate.strip())
     if (parsed is not None):
@@ -111,7 +109,6 @@ def parse_goal_in_predicate(goal_predicate):
         return int(parsed[0])
     else:
         return None
-
 def parse_a_match_predicate(match):
     parsed = parse.parse(MATCH_I_O, match.strip())
     if (parsed is not None) :
