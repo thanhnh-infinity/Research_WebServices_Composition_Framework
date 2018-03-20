@@ -4,5 +4,3 @@
 %initially(resource_WebURL,http_url).
 initially(resource_SetOfGeneStrings,list_of_strings).
 %initially(resource_geneTree,newickTree).
-
-

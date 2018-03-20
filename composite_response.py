@@ -19,8 +19,10 @@ OCCUR_SERIVCE_IN_PLAN = "OCCUR("
 GOAL_IN = "GOAL("
 SERVICE_HAS_INPUT = "INSTANCE_HAS_INPUT("
 SERVICE_HAS_OUTPUT = "INSTANCE_HAS_OUTPUT("
-SERVICE_HAS_INPUT_HAS_DATA_FORMAT = "INSTANCE_OPERATION_HAS_INPUT_HAS_DATA_FORMAT"
-SERVICE_HAS_OUTPUT_HAS_DATA_FORMAT = "INSTANCE_OPERATION_HAS_OUTPUT_HAS_DATA_FORMAT"
+#SERVICE_HAS_INPUT_HAS_DATA_FORMAT = "INSTANCE_OPERATION_HAS_INPUT_HAS_DATA_FORMAT"
+#SERVICE_HAS_OUTPUT_HAS_DATA_FORMAT = "INSTANCE_OPERATION_HAS_OUTPUT_HAS_DATA_FORMAT"
+SERVICE_HAS_INPUT_HAS_DATA_FORMAT = "OPERATION_HAS_INPUT_HAS_DATA_FORMAT"
+SERVICE_HAS_OUTPUT_HAS_DATA_FORMAT = "OPERATION_HAS_OUTPUT_HAS_DATA_FORMAT"
 INITIAL_FACTS = "INITIALLY"
 FINALLY_FACTS = "FINALLY"
 MAP_I_O = "MAP("
@@ -34,8 +36,92 @@ class MultipleLevelsOfDictionary(collections.OrderedDict):
             value = self[item] = type(self)()
             return value
 
+def process_a_plan_json_from_raw(big_list_answer_sets,json_in,json_planning_data,qos,multi_plans,quantity):
+    try:
+        data = MultipleLevelsOfDictionary()
+        json_input = json_in['request_parameters']['input']
+        array_input = []
+        for i in range(0,len(json_input)):
+            input_object = json_input[i]
+            d = MultipleLevelsOfDictionary()
+            d['name'] = input_object['name']
+            d['resource_ontology_id'] = input_object['resource_ontology_id']
+            d['resource_ontology_uri'] = input_object['resource_ontology_uri']
+            d['resource_data_format_id'] = input_object['resource_data_format_id']
+            d['resource_data_format_uri'] = input_object['resource_data_format_uri']
+            array_input.append(d)
+        json_output= json_in['request_parameters']['output']
+        array_output = []
+        for i in range(0,len(json_output)):
+            output_object = json_output[i]
+            d = MultipleLevelsOfDictionary()
+            d['name'] = output_object['name']
+            d['resource_ontology_id'] = output_object['resource_ontology_id']
+            d['resource_ontology_uri'] = output_object['resource_ontology_uri']
+            d['resource_data_format_id'] = output_object['resource_data_format_id']
+            d['resource_data_format_uri'] = output_object['resource_data_format_uri']
+            array_output.append(d)
+
+        # For only one plan
+        data['workflow_plan'] = []
+        all_workflow_plans = []
+        final_worklfow_plans = []
+        #test_index = 0
+        #test_list = [0,9,27,11,36,41]
+        #test_list = [0,9,25]
+        index = 0
+        for workflow in big_list_answer_sets:
+            #if (test_index in test_list):    
+                detail_workflow = workflow[0]["Value"]
+                # Read abstract workflow
+                array_plan,raw_plan = read_a_full_workflow_detail(detail_workflow)
+                # Read concrete workflow
+
+                # Calculate score of QoS for whole workflow
+                if (qos):
+                    score_qos_workflow,consider_QoS_Vector = calculate_QoS_For_Workflow(detail_workflow)
+
+                d = MultipleLevelsOfDictionary()
+                d['info']['name'] = "Build Reconciliation Tree"
+                d['info']['project'] = "Phylotastic"
+                d['info']['step_quantity'] = len(array_plan)
+    
+                if (qos):
+                    d['info']['quality_attributes']['qos']['score_qos'] = score_qos_workflow
+                    d['info']['quality_attributes']['qos']['response_time'] = consider_QoS_Vector[0]
+                    d['info']['quality_attributes']['qos']['throughput'] = consider_QoS_Vector[1]
+                    d['info']['quality_attributes']['qos']['reliability'] = consider_QoS_Vector[4]
+                    d['info']['quality_attributes']['qos']['availability_1'] = consider_QoS_Vector[2]
+                    d['info']['quality_attributes']['qos']['availability_2'] = consider_QoS_Vector[3]
+                d['full_plan'] = array_plan
+                d['raw_plan'] = raw_plan
+                d['ID'] = index
+                all_workflow_plans.append(d)
+                index = index + 1
+            #test_index = test_index+1
+
+        # Sorting workflow based on QoS attribute
+        if (qos and multi_plans):
+            sorted_plans = sorted(all_workflow_plans, key=lambda workflow : workflow['info']['quality_attributes']['qos']['score_qos'],reverse=True)
+            # Select best criterial worlflows to displayed
+            final_worklfow_plans = sorted_plans
+        else:
+            final_worklfow_plans = all_workflow_plans[0]
+        #Full JSON data
+        data['request_parameters']['input'] = array_input
+        data['request_parameters']['output'] = array_output
+        data['workflow_plan'] = final_worklfow_plans
+        data['info']['moldes'] = json_planning_data['Models']
+        data['info']['Time'] = json_planning_data['Time']
+        if (qos and multi_plans):
+            data['info']['ordered_multiple_workflows'] = True
+        return data
+    except Exception,err:
+        print err
+        return None
 def read_a_full_workflow_detail(json_a_workflow_object):
     full_plan = []
+    raw_plan = []
     # Raw list of abtract planning - service class in order
     LIST_OF_OCCUR_CLASS_PREDICATE = []
     LIST_OF_GOAL_ABTRACT_PREDICATE = []
@@ -50,6 +136,7 @@ def read_a_full_workflow_detail(json_a_workflow_object):
 
     for predicate in json_a_workflow_object:
         if (GOAL_IN in predicate.strip().upper()):
+            raw_plan.append(predicate)
             goal_in = composite_parser.parse_goal_in_predicate(predicate)
 
 
@@ -58,15 +145,19 @@ def read_a_full_workflow_detail(json_a_workflow_object):
            LIST_OF_OCCUR_CLASS_PREDICATE.append(predicate)
         if (SERVICE_HAS_INPUT_HAS_DATA_FORMAT in predicate.strip().upper()):
            LIST_OF_HAS_INPUT_OP_CLASS_PREDICATE.append(predicate)
+           raw_plan.append(predicate)
         if (SERVICE_HAS_OUTPUT_HAS_DATA_FORMAT in predicate.strip().upper()):
            LIST_OF_HAS_OUTPUT_OP_CLASS_PREDICATE.append(predicate)
+           raw_plan.append(predicate)
         if (MAP_I_O in predicate.strip().upper()):
            LIST_OF_MATCH_I_O.append(predicate)
+           raw_plan.append(predicate)
 
     for x in LIST_OF_OCCUR_CLASS_PREDICATE:
         service_obj = MultipleLevelsOfDictionary()
         service_name,step = composite_parser.parse_a_occur_service(x)
-        if (step < goal_in): 
+        if (step < goal_in):
+            raw_plan.append(x)
             service_obj['service_index'] = step
             service_obj['service_name'] = service_name
             service_obj['service_description'] = ""
@@ -76,6 +167,7 @@ def read_a_full_workflow_detail(json_a_workflow_object):
             input_obj['info']['data_format'] = "x-www-urlencoded(Fixed)"
             input_components = []
             for ip in LIST_OF_HAS_INPUT_OP_CLASS_PREDICATE:
+                
                 hasIn_service_name,hasIn_resource,hasIn_data_format = composite_parser.parse_a_input_data_format(ip)
                 if (service_name.strip() == hasIn_service_name.strip()):
                     input_com = MultipleLevelsOfDictionary()
@@ -114,5 +206,5 @@ def read_a_full_workflow_detail(json_a_workflow_object):
             service_obj['service_parameters']['output'] = output_obj
             full_plan.append(service_obj)
 
-    return full_plan
+    return full_plan,raw_plan
 #print json.dumps(read_a_full_workflow_detail(test.ORIGINAL_WORKFLOW))

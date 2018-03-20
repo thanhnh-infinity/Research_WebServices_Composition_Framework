@@ -20,20 +20,11 @@ def main(prg):
 
     # Start
     t0 = time.time()
-    print("---Start grounding---")
+    #print("---Start grounding---")
     prg.ground(base_program)
-    print("---End grounding---")
+    #print("---End grounding---")
     t1 = time.time()
-    print("---Time : %s ms" %(str(t1 - t0)))
+    #print("---Time : %s ms" %(str(t1 - t0)))
 
     prg.solve()
 #end.
-
-operation_has_input_has_data_format(O,I,DF) :- instance_operation_has_output_has_data_format(O,I,DF), 
-                                               occur(O,T),
-                                               goal(G),
-                                               T < G.
-operation_has_input_has_data_format(O,I,DF) :- instance_operation_has_output_has_data_format(O,I,DF), 
-                                               occur(O,T),
-                                               goal(G),
-                                               T < G.

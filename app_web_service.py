@@ -61,9 +61,11 @@ class Interact_Planning_Engine(object):
     def index(self):
         return "Planning Engine Invoking"
 
-    #curl -X POST "http://phylo.cs.nmsu.edu:8000/generateWorkflow" -H "content-type:application/json" -d '{"request_parameters":{"input":[{"name" : "Set of gene names","resource_ontology_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_SetOfGeneStrings","resource_ontology_id":"resource_SetOfGeneStrings","resource_ontology_data_format":"list_of_strings"}],"output":[{"name" : "Reconciliation Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_reconcileTree","resource_ontology_id" : "resource_reconcileTree","resource_ontology_data_format":"newickTree"}]}}'
+    #curl -X POST "http://phylo.cs.nmsu.edu:8000/generateWorkflow" -H "content-type:application/json" -d '{"request_parameters":{"input":[{"name" : "Set of gene names","resource_ontology_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_SetOfGeneStrings","resource_ontology_id":"resource_SetOfGeneStrings","resource_data_format_id":"list_of_strings"}],"output":[{"name" : "Reconciliation Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_reconcileTree","resource_ontology_id" : "resource_reconcileTree","resource_data_format_id":"newickTree"}]}}'
 
-    #curl -X POST "http://127.0.0.1:8000/planningEngine/generateWorkflow" -H "content-type:application/json" -d '{"request_parameters":{"input":[{"name" : "Set of gene names","resource_ontology_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_SetOfGeneStrings","resource_ontology_id":"resource_SetOfGeneStrings","resource_ontology_data_format":"list_of_strings"}],"output":[{"name" : "Reconciliation Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_reconcileTree","resource_ontology_id" : "resource_reconcileTree","resource_ontology_data_format":"newickTree"}]}}'
+    #curl -X POST "http://127.0.0.1:8000/planningEngine/generateWorkflow" -H "content-type:application/json" -d '{"models":{"number":1,"engine":1},"request_parameters":{"input":[{"name" : "Set of gene names","resource_ontology_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_SetOfGeneStrings","resource_ontology_id":"resource_SetOfGeneStrings","resource_data_format_id":"list_of_strings","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#list_of_strings"}],"output":[{"name" : "Reconciliation Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_reconcileTree","resource_ontology_id" : "resource_reconcileTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}]}}'
+
+    #curl -X POST "http://127.0.0.1:8000/planningEngine/generateWorkflow" -H "content-type:application/json" -d '{"models":{"number":5,"engine":2},"request_parameters":{"input":[{"name" : "Set of gene names","resource_ontology_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_SetOfGeneStrings","resource_ontology_id":"resource_SetOfGeneStrings","resource_data_format_id":"list_of_strings","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#list_of_strings"}],"output":[{"name" : "Reconciliation Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_reconcileTree","resource_ontology_id" : "resource_reconcileTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}]}}'
 
     #curl -X POST "http://127.0.0.1:8000/planningEngine/generateWorkflow" -H "content-type:application/json" -d '{"request_parameters":{"input":[{"name" : "Free Format of Text","resource_ontology_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#free_text","resource_ontology_id":"free_text"}],"output":[{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#cdao_species_tree","resource_ontology_id" : "cdao_species_tree"}]},"models":{"number":1}}'
 
@@ -77,9 +79,10 @@ class Interact_Planning_Engine(object):
         if cherrypy.request.method == "OPTIONS":
              return ""
 
-        #input_json = cherrypy.request.json
+        input_json = cherrypy.request.json
 
         #Format JSON input example:
+        '''
         input_json =  {
             "request_parameters" : {
                 "input" : [
@@ -103,10 +106,10 @@ class Interact_Planning_Engine(object):
             },
             "models":{
                 "number":1,
-                "engine":1
+                "engine":2
             }
         }
-
+        '''
 
         try:
             request_parameters = input_json['request_parameters'];
@@ -119,18 +122,18 @@ class Interact_Planning_Engine(object):
 
 
         try:
+            
             models = input_json['models']
             number_of_models = models["number"]
-            engine = modes["engine"]
-        except:
+            engine = models["engine"]
+            
+        except Exception, err:
+            print err
             number_of_models = 1
             engine = 1
 
-        if (not engine):
-            engine = 1    
 
-        if (number_of_models > 1):
-            return return_response_error(303,"error","Engine has not supported this case yet -- Number of Model > 1","JSON")
+        
 
         # Step 2 : parser input/output
         json_input_re = request_parameters["input"]
@@ -154,7 +157,7 @@ class Interact_Planning_Engine(object):
         fo.write("% INPUT PART : Initial State\n")
         fo.write("%------------------------------------------------------------------------\n")
         for i in range(0,len(json_input_re)):
-            fo.write("initially(%s, %s).\n" %(str(json_input_re[i]["resource_ontology_id"]),str(json_input_re[i]["resource_data_format_id"])))
+            fo.write("initially(%s,%s).\n" %(str(json_input_re[i]["resource_ontology_id"]),str(json_input_re[i]["resource_data_format_id"])))
         fo.write("%------------------------------------------------------------------------\n")
         fo.close()
 
@@ -166,7 +169,7 @@ class Interact_Planning_Engine(object):
         content = ""
         for i in range(0,len(json_output_re)):
             fo.write("finally(%s, %s).\n" %(str(json_output_re[i]["resource_ontology_id"]),str(json_output_re[i]["resource_data_format_id"])))
-            content += "exists(%s,I), " %(str(json_output_re[i]["resource_ontology_id"]))
+            content += "exists(%s,%s,I), " %(str(json_output_re[i]["resource_ontology_id"]),str(json_output_re[i]["resource_data_format_id"]))
         fo.write("goal(I) :- %s step(I).\n" %(content))
 
         #fo.write("goal(I) :- %s step(I).\n" %(content))
@@ -176,8 +179,12 @@ class Interact_Planning_Engine(object):
         # Step 3 : Run planning
         # Solution 1 : Run Multi-shot LP program
         if (engine == 1): # Solution 1 : Run simple Multi-shot LP program pick only 1
-            index = 0
+            if (number_of_models > 1):
+                return return_response_error(303,"error","Engine 1 generated only one Plan with maximum QoS and It has not supported multiple models. Using Engine 2 in order to display more than one model ","JSON")
+
             planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Composite.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),str(1))
+            
+            
             print("--DELETE Temp Input Folder and Output Folder Rosetta Model")
             delete_path = os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name)
             if (os.path.exists(delete_path)):
@@ -185,43 +192,13 @@ class Interact_Planning_Engine(object):
                     shutil.rmtree(delete_path)
                 except OSError:
                     pass
+            
 
             json_planning_data = json.loads(planing_data)
             model_result = str(json_planning_data["Result"])
             model_number = json_planning_data["Models"]["Number"]
-            single_one_plan = []
+
             if (model_result.strip().upper() == "SATISFIABLE"
-                or model_result.strip().upper() == "UNKNOWN"
-                or (model_number >= 1)):
-                    if (json_planning_data["Call"][index]["Witnesses"] is not None
-                            and len(json_planning_data["Call"][index]["Witnesses"]) > 0):
-                                single_one_plan = json_planning_data["Call"][index]["Witnesses"][index]["Value"]
-
-            if (len(single_one_plan) > 0):
-                print single_one_plan
-            else:
-                print "Error"                     
-
-        elif (engine == 2): # Solution 2 : Multi-shot LP Program with QoS External Calculation
-            planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Composite_WithQoS.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),str(1))
-
-            print("--DELETE Temp Input Folder and Output Folder Rosetta Model")
-            delete_path = os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name)
-            if (os.path.exists(delete_path)):
-                try:
-                    shutil.rmtree(delete_path)
-                except OSError:
-                    pass
-
-            # Step 4 : Read planning data
-            if (number_of_models > 1):
-                return return_response_error(303,"error","Engine has not supported this case yet -- Number of Model > 1","JSON")
-            elif (number_of_models == 1):
-                json_planning_data = json.loads(planing_data)
-                model_result = str(json_planning_data["Result"])
-                model_number = json_planning_data["Models"]["Number"]
-
-                if (model_result.strip().upper() == "SATISFIABLE"
                     or model_result.strip().upper() == "UNKNOWN"
                     or (model_number >= 1)):
 
@@ -234,13 +211,55 @@ class Interact_Planning_Engine(object):
                             BIG_LIST_ANSWER_SETS.append(array_plans_result_json)
 
                     if (len(BIG_LIST_ANSWER_SETS) > 0):
-                        json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data)
+                        json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data,qos=False,multi_plans=False,quantity=1)
+                        if (json_output is not None):
+                            return return_success_get_json(json_output)
+                        else:
+                            return return_response_error(403,"error","Data error","JSON")
+                    else:
+                        return return_response_error(400,"error","engine error","JSON")                   
+
+        elif (engine == 2): # Solution 2 : Multi-shot LP Program with QoS External Calculation
+            planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "program_multiple_workflows.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),str(1))
+
+
+
+            print("--DELETE Temp Input Folder and Output Folder Rosetta Model")
+            delete_path = os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name)
+            if (os.path.exists(delete_path)):
+                try:
+                    shutil.rmtree(delete_path)
+                except OSError:
+                    pass
+
+            # Step 4 : Read planning data
+            json_planning_data = json.loads(planing_data)
+            model_result = str(json_planning_data["Result"])
+            model_number = json_planning_data["Models"]["Number"]
+
+
+            if (model_result.strip().upper() == "SATISFIABLE"
+                or model_result.strip().upper() == "UNKNOWN"
+                or (model_number >= 1)):
+
+                BIG_LIST_ANSWER_SETS = []
+                array_plans_result_json = []
+                for i in range(0,model_number):
+                    if (json_planning_data["Call"][i]["Witnesses"] is not None
+                        and len(json_planning_data["Call"][i]["Witnesses"]) > 0):
+                        array_plans_result_json = json_planning_data["Call"][i]["Witnesses"]
+                        BIG_LIST_ANSWER_SETS.append(array_plans_result_json)
+
+                if (len(BIG_LIST_ANSWER_SETS) > 0):
+                    json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data,True,True,number_of_models)
+                    if (json_output is not None):
                         return return_success_get_json(json_output)
                     else:
-                        return return_response_error(400,"error","engine error","JSON")
+                        return return_response_error(403,"error","Data error","JSON")
+                else:
+                    return return_response_error(400,"error","engine error","JSON")
 
-            else:
-                return return_response_error(400,"error","engine does not accept this request","JSON")
+           
         elif (engine == 3): # Solutioon 3 : Run Clingcon-3.3.0 with QoS Internal Calculation - Ranking by the best QoS too
             return return_response_error(403,"error","engine has not supported yet","JSON")  
 

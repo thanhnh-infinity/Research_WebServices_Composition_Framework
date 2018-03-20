@@ -5,8 +5,12 @@
 import clingo
 import json
 import sys
+import os
 import time
 from random import *
+
+MAXIMUM_PLANS = 100
+
 
 #-------------------------------------------------
 def measure_QoS():
@@ -31,8 +35,8 @@ def build_no_op_rule_for_predicate_With_Active(answer_set_symbols,predicate_name
 #-------------------------------------------------
 def main(prg):
     def load_asp():
-        prg.load("single_level_planning_Working.lp")
-        prg.load("ontology_TESTING_Working.lp")
+        prg.load(os.path.join(os.getcwd(),"ASP_Planning","planning","single_level_planning_Working.lp"))
+        prg.load(os.path.join(os.getcwd(),"ASP_Planning","planning","ontology_TESTING_Working.lp"))
         
     def enable_active_rule_for_subprogram(prg,multishot_id,level):
         external_name = ""
@@ -71,14 +75,15 @@ def main(prg):
 
     # Star to find 1st answer set
     t0 = time.time()
-    print("---Start grounding---")
+    #print("---Start grounding---")
     prg.ground(base_program)
-    print("---End grounding---")
+    #print("---End grounding---")
     t1 = time.time()
-    print("---Time : %s ms" %(str(t1 - t0)))
-
+    #print("---Time : %s ms" %(str(t1 - t0)))
+    count = 1
     enable_active_rule_for_subprogram(prg,1,"single_level")
-    while (True):     
+    while (True and count <= MAXIMUM_PLANS):
+        count = count + 1
         if (multi_shot_id == 1):
             answer_sets = []
             with prg.solve(yield_=True) as handle:
