@@ -17,6 +17,7 @@ CDAO_URL_ONTOLOGY = "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#"
 
 OCCUR_SERIVCE_IN_PLAN = "OCCUR("
 GOAL_IN = "GOAL("
+SCORE_QOS_WORKFLOW = "SCORE_QOS_WORKFLOW"
 SERVICE_HAS_INPUT = "INSTANCE_HAS_INPUT("
 SERVICE_HAS_OUTPUT = "INSTANCE_HAS_OUTPUT("
 #SERVICE_HAS_INPUT_HAS_DATA_FORMAT = "INSTANCE_OPERATION_HAS_INPUT_HAS_DATA_FORMAT"
@@ -211,6 +212,9 @@ def process_a_plan_json_from_raw(big_list_answer_sets,json_in,json_planning_data
         for workflow in big_list_answer_sets:
             #if (test_index in test_list):    
                 detail_workflow = workflow[0]["Value"]
+
+                #print detail_workflow    
+
                 # Read abstract workflow
                 array_plan,raw_plan = read_a_full_workflow_detail(detail_workflow)
                 # Read concrete workflow
@@ -257,6 +261,7 @@ def process_a_plan_json_from_raw(big_list_answer_sets,json_in,json_planning_data
         data['workflow_plan'] = final_worklfow_plans
         data['info']['moldes'] = json_planning_data['Models']
         data['info']['Time'] = json_planning_data['Time']
+        data['info']['Solver'] = json_planning_data['Solver']
         if (qos and multi_plans):
             data['info']['ordered_multiple_workflows'] = True
         return data
@@ -282,7 +287,9 @@ def read_a_full_workflow_detail(json_a_workflow_object):
         if (GOAL_IN in predicate.strip().upper()):
             raw_plan.append(predicate)
             goal_in = composite_parser.parse_goal_in_predicate(predicate)
-
+        if (SCORE_QOS_WORKFLOW in predicate.strip().upper()):
+            raw_plan.append(predicate)    
+    
 
     for predicate in json_a_workflow_object:
         if (OCCUR_SERIVCE_IN_PLAN in predicate.strip().upper()):
