@@ -253,7 +253,7 @@ def process_a_plan_json_from_raw(big_list_answer_sets,json_in,json_planning_data
             #Select best criterial worlflows to displayed
             #final_worklfow_plans = sorted_plans
         else:
-            final_worklfow_plans = all_workflow_plans[0]
+            final_worklfow_plans.append(all_workflow_plans[0])
         #Full JSON data
         data['request_parameters']['input'] = array_input
         data['request_parameters']['output'] = array_output
