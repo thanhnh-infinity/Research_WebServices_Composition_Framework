@@ -321,19 +321,41 @@ class Interact_Planning_Engine(object):
             json_planning_data = json.loads(planing_data)
             model_result = str(json_planning_data["Result"])
             model_number = json_planning_data["Models"]["Number"]
-
+            # Case 1 : Run without Optimization &maximize or &minimize
             if (model_result.strip().upper() == "SATISFIABLE"
                     or model_result.strip().upper() == "UNKNOWN"
                     or (model_number >= 1)):
 
-                    BIG_LIST_ANSWER_SETS = []
-                    array_plans_result_json = []
-                    for i in range(0,model_number):
-                        if (json_planning_data["Call"][i]["Witnesses"] is not None
-                            and len(json_planning_data["Call"][i]["Witnesses"]) > 0):
-                            array_plans_result_json = json_planning_data["Call"][i]["Witnesses"]
-                            BIG_LIST_ANSWER_SETS.append(array_plans_result_json)
+                BIG_LIST_ANSWER_SETS = []
+                array_plans_result_json = []
+                for i in range(0,model_number):
+                    if (json_planning_data["Call"][i]["Witnesses"] is not None
+                        and len(json_planning_data["Call"][i]["Witnesses"]) > 0):
+                        array_plans_result_json = json_planning_data["Call"][i]["Witnesses"]
+                        BIG_LIST_ANSWER_SETS.append(array_plans_result_json)
 
+                if (len(BIG_LIST_ANSWER_SETS) > 0):
+                    json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data,qos=False,multi_plans=False,quantity=1)
+                    if (json_output is not None):
+                        return return_success_get_json(json_output)
+                    else:
+                        return return_response_error(403,"error","Data error","JSON")
+                else:
+                    return return_response_error(400,"error","engine error","JSON")   
+            elif (model_result.strip().upper() == "OPTIMUM FOUND") # Case 2 : Run with Optimization &maximize and &minimize
+                an_optimum =  json_planning_data["Models"]["Optimum"]
+                an_optimal =  int(json_planning_data["Models"]["Optimal"])
+                # Check to see optimization
+                BIG_LIST_ANSWER_SETS = []
+                if (an_optimum == "yes" and an_optimal == 1):
+                    # Get optimization value
+                    optimal_value = int(json_planning_data["Models"]["Costs"][0])
+                    list_witnesses = json_planning_data["Call"][0]["Witnesses"]
+                    for witness in list_witnesses:
+                        if (int(witness["Costs"][0]) == optimal_value):
+                            small_list = []
+                            small_list.append(witness)
+                            BIG_LIST_ANSWER_SETS.append(small_list)
                     if (len(BIG_LIST_ANSWER_SETS) > 0):
                         json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data,qos=False,multi_plans=False,quantity=1)
                         if (json_output is not None):
@@ -341,8 +363,11 @@ class Interact_Planning_Engine(object):
                         else:
                             return return_response_error(403,"error","Data error","JSON")
                     else:
-                        return return_response_error(400,"error","engine error","JSON")   
-
+                        return return_response_error(400,"error","engine error","JSON")  
+                else:
+                    return return_response_error(400,"error","unsatisfy data","JSON")     
+            else:
+                return return_response_error(400,"error","engine error","JSON")    
 
         # Step 5 : Parser planning data to JSON workflow data
 
