@@ -19,8 +19,10 @@ OCCUR_SERIVCE_IN_PLAN = "OCCUR("
 GOAL_IN = "GOAL("
 SERVICE_HAS_INPUT = "INSTANCE_HAS_INPUT("
 SERVICE_HAS_OUTPUT = "INSTANCE_HAS_OUTPUT("
-SERVICE_HAS_INPUT_HAS_DATA_FORMAT = "INSTANCE_OPERATION_HAS_INPUT_HAS_DATA_FORMAT"
-SERVICE_HAS_OUTPUT_HAS_DATA_FORMAT = "INSTANCE_OPERATION_HAS_OUTPUT_HAS_DATA_FORMAT"
+#SERVICE_HAS_INPUT_HAS_DATA_FORMAT = "INSTANCE_OPERATION_HAS_INPUT_HAS_DATA_FORMAT"
+#SERVICE_HAS_OUTPUT_HAS_DATA_FORMAT = "INSTANCE_OPERATION_HAS_OUTPUT_HAS_DATA_FORMAT"
+SERVICE_HAS_INPUT_HAS_DATA_FORMAT = "OPERATION_HAS_INPUT_HAS_DATA_FORMAT"
+SERVICE_HAS_OUTPUT_HAS_DATA_FORMAT = "OPERATION_HAS_OUTPUT_HAS_DATA_FORMAT"
 INITIAL_FACTS = "INITIALLY"
 FINALLY_FACTS = "FINALLY"
 MAP_I_O = "MAP("
@@ -76,6 +78,7 @@ def read_a_full_workflow_detail(json_a_workflow_object):
             input_obj['info']['data_format'] = "x-www-urlencoded(Fixed)"
             input_components = []
             for ip in LIST_OF_HAS_INPUT_OP_CLASS_PREDICATE:
+                
                 hasIn_service_name,hasIn_resource,hasIn_data_format = composite_parser.parse_a_input_data_format(ip)
                 if (service_name.strip() == hasIn_service_name.strip()):
                     input_com = MultipleLevelsOfDictionary()

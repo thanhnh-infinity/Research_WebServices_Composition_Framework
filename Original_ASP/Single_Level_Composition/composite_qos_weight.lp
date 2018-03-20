@@ -9,8 +9,6 @@ weight_response_time(4).
 weight_throughput(3).
 weight_availability(1).
 weight_reliability(2).
-
-
 % ---------------------------------------
 % Working for Response Time (smaller is better)
 % ---------------------------------------
@@ -75,4 +73,4 @@ has_qos_reliability_involved_concrete(X,T,RE_AVG_V) :- occur(X,T),
                                                                                              V = T - 1,
                                                                                              qos_availability(AV_W).
 &show{score_qos_workflow}.
-%&minimize{0 - score_qos_workflow}.
+%&minimize{qos_response_time(10)}.

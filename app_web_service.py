@@ -97,17 +97,13 @@ class Interact_Planning_Engine(object):
                         "resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_reconcileTree",
                         "resource_ontology_id" : "resource_reconcileTree",
                         "resource_data_format_id":"newickTree",
-                        "resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree",
-                        "map":{
-                            "resource_ontology_id" : "resource_reconcileTree",
-                            "at_step":5,
-                            "from":"tree_reconciliation"
-                        }
+                        "resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"
                    }
                 ]
             },
             "models":{
-                "number":1
+                "number":1,
+                "engine":1
             }
         }
 
@@ -125,8 +121,13 @@ class Interact_Planning_Engine(object):
         try:
             models = input_json['models']
             number_of_models = models["number"]
+            engine = modes["engine"]
         except:
             number_of_models = 1
+            engine = 1
+
+        if (not engine):
+            engine = 1    
 
         if (number_of_models > 1):
             return return_response_error(303,"error","Engine has not supported this case yet -- Number of Model > 1","JSON")
@@ -172,49 +173,76 @@ class Interact_Planning_Engine(object):
         fo.write("%------------------------------------------------------------------------\n")
         fo.close()
 
-        # return "OK-GOOD"
         # Step 3 : Run planning
-        planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "main_program.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),str(1))
+        # Solution 1 : Run Multi-shot LP program
+        if (engine == 1): # Solution 1 : Run simple Multi-shot LP program pick only 1
+            index = 0
+            planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Composite.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),str(1))
+            print("--DELETE Temp Input Folder and Output Folder Rosetta Model")
+            delete_path = os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name)
+            if (os.path.exists(delete_path)):
+                try:
+                    shutil.rmtree(delete_path)
+                except OSError:
+                    pass
 
-        #print planing_data
-
-        print("--DELETE Temp Input Folder and Output Folder Rosetta Model")
-        delete_path = os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name)
-        if (os.path.exists(delete_path)):
-            try:
-                shutil.rmtree(delete_path)
-            except OSError:
-                pass
-
-        # Step 4 : Read planning data
-        if (number_of_models > 1):
-            return return_response_error(303,"error","Engine has not supported this case yet -- Number of Model > 1","JSON")
-        elif (number_of_models == 1):
             json_planning_data = json.loads(planing_data)
             model_result = str(json_planning_data["Result"])
             model_number = json_planning_data["Models"]["Number"]
-
+            single_one_plan = []
             if (model_result.strip().upper() == "SATISFIABLE"
                 or model_result.strip().upper() == "UNKNOWN"
                 or (model_number >= 1)):
+                    if (json_planning_data["Call"][index]["Witnesses"] is not None
+                            and len(json_planning_data["Call"][index]["Witnesses"]) > 0):
+                                single_one_plan = json_planning_data["Call"][index]["Witnesses"][index]["Value"]
 
-                BIG_LIST_ANSWER_SETS = []
-                array_plans_result_json = []
-                for i in range(0,model_number):
-                    if (json_planning_data["Call"][i]["Witnesses"] is not None
-                        and len(json_planning_data["Call"][i]["Witnesses"]) > 0):
-                        array_plans_result_json = json_planning_data["Call"][i]["Witnesses"]
-                        BIG_LIST_ANSWER_SETS.append(array_plans_result_json)
+            if (len(single_one_plan) > 0):
+                print single_one_plan
+            else:
+                print "Error"                     
 
-                if (len(BIG_LIST_ANSWER_SETS) > 0):
-                    json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data)
-                    return return_success_get_json(json_output)
-                else:
-                    return return_response_error(400,"error","engine error","JSON")
+        elif (engine == 2): # Solution 2 : Multi-shot LP Program with QoS External Calculation
+            planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Composite_WithQoS.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),str(1))
 
-        else:
-            return return_response_error(400,"error","engine does not accept this request","JSON")
+            print("--DELETE Temp Input Folder and Output Folder Rosetta Model")
+            delete_path = os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name)
+            if (os.path.exists(delete_path)):
+                try:
+                    shutil.rmtree(delete_path)
+                except OSError:
+                    pass
 
+            # Step 4 : Read planning data
+            if (number_of_models > 1):
+                return return_response_error(303,"error","Engine has not supported this case yet -- Number of Model > 1","JSON")
+            elif (number_of_models == 1):
+                json_planning_data = json.loads(planing_data)
+                model_result = str(json_planning_data["Result"])
+                model_number = json_planning_data["Models"]["Number"]
+
+                if (model_result.strip().upper() == "SATISFIABLE"
+                    or model_result.strip().upper() == "UNKNOWN"
+                    or (model_number >= 1)):
+
+                    BIG_LIST_ANSWER_SETS = []
+                    array_plans_result_json = []
+                    for i in range(0,model_number):
+                        if (json_planning_data["Call"][i]["Witnesses"] is not None
+                            and len(json_planning_data["Call"][i]["Witnesses"]) > 0):
+                            array_plans_result_json = json_planning_data["Call"][i]["Witnesses"]
+                            BIG_LIST_ANSWER_SETS.append(array_plans_result_json)
+
+                    if (len(BIG_LIST_ANSWER_SETS) > 0):
+                        json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data)
+                        return return_success_get_json(json_output)
+                    else:
+                        return return_response_error(400,"error","engine error","JSON")
+
+            else:
+                return return_response_error(400,"error","engine does not accept this request","JSON")
+        elif (engine == 3): # Solutioon 3 : Run Clingcon-3.3.0 with QoS Internal Calculation - Ranking by the best QoS too
+            return return_response_error(403,"error","engine has not supported yet","JSON")  
 
 
         # Step 5 : Parser planning data to JSON workflow data

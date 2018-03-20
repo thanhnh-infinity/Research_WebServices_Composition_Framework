@@ -60,7 +60,7 @@ exists(O,DF_O,T+1) :- occur(A,T),
 % Basic part : AWC for operation
 :- operation(A1), operation(A2), occur(A1,I), occur(A2,I), A1 != A2, step(I).
 
-% Real Map for Graph
+% Real Map for Graph and Support display rules
 map(A,I,DF_I,T,B,O,DF_O,T1) :- occur(A,T),
                                instance_has_input(A,N2,I),
                                instance_operation_has_input_has_data_format(A,I,DF_I),
@@ -75,6 +75,15 @@ map(A,I,DF_I,T,initial_state,O,DF_O,0) :- occur(A,T),
                                           instance_has_input(A,N1,I),
                                           instance_operation_has_input_has_data_format(A,I,DF_I),
                                           match(A,I,DF_I,T,O,DF_O,0).
+
+operation_has_input_has_data_format(A,I,DF_I) :- instance_operation_has_input_has_data_format(A,I,DF_I), 
+                                                 occur(A,T),
+                                                 goal(G),
+                                                 T < G.
+operation_has_output_has_data_format(A,O,DF_O) :- instance_operation_has_output_has_data_format(A,O,DF_O), 
+                                                 occur(A,T),
+                                                 goal(G),
+                                                 T < G.
 
 %========================================================================
 % Basic Part : Goal Tracker 2
@@ -164,8 +173,8 @@ goal(I) :- exists(resource_reconcileTree,newickTree,I), step(I).
 %#show match/7.
 %#show good_match/4.
 %#show possible_match/7.
-#show instance_operation_has_output_has_data_format/3.
-#show instance_operation_has_input_has_data_format/3.
+#show operation_has_output_has_data_format/3.
+#show operation_has_input_has_data_format/3.
 %#show score_qos_workflow/1.
 #show goal/1.
 %#show stop_index/1.

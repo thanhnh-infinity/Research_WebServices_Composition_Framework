@@ -6,12 +6,13 @@ import clingo
 import time
 from random import *
 import sys
+import os
 
 #-----------------------
 def main(prg):
     def load_asp():
-        prg.load("single_level_planning_Working.lp")
-        prg.load("ontology_TESTING_Working.lp")
+        prg.load(os.path.join(os.getcwd(),"ASP_Planning","planning","single_level_planning_Working.lp"))
+        prg.load(os.path.join(os.getcwd(),"ASP_Planning","planning","ontology_TESTING_Working.lp"))
 
     load_asp()
     # prg.configuration.solve.models = 0
@@ -28,5 +29,11 @@ def main(prg):
     prg.solve()
 #end.
 
-
-
+operation_has_input_has_data_format(O,I,DF) :- instance_operation_has_output_has_data_format(O,I,DF), 
+                                               occur(O,T),
+                                               goal(G),
+                                               T < G.
+operation_has_input_has_data_format(O,I,DF) :- instance_operation_has_output_has_data_format(O,I,DF), 
+                                               occur(O,T),
+                                               goal(G),
+                                               T < G.
