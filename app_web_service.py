@@ -46,7 +46,9 @@ class Interact_Planning_Engine(object):
 
     FULL_PATH_PLANNING_ENGINE_MODEL = os.path.join(os.getcwd(), "ASP_Planning","planning")
     FULL_PATH_PLANNING_STATES_FOLDER = os.path.join(os.getcwd(),"ASP_Planning" ,"states")
-    FULL_PATH_CLINGO_EXECUTATBLE = "clingo-python"
+    #FULL_PATH_CLINGO_EXECUTATBLE = "clingo-python"
+    #FULL_PATH_CLINGO_EXECUTATBLE = "clingcon-3.3.0"
+    FULL_PATH_CLINGO_EXECUTATBLE = "clingo"
 
     # Function
     def prepareDistinguish_Input_Output_Folder_PerEachProcess(self):
