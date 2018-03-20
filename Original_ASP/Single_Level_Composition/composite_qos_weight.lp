@@ -75,4 +75,4 @@ has_qos_reliability_involved_concrete(X,T,RE_AVG_V) :- occur(X,T),
                                                                                              V = T - 1,
                                                                                              qos_availability(AV_W).
 &show{score_qos_workflow}.
-%&minimize{score_qos_workflow}.
+%&minimize{0 - score_qos_workflow}.
