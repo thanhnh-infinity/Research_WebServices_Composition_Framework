@@ -342,7 +342,7 @@ class Interact_Planning_Engine(object):
                         return return_response_error(403,"error","Data error","JSON")
                 else:
                     return return_response_error(400,"error","engine error","JSON")   
-            elif (model_result.strip().upper() == "OPTIMUM FOUND") # Case 2 : Run with Optimization &maximize and &minimize
+            elif (model_result.strip().upper() == "OPTIMUM FOUND"):  # Case 2 : Run with Optimization &maximize and &minimize
                 an_optimum =  json_planning_data["Models"]["Optimum"]
                 an_optimal =  int(json_planning_data["Models"]["Optimal"])
                 # Check to see optimization
