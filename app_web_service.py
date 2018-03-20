@@ -46,6 +46,7 @@ class Interact_Planning_Engine(object):
 
     FULL_PATH_PLANNING_ENGINE_MODEL = os.path.join(os.getcwd(), "ASP_Planning","planning")
     FULL_PATH_PLANNING_STATES_FOLDER = os.path.join(os.getcwd(),"ASP_Planning" ,"states")
+    DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","default.lp")
     #FULL_PATH_CLINGO_EXECUTATBLE = "clingo-python"
     #FULL_PATH_CLINGO_EXECUTATBLE = "clingcon-3.3.0"
     FULL_PATH_CLINGO_EXECUTATBLE = "clingo"
@@ -64,6 +65,8 @@ class Interact_Planning_Engine(object):
 
     # Generate Species Tree from Raw Text    
     #curl -X POST "http://127.0.0.1:8000/planningEngine/generateWorkflow" -H "content-type:application/json" -d '{"request_parameters" : {"input" : [{"name" : "A Raw Text mixes many types of encoding","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_FreeText","resource_ontology_id" : "resource_FreeText","resource_data_format_id":"raw_text","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#raw_text"}],"output" : [{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree","resource_ontology_id" : "resource_speciesTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}]},"models":{"number":1,"engine":1}}'
+
+    #curl -X POST "http://127.0.0.1:8000/planningEngine/generateWorkflow" -H "content-type:application/json" -d '{"request_parameters" : {"input" : [{"name" : "A Raw Text mixes many types of encoding","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_FreeText","resource_ontology_id" : "resource_FreeText","resource_data_format_id":"raw_text","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#raw_text"}],"output" : [{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree","resource_ontology_id" : "resource_speciesTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}]},"models":{"number":5,"engine":2}}'
 
     # Generate Reconciliation Tree
     #curl -X POST "http://127.0.0.1:8000/planningEngine/generateWorkflow" -H "content-type:application/json" -d '{"models":{"number":1,"engine":1},"request_parameters":{"input":[{"name" : "Set of gene names","resource_ontology_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_SetOfGeneStrings","resource_ontology_id":"resource_SetOfGeneStrings","resource_data_format_id":"list_of_strings","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#list_of_strings"}],"output":[{"name" : "Reconciliation Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_reconcileTree","resource_ontology_id" : "resource_reconcileTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}]}}'
@@ -206,13 +209,20 @@ class Interact_Planning_Engine(object):
         fo.write("%------------------------------------------------------------------------\n")
         fo.close()
 
+        
+        if (len(json_output_re) == 1):
+            if ("resource_speciesTree" in json_output_re[i]["resource_ontology_id"]):
+                DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_9.lp")
+            elif ("resource_reconcileTree" in json_output_re[i]["resource_ontology_id"]):
+                DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")
+
         # Step 3 : Run planning
         # Solution 1 : Run Multi-shot LP program
         if (engine == 1): # Solution 1 : Run simple Multi-shot LP program pick only 1
             if (number_of_models > 1):
                 return return_response_error(303,"error","Engine 1 generated only one Plan with maximum QoS and It has not supported multiple models. Using Engine 2 in order to display more than one model ","JSON")
 
-            planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Composite.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),str(1))
+            planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Composite.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),DEFAULT_STEP,str(1))
             
             
             print("--DELETE Temp Input Folder and Output Folder Rosetta Model")
@@ -250,7 +260,7 @@ class Interact_Planning_Engine(object):
                         return return_response_error(400,"error","engine error","JSON")                   
 
         elif (engine == 2): # Solution 2 : Multi-shot LP Program with QoS External Calculation
-            planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "program_multiple_workflows.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),str(1))
+            planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "program_multiple_workflows.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),DEFAULT_STEP,str(1))
 
 
 

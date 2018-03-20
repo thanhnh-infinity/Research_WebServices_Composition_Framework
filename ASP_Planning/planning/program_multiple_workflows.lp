@@ -10,8 +10,6 @@ import time
 from random import *
 
 MAXIMUM_PLANS = 20
-
-
 #-------------------------------------------------
 def measure_QoS():
     return randint(1000,2000) 

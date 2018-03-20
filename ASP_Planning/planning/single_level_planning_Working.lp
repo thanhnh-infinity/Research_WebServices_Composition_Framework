@@ -6,7 +6,7 @@
 %#const n = 9.
 %#const n = 11.
 %#const n = 20.
-#const n = 12.
+%#const n = 12.
 step(0..n).
 %========================================================================
 % 1. PLANNING ENGINE - BASIC PART
@@ -129,7 +129,8 @@ is_used_operation(A) :- operation(A),
 %                     operation(C).
 %used_operation(D) :- ordered_services(C,D), 
 %                     operation(C).
-:- occur(X1,T1),occur(X1,T2),T1 != T2.
+% Them vao thoi nhung la SAI
+:- occur(X,T1), occur(X,T2), T1 != T2.
 %========================================================================
 % Basic part : initial and goal state (SHOULD BE IN DIFFERENT FILES - INIITAL and GOAL FILES)
 %========================================================================

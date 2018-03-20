@@ -242,10 +242,7 @@ def process_a_plan_json_from_raw(big_list_answer_sets,json_in,json_planning_data
         if (qos and multi_plans):
             sorted_plans = sorted(all_workflow_plans, key=lambda workflow : workflow['info']['quality_attributes']['qos']['score_qos'],reverse=True)
             slot = quantity
-
             for i in range(0,len(sorted_plans)):
-                #considered_qos = sorted_plans[i]['info']['quality_attributes']['qos']['score_qos']
-                #if (considered_qos not in remember_qos_total):
                 final_worklfow_plans.append(sorted_plans[i])
                 slot = slot - 1
                 if slot == 0:
