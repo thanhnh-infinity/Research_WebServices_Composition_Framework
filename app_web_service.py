@@ -65,7 +65,7 @@ class Interact_Planning_Engine(object):
 
     #curl -X POST "http://127.0.0.1:8000/planningEngine/generateWorkflow" -H "content-type:application/json" -d '{"models":{"number":1,"engine":1},"request_parameters":{"input":[{"name" : "Set of gene names","resource_ontology_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_SetOfGeneStrings","resource_ontology_id":"resource_SetOfGeneStrings","resource_data_format_id":"list_of_strings","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#list_of_strings"}],"output":[{"name" : "Reconciliation Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_reconcileTree","resource_ontology_id" : "resource_reconcileTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}]}}'
 
-    #curl -X POST "http://127.0.0.1:8000/planningEngine/generateWorkflow" -H "content-type:application/json" -d '{"models":{"number":5,"engine":2},"request_parameters":{"input":[{"name" : "Set of gene names","resource_ontology_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_SetOfGeneStrings","resource_ontology_id":"resource_SetOfGeneStrings","resource_data_format_id":"list_of_strings","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#list_of_strings"}],"output":[{"name" : "Reconciliation Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_reconcileTree","resource_ontology_id" : "resource_reconcileTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}]}}'
+    #curl -X POST "http://127.0.0.1:8000/planningEngine/generateWorkflow" -H "content-type:application/json" -d '{"models":{"number":4,"engine":2},"request_parameters":{"input":[{"name" : "Set of gene names","resource_ontology_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_SetOfGeneStrings","resource_ontology_id":"resource_SetOfGeneStrings","resource_data_format_id":"list_of_strings","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#list_of_strings"}],"output":[{"name" : "Reconciliation Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_reconcileTree","resource_ontology_id" : "resource_reconcileTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}]}}'
 
     #curl -X POST "http://127.0.0.1:8000/planningEngine/generateWorkflow" -H "content-type:application/json" -d '{"request_parameters":{"input":[{"name" : "Free Format of Text","resource_ontology_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#free_text","resource_ontology_id":"free_text"}],"output":[{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#cdao_species_tree","resource_ontology_id" : "cdao_species_tree"}]},"models":{"number":1}}'
 
@@ -75,7 +75,7 @@ class Interact_Planning_Engine(object):
     def generateWorkflow(self,**request_data):
 
         CORS()
-        print("Vao day")
+        
         if cherrypy.request.method == "OPTIONS":
              return ""
 

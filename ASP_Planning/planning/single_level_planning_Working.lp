@@ -129,7 +129,7 @@ is_used_operation(A) :- operation(A),
 %                     operation(C).
 %used_operation(D) :- ordered_services(C,D), 
 %                     operation(C).
-
+:- occur(X1,T1),occur(X1,T2),T1 != T2.
 %========================================================================
 % Basic part : initial and goal state (SHOULD BE IN DIFFERENT FILES - INIITAL and GOAL FILES)
 %========================================================================

@@ -9,7 +9,7 @@ import os
 import time
 from random import *
 
-MAXIMUM_PLANS = 100
+MAXIMUM_PLANS = 20
 
 
 #-------------------------------------------------
@@ -24,12 +24,18 @@ def build_no_op_rule_for_predicate_With_Active(answer_set_symbols,predicate_name
     elif ("single_level" in level):
         contrains_distince_wf_rule = "1{%s} :- active_rule_single_level(%d)."
 
+    # Find goal att..
+    goal_in = -1
+    for atom in answer_set_symbols:
+        if (atom.name == "goal"):
+            goal_in = int(str(atom.arguments[0]))
+
     component_rule = ""
     for atom in answer_set_symbols:
         str_atom = str(atom)
-        #if (predicate_name in str_atom):
         if (atom.name == predicate_name):
-            component_rule = component_rule + "not " + str_atom + "; "
+            if( int(str(atom.arguments[1])) < goal_in):
+                component_rule = component_rule + "not " + str_atom + "; "
     component_rule = component_rule[:len(component_rule)-2]
     return contrains_distince_wf_rule %(component_rule,index)
 #-------------------------------------------------
@@ -37,6 +43,7 @@ def main(prg):
     def load_asp():
         prg.load(os.path.join(os.getcwd(),"ASP_Planning","planning","single_level_planning_Working.lp"))
         prg.load(os.path.join(os.getcwd(),"ASP_Planning","planning","ontology_TESTING_Working.lp"))
+        prg.load(os.path.join(os.getcwd(),"ASP_Planning","planning","composite_qos_external.lp"))
         
     def enable_active_rule_for_subprogram(prg,multishot_id,level):
         external_name = ""
@@ -123,5 +130,6 @@ def main(prg):
 #external active_rule_single_level(1).
 check_add_single_level_ok(0).
 %-----------------------------------------------
+
 
 

@@ -16,35 +16,35 @@ INSTANCE_OP_OUPUT_HAS_DATA_FORMAT = 'operation_has_output_has_data_format({},{},
 INITIAL_FACTS = 'initially({},{})'
 GOAL_FACTS = 'finally({},{})'
 MATCH_I_O = 'map({},{},{},{:d},{},{},{},{:d})'
-HAS_QOS_RESPONSE_TIME = 'has_qos_response_time_involved_concrete({},{})'
-HAS_QOS_AVAILABILITY = 'has_qos_availability_involved_concrete({},{})'
-HAS_QOS_THROUGHPUT = 'has_qos_throughput_involved_concrete({},{})'
-HAS_QOS_RELIABILITY = 'has_qos_reliability_involved_concrete({},{})'
+HAS_QOS_RESPONSE_TIME = 'has_qos_response_time_involved_concrete({},{:d},{})'
+HAS_QOS_AVAILABILITY = 'has_qos_availability_involved_concrete({},{:d},{})'
+HAS_QOS_THROUGHPUT = 'has_qos_throughput_involved_concrete({},{:d},{})'
+HAS_QOS_RELIABILITY = 'has_qos_reliability_involved_concrete({},{:d},{})'
 
 
 def parse_a_has_qos_response_time(has_response_time):
     parsed = parse.parse(HAS_QOS_RESPONSE_TIME, has_response_time.strip())
     if (parsed is not None):
-        if (parsed[0] is not None and parsed[1] is not None ):
-            return parsed[0],parsed[1]
+        if (parsed[0] is not None and parsed[2] is not None ):
+            return parsed[0],parsed[1],parsed[2]
     return None,None
 def parse_a_has_qos_availability(has_availability):
     parsed = parse.parse(HAS_QOS_AVAILABILITY, has_availability.strip())
     if (parsed is not None):
-        if (parsed[0] is not None and parsed[1] is not None ):
-            return parsed[0],parsed[1]
+        if (parsed[0] is not None and parsed[2] is not None ):
+             return parsed[0],parsed[1],parsed[2]
     return None,None
 def parse_a_has_qos_throughput(has_throughput):
     parsed = parse.parse(HAS_QOS_THROUGHPUT, has_throughput.strip())
     if (parsed is not None):
-        if (parsed[0] is not None and parsed[1] is not None ):
-            return parsed[0],parsed[1]
+        if (parsed[0] is not None and parsed[2] is not None ):
+            return parsed[0],parsed[1],parsed[2]
     return None,None
 def parse_a_has_qos_reliability(has_reliability):
     parsed = parse.parse(HAS_QOS_RELIABILITY, has_reliability.strip())
     if (parsed is not None):
-        if (parsed[0] is not None and parsed[1] is not None ):
-            return parsed[0],parsed[1]
+        if (parsed[0] is not None and parsed[2] is not None ):
+             return parsed[0],parsed[1],parsed[2]
     return None,None
 def parse_a_asset_for_goal_fact(goal_fact):
     parsed = parse.parse(GOAL_FACTS, goal_fact.strip())

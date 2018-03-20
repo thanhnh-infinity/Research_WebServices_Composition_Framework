@@ -26,6 +26,10 @@ SERVICE_HAS_OUTPUT_HAS_DATA_FORMAT = "OPERATION_HAS_OUTPUT_HAS_DATA_FORMAT"
 INITIAL_FACTS = "INITIALLY"
 FINALLY_FACTS = "FINALLY"
 MAP_I_O = "MAP("
+HAS_QOS_RESPONSE_TIME_INVOLVED_CONRETE = "HAS_QOS_RESPONSE_TIME_INVOLVED_CONCRETE"
+HAS_QOS_AVAILABILITY_INVOLVED_CONRETE = "HAS_QOS_AVAILABILITY_INVOLVED_CONCRETE"
+HAS_QOS_THROUGHPUT_INVOLVED_CONRETE = "HAS_QOS_THROUGHPUT_INVOLVED_CONCRETE"
+HAS_QOS_RELIABILITY_INVOLVED_CONRETE = "HAS_QOS_RELIABILITY_INVOLVED_CONCRETE"
 
 
 class MultipleLevelsOfDictionary(collections.OrderedDict):
@@ -36,8 +40,142 @@ class MultipleLevelsOfDictionary(collections.OrderedDict):
             value = self[item] = type(self)()
             return value
 
+def calculateNormalization(aVector):
+    sum_thing = 0
+    for a in aVector:
+        sum_thing += a*a
+
+    length_vector = math.sqrt(sum_thing)
+    normalizeVector = []
+    for a in aVector:
+        normalizeVector.append(float(a)/length_vector)
+
+    return normalizeVector
+def read_QoS_values_for_workflow(json_a_workflow_object):
+    # Read all qos attribute of each concrete service that occur in Concrete Plan Level
+    qos_response_time_total = 0.0
+    qos_availability_total_1 = 1.0
+    qos_availability_total_2 = 1.0
+    qos_throughput_total = 0.0
+    qos_throughput_avg = 0.0
+    qos_reliability_total = 0.0
+    qos_reliability_avg = 0.0
+    count_n_tp = 0
+    count_n_ra = 0
+
+    qos_response_time_vector = []
+    qos_throughput_vector = []
+    qos_reliability_vector = []
+    qos_availability_vector = []
+
+
+
+    for predicate in json_a_workflow_object:
+        # Calcuate qos response time for whole workflow, simple is sum of all. = sum(1->n)T(operation_i)
+        if (HAS_QOS_RESPONSE_TIME_INVOLVED_CONRETE in predicate.strip().upper()):
+            op,time,response_time = composite_parser.parse_a_has_qos_response_time(predicate.strip())
+            #qos_response_time_total += float(response_time.replace("\"",""))
+            qos_response_time_total += float(response_time)/1000
+            qos_response_time_vector.append(float(response_time)/1000)
+        # Calculate qos availability for whole workflow, = Pi(1->n)e^(av(op_i)*z_i)
+        if (HAS_QOS_AVAILABILITY_INVOLVED_CONRETE in predicate.strip().upper()):
+            op,time,av = composite_parser.parse_a_has_qos_availability(predicate.strip())
+            qos_availability_total_1 *= math.exp(float(av)/1000*1)
+            qos_availability_total_2 *= float(av)/1000
+            qos_availability_vector.append(float(av)/1000)
+            #print "Go go"
+        # Calculate qos throughput = [Sum(1->n)(tp(op_i))]/n
+        if (HAS_QOS_THROUGHPUT_INVOLVED_CONRETE in predicate.strip().upper()):
+            count_n_tp = count_n_tp + 1
+            op,time,tp = composite_parser.parse_a_has_qos_throughput(predicate.strip())
+            qos_throughput_total += float(tp)/1000
+            qos_throughput_vector.append(float(tp)/1000)
+        # Calculate qos reliability = % Shoud ask Abu about where is he got it
+        if (HAS_QOS_RELIABILITY_INVOLVED_CONRETE in predicate.strip().upper()):
+            count_n_ra = count_n_ra + 1
+            op,time,ra = composite_parser.parse_a_has_qos_reliability(predicate.strip())
+            qos_reliability_total += float(ra)/1000
+            qos_reliability_vector.append(float(ra)/1000)
+
+    try:
+        qos_throughput_avg = qos_throughput_total/count_n_tp
+    except:
+        qos_throughput_avg = 0.0
+
+    try:
+        qos_reliability_avg = qos_reliability_total/count_n_ra
+    except:
+        qos_reliability_avg = 0.0
+
+    return qos_response_time_vector,qos_throughput_vector,qos_availability_vector,qos_reliability_vector,qos_response_time_total,qos_throughput_avg,qos_availability_total_1,qos_availability_total_2,qos_reliability_avg
+
+def calculate_QoS_For_Workflow(detail_workflow):
+    # Read QoS
+    qos_response_time_vector,qos_throughput_vector,qos_availability_vector, qos_reliability_vector,resp_time,throughput,availability_1,availability_2,reliability =read_QoS_values_for_workflow(detail_workflow)
+
+    # Logic to calculate Total QoS for a workflow
+    # Cach 1 : Using function vector of composition service
+    consider_QoS_Vector = [resp_time,throughput,availability_1,availability_2,reliability]
+    # Normalization vector data by max min
+
+    # Cach 2 : Seperate vectors Using Local Optimization
+    # Scaling Phase : Normalization data vector by max (Scalling Phase)
+    qos_response_time_vector_norm = normalize([qos_response_time_vector],norm='max')
+    qos_throughput_vector_norm = normalize([qos_throughput_vector],norm='max')
+    qos_availability_vector_norm = normalize([qos_availability_vector],norm='max')
+    qos_reliability_vector_norm = normalize([qos_reliability_vector],norm='max')
+    '''
+    print "--------------------------------"
+    print qos_response_time_vector
+    print qos_response_time_vector_norm[0]
+    print qos_throughput_vector
+    print qos_throughput_vector_norm[0]
+    print qos_availability_vector
+    print qos_availability_vector_norm[0]
+    print qos_reliability_vector
+    print qos_reliability_vector_norm[0]
+    print "--------------------------------"
+    '''
+    # Weighting Phase Score(WF) = sum(all criterie)(Vi,j*Wj)
+    # Calculate score_response_time
+    score_qos_response_time = 0.0
+    for value in qos_response_time_vector_norm[0]:
+        score_qos_response_time += value
+    score_qos_response_time = score_qos_response_time*configuration.WEIGHT_QoS_DATA['response_time']
+    #print "Response Time : " + str(score_qos_response_time)
+
+    score_qos_throughput = 0.0
+    for value in qos_throughput_vector_norm[0]:
+        score_qos_throughput += value
+    try:
+        score_qos_throughput = (score_qos_throughput / len(qos_throughput_vector_norm[0]))*configuration.WEIGHT_QoS_DATA['throughput']
+    except:
+        score_qos_throughput = 0.0
+    #print "Throughput : " + str(score_qos_throughput)
+
+    score_qos_availability = 1.0
+    for value in qos_availability_vector_norm[0]:
+        score_qos_availability *= value
+    score_qos_availability = score_qos_availability*configuration.WEIGHT_QoS_DATA['availability']
+    #print "Availability : " + str(score_qos_availability)
+
+    score_qos_reliability= 0.0
+    for value in qos_reliability_vector_norm[0]:
+        score_qos_reliability += value
+    try:
+        score_qos_reliability = (score_qos_reliability / len(qos_reliability_vector_norm[0]))*configuration.WEIGHT_QoS_DATA['reliability']
+    except:
+        score_qos_reliability= 0.0
+    #print "Reliability :" + str(score_qos_reliability)
+
+    score_qos_workflow = 0.0
+    score_qos_workflow = score_qos_response_time + score_qos_throughput + score_qos_reliability + score_qos_availability
+    return score_qos_workflow,consider_QoS_Vector
+
 def process_a_plan_json_from_raw(big_list_answer_sets,json_in,json_planning_data,qos,multi_plans,quantity):
     try:
+        remember_qos_total = []
+
         data = MultipleLevelsOfDictionary()
         json_input = json_in['request_parameters']['input']
         array_input = []
@@ -103,8 +241,17 @@ def process_a_plan_json_from_raw(big_list_answer_sets,json_in,json_planning_data
         # Sorting workflow based on QoS attribute
         if (qos and multi_plans):
             sorted_plans = sorted(all_workflow_plans, key=lambda workflow : workflow['info']['quality_attributes']['qos']['score_qos'],reverse=True)
-            # Select best criterial worlflows to displayed
-            final_worklfow_plans = sorted_plans
+            slot = quantity
+
+            for i in range(0,len(sorted_plans)):
+                #considered_qos = sorted_plans[i]['info']['quality_attributes']['qos']['score_qos']
+                #if (considered_qos not in remember_qos_total):
+                final_worklfow_plans.append(sorted_plans[i])
+                slot = slot - 1
+                if slot == 0:
+                    break    
+            #Select best criterial worlflows to displayed
+            #final_worklfow_plans = sorted_plans
         else:
             final_worklfow_plans = all_workflow_plans[0]
         #Full JSON data
