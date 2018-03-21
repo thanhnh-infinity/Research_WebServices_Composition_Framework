@@ -8,9 +8,9 @@
 ### For Re-Composition (Inprogressive):
 
 ## Sync Source Code internal Project
-### Sync ASP source code between ASP_Planning and Original_ASP : DONE
+### Sync ASP source code between ASP_Planning and Original_ASP : (DONE)
 
-### Sync Pythong source between IN-SIDE and Out-Side : In-progressive
+### Sync Pythong source between IN-SIDE and Out-Side : (DONE)
 
 ## Update Ontology
 ### For LP Ontology
