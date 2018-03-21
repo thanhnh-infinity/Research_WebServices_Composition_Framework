@@ -8,6 +8,7 @@ import sys
 import time
 from random import *
 
+MAXIMUM_PLANS = 150
 #-------------------------------------------------
 def measure_QoS():
     return randint(1000,2000) 
@@ -20,12 +21,18 @@ def build_no_op_rule_for_predicate_With_Active(answer_set_symbols,predicate_name
     elif ("single_level" in level):
         contrains_distince_wf_rule = "1{%s} :- active_rule_single_level(%d)."
 
+    # Find goal att..
+    goal_in = -1
+    for atom in answer_set_symbols:
+        if (atom.name == "goal"):
+            goal_in = int(str(atom.arguments[0]))
+
     component_rule = ""
     for atom in answer_set_symbols:
         str_atom = str(atom)
-        #if (predicate_name in str_atom):
         if (atom.name == predicate_name):
-            component_rule = component_rule + "not " + str_atom + "; "
+            if( int(str(atom.arguments[1])) < goal_in):
+                component_rule = component_rule + "not " + str_atom + "; "
     component_rule = component_rule[:len(component_rule)-2]
     return contrains_distince_wf_rule %(component_rule,index)
 #-------------------------------------------------
@@ -75,9 +82,10 @@ def main(prg):
     print("---End grounding---")
     t1 = time.time()
     print("---Time : %s ms" %(str(t1 - t0)))
-
+    count = 1
     enable_active_rule_for_subprogram(prg,1,"single_level")
-    while (True):     
+    while (True and count <= MAXIMUM_PLANS):
+        count = count + 1    
         if (multi_shot_id == 1):
             answer_sets = []
             with prg.solve(yield_=True) as handle:
