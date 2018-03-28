@@ -63,14 +63,22 @@ class Interact_Planning_Engine(object):
     def index(self):
         return "Planning Engine Invoking"
 
-    # Generate Species Tree from Raw Text    
+    # Use Case 1 : Generate Species Tree from Raw Text    
     #curl -X POST "http://127.0.0.1:8000/planningEngine/generateWorkflow" -H "content-type:application/json" -d '{"request_parameters" : {"input" : [{"name" : "A Raw Text mixes many types of encoding","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_FreeText","resource_ontology_id" : "resource_FreeText","resource_data_format_id":"raw_text","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#raw_text"}],"output" : [{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree","resource_ontology_id" : "resource_speciesTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}]},"models":{"number":1,"engine":1}}'
 
     #curl -X POST "http://127.0.0.1:8000/planningEngine/generateWorkflow" -H "content-type:application/json" -d '{"request_parameters" : {"input" : [{"name" : "A Raw Text mixes many types of encoding","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_FreeText","resource_ontology_id" : "resource_FreeText","resource_data_format_id":"raw_text","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#raw_text"}],"output" : [{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree","resource_ontology_id" : "resource_speciesTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}]},"models":{"number":5,"engine":2}}'
 
     #curl -X POST "http://127.0.0.1:8000/planningEngine/generateWorkflow" -H "content-type:application/json" -d '{"request_parameters" : {"input" : [{"name" : "A Raw Text mixes many types of encoding","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_FreeText","resource_ontology_id" : "resource_FreeText","resource_data_format_id":"raw_text","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#raw_text"}],"output" : [{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree","resource_ontology_id" : "resource_speciesTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}]},"models":{"number":1,"engine":3}}'
 
-    # Generate Reconciliation Tree
+    # Use Case 2 : Generate Gene Tree and Species tree from set of gene names
+    #curl -X POST "http://127.0.0.1:8000/planningEngine/generateWorkflow" -H "content-type:application/json" -d '{"models":{"number":1,"engine":1},"request_parameters":{"input":[{"name" : "Set of gene names","resource_ontology_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_SetOfGeneStrings","resource_ontology_id":"resource_SetOfGeneStrings","resource_data_format_id":"list_of_strings","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#list_of_strings"}],"output":[{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree","resource_ontology_id" : "resource_speciesTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"},{"name" : "Gene Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_geneTree","resource_ontology_id" : "resource_geneTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}]}}'
+
+    #curl -X POST "http://127.0.0.1:8000/planningEngine/generateWorkflow" -H "content-type:application/json" -d '{"models":{"number":2,"engine":2},"request_parameters":{"input":[{"name" : "Set of gene names","resource_ontology_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_SetOfGeneStrings","resource_ontology_id":"resource_SetOfGeneStrings","resource_data_format_id":"list_of_strings","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#list_of_strings"}],"output":[{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree","resource_ontology_id" : "resource_speciesTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"},{"name" : "Gene Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_geneTree","resource_ontology_id" : "resource_geneTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}]}}'
+
+    #curl -X POST "http://127.0.0.1:8000/planningEngine/generateWorkflow" -H "content-type:application/json" -d '{"models":{"number":1,"engine":3},"request_parameters":{"input":[{"name" : "Set of gene names","resource_ontology_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_SetOfGeneStrings","resource_ontology_id":"resource_SetOfGeneStrings","resource_data_format_id":"list_of_strings","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#list_of_strings"}],"output":[{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree","resource_ontology_id" : "resource_speciesTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"},{"name" : "Gene Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_geneTree","resource_ontology_id" : "resource_geneTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}]}}'
+
+
+    # Use Case 3 : Generate Reconciliation Tree
     #curl -X POST "http://127.0.0.1:8000/planningEngine/generateWorkflow" -H "content-type:application/json" -d '{"models":{"number":1,"engine":1},"request_parameters":{"input":[{"name" : "Set of gene names","resource_ontology_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_SetOfGeneStrings","resource_ontology_id":"resource_SetOfGeneStrings","resource_data_format_id":"list_of_strings","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#list_of_strings"}],"output":[{"name" : "Reconciliation Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_reconcileTree","resource_ontology_id" : "resource_reconcileTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}]}}'
 
     #curl -X POST "http://127.0.0.1:8000/planningEngine/generateWorkflow" -H "content-type:application/json" -d '{"models":{"number":4,"engine":2},"request_parameters":{"input":[{"name" : "Set of gene names","resource_ontology_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_SetOfGeneStrings","resource_ontology_id":"resource_SetOfGeneStrings","resource_data_format_id":"list_of_strings","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#list_of_strings"}],"output":[{"name" : "Reconciliation Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_reconcileTree","resource_ontology_id" : "resource_reconcileTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}]}}'
@@ -153,9 +161,7 @@ class Interact_Planning_Engine(object):
 
         if ((request_parameters is None) or (request_parameters == '')):
             return return_response_error(400,"error","Missing params","JSON")
-        #print request_parameters["input"][0]["resource_ontology_id"]
-
-
+       
         try:
             
             models = input_json['models']
@@ -166,10 +172,7 @@ class Interact_Planning_Engine(object):
             print err
             number_of_models = 1
             engine = 1
-
-
-        
-
+  
         # Step 2 : parser input/output
         json_input_re = request_parameters["input"]
         if ((json_input_re is None) or (json_input_re == '')):
@@ -202,10 +205,23 @@ class Interact_Planning_Engine(object):
         fo.write("% GOAL State\n")
         fo.write("%------------------------------------------------------------------------\n")
         content = ""
+        max_content = ""
         for i in range(0,len(json_output_re)):
             fo.write("finally(%s, %s).\n" %(str(json_output_re[i]["resource_ontology_id"]),str(json_output_re[i]["resource_data_format_id"])))
-            content += "exists(%s,%s,I), " %(str(json_output_re[i]["resource_ontology_id"]),str(json_output_re[i]["resource_data_format_id"]))
-        fo.write("goal(I) :- %s step(I).\n" %(content))
+            # Cho nay can lam phuc tap hon nua
+            if (len(json_output_re) > 1):
+                content += "exists(%s,%s,I%s),step(I%s)," %(str(json_output_re[i]["resource_ontology_id"]),str(json_output_re[i]["resource_data_format_id"]),str(i),str(i))
+                if (i == 0):
+                    max_content = "I%s" %(str(i))
+                else:
+                    max_content += ";I%s" %(str(i))    
+            if (len(json_output_re) == 1):
+                content += "exists(%s,%s,I), " %(str(json_output_re[i]["resource_ontology_id"]),str(json_output_re[i]["resource_data_format_id"]))
+
+        if (len(json_output_re) > 1):        
+            fo.write("goal(M) :- %s M = #max{%s}.\n" %(content,max_content))
+        else:
+            fo.write("goal(I) :- %s step(I).\n" %(content)) 
 
         #fo.write("goal(I) :- %s step(I).\n" %(content))
         fo.write("%------------------------------------------------------------------------\n")
@@ -217,7 +233,9 @@ class Interact_Planning_Engine(object):
                 DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_9.lp")
             elif ("resource_reconcileTree" in json_output_re[i]["resource_ontology_id"]):
                 DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")
-
+        else:
+            DEFAULT_STEP = os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")       
+                
         # Step 3 : Run planning
         # Solution 1 : Run Multi-shot LP program
         if (engine == 1): # Solution 1 : Run simple Multi-shot LP program pick only 1
@@ -265,7 +283,7 @@ class Interact_Planning_Engine(object):
             planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "program_multiple_workflows.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),DEFAULT_STEP,str(1))
 
 
-
+        
             print("--DELETE Temp Input Folder and Output Folder Rosetta Model")
             delete_path = os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name)
             if (os.path.exists(delete_path)):
@@ -273,6 +291,7 @@ class Interact_Planning_Engine(object):
                     shutil.rmtree(delete_path)
                 except OSError:
                     pass
+            
 
             # Step 4 : Read planning data
             json_planning_data = json.loads(planing_data)

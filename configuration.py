@@ -11,3 +11,5 @@ WEIGHT_SIMILARITY_NODES = {
   "input_output" : 0.2,
   "service_description" : 0.1 
 }
+
+
