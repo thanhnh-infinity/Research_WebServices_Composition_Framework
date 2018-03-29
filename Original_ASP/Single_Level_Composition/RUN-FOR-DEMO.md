@@ -32,7 +32,6 @@ map(phylotastic_GenerateGeneTree_From_Genes,resource_SetOfGeneStrings,list_of_st
 map(phylotastic_GenerateGeneTree_From_Genes,resource_SetOfGeneStrings,list_of_strings,12,initial_state,resource_SetOfGeneStrings,list_of_strings,0)
 ```
 
-
 ## 2.1 Inclusion : Require to use ```phylotastic_GeneTree_Scaling```
 
 ### Modify code in ```composite_preference.lp```
@@ -139,4 +138,34 @@ occur(convert_df_taxons_format_GNR_to_PhyloT,8)
 occur(phylotastic_GetPhylogeneticTree_PhyloT_GET,9)
 occur(phylotastic_GetReconciliationTree_GET,10) 
 occur(phylotastic_GenerateGeneTree_From_Genes,12)     
+```
+
+## 4.1  Avoidance : ```phylotastic_ResolvedScientificNames_GNR_TNRS_POST``` ; ```phylotastic_ResolvedScientificNames_OT_TNRS_GET```, ```phylotastic_ResolvedScientificNames_OT_TNRS_POST```
+
+### Modify code in ```composite_preference.lp```
+
+### Changes : add 3 data convertion operation ```convert_df_taxons_format_2_to_4``` ; ```convert_df_taxons_format_4_to_6``` ; ```convert_df_taxons_format_6_to_ALL_COMBO```
+in order to use ```phylotastic_ResolvedScientificNames_GNR_TNRS_GET```
+
+### Command :
+```
+clingo single_level_planning_Working.lp ontology_TESTING_Working.lp composite_preference.lp
+clingo Program_Composite.lp
+```
+
+### Result :
+```
+occur(phylotastic_GenerateGeneTree_From_Genes,0)
+occur(convert_gene_tree_format_PhyloTree_to_NMSU,1)
+occur(convert_gene_tree_format_NMSU_to_NewickTree,2) 
+occur(phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET,3)
+occur(convert_df_sci_names_format_2_to_4,4)
+occur(convert_df_sci_names_format_4_to_6,5)
+occur(convert_df_sci_names_format_6_to_GNR,6)
+occur(phylotastic_ResolvedScientificNames_GNR_TNRS_GET,7)
+occur(convert_df_taxons_format_2_to_4,8)
+occur(convert_df_taxons_format_4_to_6,9)
+occur(convert_df_taxons_format_6_to_ALL_COMBO,10)
+occur(phylotastic_GetPhylogeneticTree_PhyloT_GET,11)
+occur(phylotastic_GetReconciliationTree_GET,12)      
 ```
