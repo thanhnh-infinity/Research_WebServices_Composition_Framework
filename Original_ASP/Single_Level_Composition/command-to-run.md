@@ -10,8 +10,12 @@ clingcon-3.3.0 single_level_planning_Working.lp ontology_TESTING_Working.lp comp
 or
 
 # Without clingcon - use clingo
-clingo single_level_planning_Working.lp ontology_TESTING_Working.lp  composite_preference.lp composite_qos_weight.lp 
+clingo single_level_planning_Working.lp ontology_TESTING_Working.lp  composite_preference.lp composite_qos_weight.lp
+
+## Run with preferene to see the change
 clingo single_level_planning_Working.lp ontology_TESTING_Working.lp  composite_preference.lp
+
+## Run to find Original Worfklow
 clingo single_level_planning_Working.lp ontology_TESTING_Working.lp
 
 # Run program

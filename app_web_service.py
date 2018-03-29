@@ -567,6 +567,57 @@ class Interact_Planning_Engine(object):
             fo.write("%------------------------------------------------------------------------\n")  
             fo.write("%------------------------------------------------------------------------\n")
         fo.close()
+        #==========================================================================================
+        if (len(json_output_re) == 1):
+            if ("resource_speciesTree" in json_output_re[i]["resource_ontology_id"]):
+                DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_9.lp")
+            elif ("resource_reconcileTree" in json_output_re[i]["resource_ontology_id"]):
+                DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")
+        else:
+            DEFAULT_STEP = os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")       
+                
+        # Step 3 : Run planning
+        # Solution 1 : Run S2_Node Similarity
+        if (engine == 1): # Solution 1 : Run simple Multi-shot LP program pick only 1
+            if (number_of_models > 1):
+                return return_response_error(303,"error","Engine 1 generated only one Plan with hightest App. Similarity Index - Node Similarity ONLY. Using Engine 2 in order to display more than one model with Exact Sim Index ","JSON")
+
+            #planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Composite.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),DEFAULT_STEP,str(1))
+            
+            '''
+            print("--DELETE Temp Input Folder and Output Folder Rosetta Model")
+            delete_path = os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name)
+            if (os.path.exists(delete_path)):
+                try:
+                    shutil.rmtree(delete_path)
+                except OSError:
+                    pass
+            '''
+
+            json_planning_data = json.loads(planing_data)
+            model_result = str(json_planning_data["Result"])
+            model_number = json_planning_data["Models"]["Number"]
+
+            if (model_result.strip().upper() == "SATISFIABLE"
+                    or model_result.strip().upper() == "UNKNOWN"
+                    or (model_number >= 1)):
+
+                    BIG_LIST_ANSWER_SETS = []
+                    array_plans_result_json = []
+                    for i in range(0,model_number):
+                        if (json_planning_data["Call"][i]["Witnesses"] is not None
+                            and len(json_planning_data["Call"][i]["Witnesses"]) > 0):
+                            array_plans_result_json = json_planning_data["Call"][i]["Witnesses"]
+                            BIG_LIST_ANSWER_SETS.append(array_plans_result_json)
+
+                    if (len(BIG_LIST_ANSWER_SETS) > 0):
+                        json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data,qos=False,multi_plans=False,quantity=1)
+                        if (json_output is not None):
+                            return return_success_get_json(json_output)
+                        else:
+                            return return_response_error(403,"error","Data error","JSON")
+                    else:
+                        return return_response_error(400,"error","engine error","JSON")      
 
     #public generate workflow
     generateWorkflow.exposed = True
