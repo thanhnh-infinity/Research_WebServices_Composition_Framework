@@ -10,6 +10,10 @@ import subprocess
 import shutil
 import datetime
 from pprint import pprint
+import requests
+import ultility
+
+HOST_PLANNING_ENGINE_URL_COMPOSITE = "http://127.0.0.1:8000/planningEngine/generateWorkflow"
 
 def CORS():
     cherrypy.response.headers["Access-Control-Allow-Origin"] = "*"
@@ -89,12 +93,9 @@ class Interact_Planning_Engine(object):
     @cherrypy.tools.json_out()
     @cherrypy.tools.json_in()
     def generateWorkflow(self,**request_data):
-
         CORS()
-        
         if cherrypy.request.method == "OPTIONS":
              return ""
-
         input_json = cherrypy.request.json
 
         #Format JSON input example:
@@ -153,7 +154,6 @@ class Interact_Planning_Engine(object):
             }
         }
         '''
-
         try:
             request_parameters = input_json['request_parameters'];
         except:
@@ -173,7 +173,7 @@ class Interact_Planning_Engine(object):
             number_of_models = 1
             engine = 1
   
-        # Step 2 : parser input/output
+        # Step 2 : parser input/output/avoidance,inclusion,insertion
         json_input_re = request_parameters["input"]
         if ((json_input_re is None) or (json_input_re == '')):
             return return_response_error(400,"error","Missing input","JSON")
@@ -186,7 +186,7 @@ class Interact_Planning_Engine(object):
         if (len(json_output_re) <= 0):
             return return_response_error(400,"error","Empty Output","JSON")
 
-        # Step 3 : Write input/output to ASP files
+        # Step 2.1 : Write input/output to ASP files
         folder_name = self.prepareDistinguish_Input_Output_Folder_PerEachProcess()
         print folder_name
         fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),"wb")
@@ -226,8 +226,7 @@ class Interact_Planning_Engine(object):
         #fo.write("goal(I) :- %s step(I).\n" %(content))
         fo.write("%------------------------------------------------------------------------\n")
         fo.close()
-
-        
+        #=========================================================================================================
         if (len(json_output_re) == 1):
             if ("resource_speciesTree" in json_output_re[i]["resource_ontology_id"]):
                 DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_9.lp")
@@ -388,13 +387,191 @@ class Interact_Planning_Engine(object):
             else:
                 return return_response_error(400,"error","engine error","JSON")    
 
-        # Step 5 : Parser planning data to JSON workflow data
+        #--------------END-----------------------------------------
+        #==========================================================
+    
+    def back_end_process(json_input):
+        print "ABC"    
 
 
-        # Step 6 : Return to requester
-        #print "ABC"
+    # Use Case 1 : Generate Species Tree from Raw Text    
+    #curl -X POST "http://127.0.0.1:8000/planningEngine/recomposite" -H "content-type:application/json" -d '{"request_parameters" : {"input" : [{"name" : "A Raw Text mixes many types of encoding","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_FreeText","resource_ontology_id" : "resource_FreeText","resource_data_format_id":"raw_text","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#raw_text"}],"output" : [{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree","resource_ontology_id" : "resource_speciesTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}],"avoidance":["phylotastic_GetPhylogeneticTree_Phylomatic_POST","phylotastic_GetPhylogeneticTree_Phylomatic_GET"],"inclusion":[],"insertion":[],"current_workflow":[]},"models":{"number":1,"engine":1}}'
+
+    #curl -X POST "http://127.0.0.1:8000/planningEngine/recomposite" -H "content-type:application/json" -d '{"request_parameters" : {"input" : [{"name" : "A Raw Text mixes many types of encoding","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_FreeText","resource_ontology_id" : "resource_FreeText","resource_data_format_id":"raw_text","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#raw_text"}],"output" : [{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree","resource_ontology_id" : "resource_speciesTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}],"avoidance":["phylotastic_GetPhylogeneticTree_Phylomatic_POST","phylotastic_GetPhylogeneticTree_Phylomatic_GET"],"inclusion":["phylotastic_GetPhylogeneticTree_OT_POST"],"insertion":[],"current_workflow":[]},"models":{"number":1,"engine":1}}' 
+
+    # Re-Generate workflow - Recomposite 
+    @cherrypy.tools.json_out()
+    @cherrypy.tools.json_in()
+    def recomposite(self,**request_data):
+        CORS()
+        if cherrypy.request.method == "OPTIONS":
+             return ""
+        input_json = cherrypy.request.json
+        '''
+        input_json =  {
+            "request_parameters" : {
+                "input" : [
+                    {
+                        "name" : "A Raw Text mixes many types of encoding",
+                        "resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_FreeText",
+                        "resource_ontology_id" : "resource_FreeText",
+                        "resource_data_format_id":"raw_text",
+                        "resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#raw_text"
+                    }
+                ],
+                "output" : [
+                    {
+                        "name" : "Species Tree",
+                        "resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree",
+                        "resource_ontology_id" : "resource_speciesTree",
+                        "resource_data_format_id":"newickTree",
+                        "resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"
+                   }
+                ],
+                "avoidance" : ["phylotastic_GetPhylogeneticTree_Phylomatic_POST","phylotastic_GetPhylogeneticTree_Phylomatic_GET"],
+                "inclusion" : ["phylotastic_GetPhylogeneticTree_OT_POST"],
+                "insertion" : [],
+                "current_workflow" : []
+            },
+            "models":{
+                "number":1,
+                "engine":1
+            }
+        }
+        '''
+        try:
+            request_parameters = input_json['request_parameters'];
+        except:
+            return return_response_error(400,"error","Missing input","JSON")
+
+        if ((request_parameters is None) or (request_parameters == '')):
+            return return_response_error(400,"error","Missing params","JSON")
+       
+        try:
+            models = input_json['models']
+            number_of_models = models["number"]
+            engine = models["engine"]
+        except Exception, err:
+            print err
+            number_of_models = 1
+            engine = 1
+  
+        # Step 2 : parser input/output/avoidance,inclusion,insertion
+        isAvoidance = True
+        isInclusion = True
+        isInsertion = True
+        
+        json_input_re = request_parameters["input"]
+        if ((json_input_re is None) or (json_input_re == '')):
+            return return_response_error(400,"error","Missing input","JSON")
+        if (len(json_input_re) <= 0):
+            return return_response_error(400,"error","Empty Input","JSON")
+
+        json_output_re = request_parameters["output"]
+        if ((json_output_re is None) or (json_output_re == '')):
+            return return_response_error(400,"error","Missing output","JSON")
+        if (len(json_output_re) <= 0):
+            return return_response_error(400,"error","Empty Output","JSON")
+
+        json_avoidance_re = request_parameters["avoidance"]
+        if ((json_avoidance_re is None) or (json_avoidance_re == '')):
+            print "No avoidance request"
+            isAvoidance = False
+        if (len(json_avoidance_re) <= 0):
+            print "No avoidance request"
+            isAvoidance = False
+
+        json_inclusion_re = request_parameters["inclusion"]
+        if ((json_inclusion_re is None) or (json_inclusion_re == '')):
+            print "No inclusion request"
+            isInclusion = False
+        if (len(json_inclusion_re) <= 0):
+            print "No inclusion request"
+            isInclusion = False
+
+        json_insertion_re = request_parameters["insertion"]
+        if ((json_insertion_re is None) or (json_insertion_re == '')):
+            print "No inclusion request"
+            isInsertion = False
+        if (len(json_insertion_re) <= 0):
+            print "No inclusion request"
+            isInsertion = False
+        
+        if (not isAvoidance) and (not isInclusion) and (not isInsertion):
+            print "Switch to Composition - Planning - Input/Output specified but NO Prefernce and Current Workflow"
+            #requests.post(url= HOST_PLANNING_ENGINE_URL_COMPOSITE, data=input_json)
+            #Maku CURL request
+            #print ultility.run_CURL_planning_engine_service(HOST_PLANNING_ENGINE_URL_COMPOSITE,"'" + str(input_json) + "'")
+            
+        # Step 2.1 : Write input/output to ASP files
+        folder_name = self.prepareDistinguish_Input_Output_Folder_PerEachProcess()
+        print folder_name
+        fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),"wb")
+        print("---Create Initial State--")
+        fo.write("%------------------------------------------------------------------------\n")
+        fo.write("% INPUT PART : Initial State\n")
+        fo.write("%------------------------------------------------------------------------\n")
+        for i in range(0,len(json_input_re)):
+            fo.write("initially(%s,%s).\n" %(str(json_input_re[i]["resource_ontology_id"]),str(json_input_re[i]["resource_data_format_id"])))
+        fo.write("%------------------------------------------------------------------------\n")
+        fo.close()
+
+        fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"), "wb")
+        print("---Create Goal State--")
+        fo.write("%------------------------------------------------------------------------\n")
+        fo.write("% GOAL State\n")
+        fo.write("%------------------------------------------------------------------------\n")
+        content = ""
+        max_content = ""
+        for i in range(0,len(json_output_re)):
+            fo.write("finally(%s, %s).\n" %(str(json_output_re[i]["resource_ontology_id"]),str(json_output_re[i]["resource_data_format_id"])))
+            if (len(json_output_re) > 1):
+                content += "exists(%s,%s,I%s),step(I%s)," %(str(json_output_re[i]["resource_ontology_id"]),str(json_output_re[i]["resource_data_format_id"]),str(i),str(i))
+                if (i == 0):
+                    max_content = "I%s" %(str(i))
+                else:
+                    max_content += ";I%s" %(str(i))    
+            if (len(json_output_re) == 1):
+                content += "exists(%s,%s,I), " %(str(json_output_re[i]["resource_ontology_id"]),str(json_output_re[i]["resource_data_format_id"]))
+
+        if (len(json_output_re) > 1):        
+            fo.write("goal(M) :- %s M = #max{%s}.\n" %(content,max_content))
+        else:
+            fo.write("goal(I) :- %s step(I).\n" %(content)) 
+
+        #fo.write("goal(I) :- %s step(I).\n" %(content))
+        fo.write("%------------------------------------------------------------------------\n")
+        fo.close()
+        #========================================================================================================= 
+
+        # Step 2.2 : Write avoidance/inclusion/insertion to ASP files
+        fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"composite_preference.lp"),"wb")
+        print("---Create Preferences and Constraint From--")
+        if (isAvoidance):
+            fo.write("%------------------------------------------------------------------------\n")
+            fo.write("% AVOIDANCE  SERVICES \n")
+            fo.write("%------------------------------------------------------------------------\n")
+            for i in range(0,len(json_avoidance_re)):
+                fo.write("do_not_use_operation(%s).\n" %(str(json_avoidance_re[i])))
+            fo.write("%------------------------------------------------------------------------\n")
+        if (isInclusion):
+            fo.write("%------------------------------------------------------------------------\n")
+            fo.write("% INCLUSION  SERVICES \n")
+            fo.write("%------------------------------------------------------------------------\n")
+            for i in range(0,len(json_inclusion_re)):
+                fo.write("used_operation(%s).\n" %(str(json_inclusion_re[i])))
+            fo.write("%------------------------------------------------------------------------\n")
+        if (isInsertion):
+            fo.write("%------------------------------------------------------------------------\n")
+            fo.write("% INSERTION  SERVICES \n")
+            fo.write("%------------------------------------------------------------------------\n")  
+            fo.write("%------------------------------------------------------------------------\n")
+        fo.close()
+
     #public generate workflow
     generateWorkflow.exposed = True
+    #public recomposite similarity workflow
+    recomposite.exposed = True
     #public index
     index.exposed = True
 class OntologyAPI_Service(object):
