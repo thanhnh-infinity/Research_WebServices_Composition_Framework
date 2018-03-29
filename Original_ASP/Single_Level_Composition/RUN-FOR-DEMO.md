@@ -169,3 +169,5 @@ occur(convert_df_taxons_format_6_to_ALL_COMBO,10)
 occur(phylotastic_GetPhylogeneticTree_PhyloT_GET,11)
 occur(phylotastic_GetReconciliationTree_GET,12)      
 ```
+
+## 5.1  Insertion : 
