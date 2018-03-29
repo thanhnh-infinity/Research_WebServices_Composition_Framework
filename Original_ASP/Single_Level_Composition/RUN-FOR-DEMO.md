@@ -33,13 +33,15 @@ map(phylotastic_GenerateGeneTree_From_Genes,resource_SetOfGeneStrings,list_of_st
 ```
 
 
-## 2. Inclusion : Require to use ```phylotastic_GeneTree_Scaling```
+## 2.1 Inclusion : Require to use ```phylotastic_GeneTree_Scaling```
 
 ### Modify code in ```composite_preference.lp```
 
+### Changes : Add ```phylotastic_GeneTree_Scaling``` into workflow produces one output for ```phylotastic_GetReconciliationTree_GET```
+
 ### Command :
 ```
-clingo single_level_planning_Working.lp ontology_TESTING_Working.lp
+clingo single_level_planning_Working.lp ontology_TESTING_Working.lp composite_preference.lp
 clingo Program_Composite.lp
 ```
 
@@ -72,9 +74,11 @@ map(phylotastic_GetReconciliationTree_GET,resource_speciesTree,newickTree,11,con
 map(phylotastic_GenerateGeneTree_From_Genes,resource_SetOfGeneStrings,list_of_strings,0,initial_state,resource_SetOfGeneStrings,list_of_strings,0)
 ```
 
-## 2. Inclusion : Require to use ```phylotastic_GetPhylogeneticTree_OT_POST```
+## 2.2 Inclusion : Require to use ```phylotastic_GetPhylogeneticTree_OT_POST```
 
 ### Modify code in ```composite_preference.lp```
+
+### Changes : Simple replace ```phylotastic_GetPhylogeneticTree_OT_GET``` by ```phylotastic_GetPhylogeneticTree_OT_POST```
 
 ### Command :
 ```
@@ -109,5 +113,30 @@ map(phylotastic_GenerateGeneTree_From_Genes,resource_SetOfGeneStrings,list_of_st
 map(phylotastic_GenerateGeneTree_From_Genes,resource_SetOfGeneStrings,list_of_strings,12,initial_state,resource_SetOfGeneStrings,list_of_strings,0)
 ```
 
-3. Inclusion : 
+## 3.3 Inclusion : ```phylotastic_GetPhylogeneticTree_PhyloT_GET```
 
+### Modify code in ```composite_preference.lp```
+
+### Changes : Add ```phylotastic_GetPhylogeneticTree_PhyloT_GET``` into workflow AND add one more service ```convert_df_taxons_format_GNR_to_PhyloT``` before ```phylotastic_GetPhylogeneticTree_PhyloT_GET```
+
+### Command :
+```
+clingo single_level_planning_Working.lp ontology_TESTING_Working.lp composite_preference.lp
+clingo Program_Composite.lp
+```
+
+### Result :
+```
+occur(phylotastic_GenerateGeneTree_From_Genes,0)
+occur(convert_gene_tree_format_PhyloTree_to_NMSU,1)
+occur(convert_gene_tree_format_NMSU_to_NewickTree,2)
+occur(phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET,3)
+occur(convert_df_sci_names_format_2_to_4,4)
+occur(convert_df_sci_names_format_4_to_6,5)
+occur(convert_df_sci_names_format_6_to_GNR,6)
+occur(phylotastic_ResolvedScientificNames_GNR_TNRS_POST,7)
+occur(convert_df_taxons_format_GNR_to_PhyloT,8)
+occur(phylotastic_GetPhylogeneticTree_PhyloT_GET,9)
+occur(phylotastic_GetReconciliationTree_GET,10) 
+occur(phylotastic_GenerateGeneTree_From_Genes,12)     
+```
