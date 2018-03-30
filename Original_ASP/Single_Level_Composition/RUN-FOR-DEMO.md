@@ -112,7 +112,7 @@ map(phylotastic_GenerateGeneTree_From_Genes,resource_SetOfGeneStrings,list_of_st
 map(phylotastic_GenerateGeneTree_From_Genes,resource_SetOfGeneStrings,list_of_strings,12,initial_state,resource_SetOfGeneStrings,list_of_strings,0)
 ```
 
-## 3.3 Inclusion : ```phylotastic_GetPhylogeneticTree_PhyloT_GET```
+## 2.3 Inclusion : ```phylotastic_GetPhylogeneticTree_PhyloT_GET```
 
 ### Modify code in ```composite_preference.lp```
 
@@ -140,7 +140,7 @@ occur(phylotastic_GetReconciliationTree_GET,10)
 occur(phylotastic_GenerateGeneTree_From_Genes,12)     
 ```
 
-## 4.1  Avoidance : ```phylotastic_ResolvedScientificNames_GNR_TNRS_POST``` ; ```phylotastic_ResolvedScientificNames_OT_TNRS_GET```, ```phylotastic_ResolvedScientificNames_OT_TNRS_POST```
+## 3.1  Avoidance : ```phylotastic_ResolvedScientificNames_GNR_TNRS_POST``` ; ```phylotastic_ResolvedScientificNames_OT_TNRS_GET```, ```phylotastic_ResolvedScientificNames_OT_TNRS_POST```
 
 ### Modify code in ```composite_preference.lp```
 
@@ -170,4 +170,4 @@ occur(phylotastic_GetPhylogeneticTree_PhyloT_GET,11)
 occur(phylotastic_GetReconciliationTree_GET,12)      
 ```
 
-## 5.1  Insertion : 
+## 4.1  Insertion : 
