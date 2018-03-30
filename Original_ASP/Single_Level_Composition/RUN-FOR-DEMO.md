@@ -1,7 +1,8 @@
 # Init : Set of Gene Strings ; Out : Reconciliation Tree
-## 1. Run to find original Workflow
+## 1. Run to find original Workflow 
 ### Command :
 ```
+Config n = 12
 clingo single_level_planning_Working.lp ontology_TESTING_Working.lp
 clingo Program_Composite.lp
 ```
@@ -34,12 +35,13 @@ map(phylotastic_GenerateGeneTree_From_Genes,resource_SetOfGeneStrings,list_of_st
 
 ## 2.1 Inclusion : Require to use ```phylotastic_GeneTree_Scaling```
 
-### Modify code in ```composite_preference.lp```
+### Modify code in ```composite_preference.lp``` - Config n = 12
 
 ### Changes : Add ```phylotastic_GeneTree_Scaling``` into workflow produces one output for ```phylotastic_GetReconciliationTree_GET```
 
 ### Command :
 ```
+Config n = 12
 clingo single_level_planning_Working.lp ontology_TESTING_Working.lp composite_preference.lp
 clingo Program_Composite.lp
 ```
@@ -75,12 +77,13 @@ map(phylotastic_GenerateGeneTree_From_Genes,resource_SetOfGeneStrings,list_of_st
 
 ## 2.2 Inclusion : Require to use ```phylotastic_GetPhylogeneticTree_OT_POST```
 
-### Modify code in ```composite_preference.lp```
+### Modify code in ```composite_preference.lp``` - Config n = 12
 
 ### Changes : Simple replace ```phylotastic_GetPhylogeneticTree_OT_GET``` by ```phylotastic_GetPhylogeneticTree_OT_POST```
 
 ### Command :
 ```
+Config n = 12
 clingo single_level_planning_Working.lp ontology_TESTING_Working.lp composite_preference.lp
 clingo Program_Composite.lp
 ```
@@ -112,14 +115,15 @@ map(phylotastic_GenerateGeneTree_From_Genes,resource_SetOfGeneStrings,list_of_st
 map(phylotastic_GenerateGeneTree_From_Genes,resource_SetOfGeneStrings,list_of_strings,12,initial_state,resource_SetOfGeneStrings,list_of_strings,0)
 ```
 
-## 2.3 Inclusion : ```phylotastic_GetPhylogeneticTree_PhyloT_GET```
+## 3.3 Inclusion : ```phylotastic_GetPhylogeneticTree_PhyloT_GET```
 
-### Modify code in ```composite_preference.lp```
+### Modify code in ```composite_preference.lp``` - Config n = 12
 
 ### Changes : Add ```phylotastic_GetPhylogeneticTree_PhyloT_GET``` into workflow AND add one more service ```convert_df_taxons_format_GNR_to_PhyloT``` before ```phylotastic_GetPhylogeneticTree_PhyloT_GET```
 
 ### Command :
 ```
+Config n = 12
 clingo single_level_planning_Working.lp ontology_TESTING_Working.lp composite_preference.lp
 clingo Program_Composite.lp
 ```
@@ -140,15 +144,16 @@ occur(phylotastic_GetReconciliationTree_GET,10)
 occur(phylotastic_GenerateGeneTree_From_Genes,12)     
 ```
 
-## 3.1  Avoidance : ```phylotastic_ResolvedScientificNames_GNR_TNRS_POST``` ; ```phylotastic_ResolvedScientificNames_OT_TNRS_GET```, ```phylotastic_ResolvedScientificNames_OT_TNRS_POST```
+## 4.1  Avoidance : ```phylotastic_ResolvedScientificNames_GNR_TNRS_POST``` ; ```phylotastic_ResolvedScientificNames_OT_TNRS_GET```, ```phylotastic_ResolvedScientificNames_OT_TNRS_POST```
 
-### Modify code in ```composite_preference.lp```
+### Modify code in ```composite_preference.lp``` - Reconfig n = 14
 
 ### Changes : add 3 data convertion operation ```convert_df_taxons_format_2_to_4``` ; ```convert_df_taxons_format_4_to_6``` ; ```convert_df_taxons_format_6_to_ALL_COMBO```
 in order to use ```phylotastic_ResolvedScientificNames_GNR_TNRS_GET```
 
 ### Command :
 ```
+Reconfig n = 14
 clingo single_level_planning_Working.lp ontology_TESTING_Working.lp composite_preference.lp
 clingo Program_Composite.lp
 ```
@@ -170,4 +175,31 @@ occur(phylotastic_GetPhylogeneticTree_PhyloT_GET,11)
 occur(phylotastic_GetReconciliationTree_GET,12)      
 ```
 
-## 4.1  Insertion : 
+## 5.1  Insertion a service in particular position : Run ```phylotastic_GeneTree_Scaling``` before ```phylotastic_GetPhylogeneticTree_OT_GET``` ; 
+
+### Modify code in ```composite_preference.lp``` ; Reconfig n = 12
+
+### Changes : ```phylotastic_GeneTree_Scaling``` has to be executed BEFORE ```phylotastic_GetPhylogeneticTree_OT_GET```
+
+### Command :
+```
+Reconfig n = 12
+clingo single_level_planning_Working.lp ontology_TESTING_Working.lp composite_preference.lp
+clingo Program_Composite.lp
+```
+
+### Result :
+```
+occur(phylotastic_ResolvedScientificNames_OT_TNRS_GET,8) 
+occur(phylotastic_GetPhylogeneticTree_OT_GET,9) 
+occur(phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET,3) 
+occur(phylotastic_GetReconciliationTree_GET,11) 
+occur(phylotastic_GenerateGeneTree_From_Genes,0) 
+occur(phylotastic_GeneTree_Scaling,7) 
+occur(convert_df_sci_names_format_2_to_4,4) 
+occur(convert_df_sci_names_format_4_to_6,5) 
+occur(convert_df_sci_names_format_6_to_OT,6) 
+occur(convert_gene_tree_format_PhyloTree_to_NMSU,1) 
+occur(convert_species_tree_format_NMSU_to_NewickTree,10) 
+occur(convert_gene_tree_format_NMSU_to_NewickTree,2)     
+```

@@ -117,6 +117,7 @@ is_used_operation(A) :- operation(A),
 
 % Extend Part : Require involved operation C executed before operation D
 %%%% Super poor performance
+
 %is_ordered_services(C,D) :- operation(C),
 %                            operation(D),
 %                            occur(C,T1),
@@ -124,12 +125,17 @@ is_used_operation(A) :- operation(A),
 %                            goal(G),
 %                            T1 < T2,
 %                            T2 < G.
-%:- ordered_services(C,D), not is_ordered_services(C,D).
-%used_operation(C) :- ordered_services(C,D), 
-%                     operation(C).
-%used_operation(D) :- ordered_services(C,D), 
-%                     operation(C).
 
+:- ordered_services(C,D), not is_ordered_services(C,D).
+used_operation(C) :- ordered_services(C,D), 
+                     operation(C).
+used_operation(D) :- ordered_services(C,D), 
+                     operation(C).
+is_ordered_services(C,D) :- operation(C),
+                            operation(D),
+                            occur(C,T1),
+                            occur(D,T2),
+                            T1 < T2.
 %========================================================================
 % Basic part : initial and goal state (SHOULD BE IN DIFFERENT FILES - INIITAL and GOAL FILES)
 
