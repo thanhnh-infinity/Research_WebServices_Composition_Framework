@@ -6,11 +6,12 @@
 #### Used Clingcon - Single Workflow Highest QoS (DONE)
 
 ### For Re-Composition (Inprogressive):
+#### Cases for Re-composite
+##### Case 1 : No Preference - Have Original Workflow => Return original workflow
 
 ## Sync Source Code internal Project
 ### Sync ASP source code between ASP_Planning and Original_ASP : (DONE)
-
-### Sync Pythong source between IN-SIDE and Out-Side : (DONE)
+### Sync Python source between IN-SIDE and Out-Side : (DONE)
 
 ## Update Ontology
 ### For LP Ontology

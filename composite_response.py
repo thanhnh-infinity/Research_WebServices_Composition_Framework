@@ -208,11 +208,13 @@ def process_a_plan_json_from_raw(big_list_answer_sets,json_in,json_planning_data
         #test_index = 0
         #test_list = [0,9,27,11,36,41]
         #test_list = [0,9,25]
+        #print "Work here"
         index = 0
         for workflow in big_list_answer_sets:
-            #if (test_index in test_list):    
+            #if (test_index in test_list):
+                #print "Work here 1"
                 detail_workflow = workflow[0]["Value"]
-
+                #print "ABC"
                 #print detail_workflow    
 
                 # Read abstract workflow
@@ -241,7 +243,7 @@ def process_a_plan_json_from_raw(big_list_answer_sets,json_in,json_planning_data
                 all_workflow_plans.append(d)
                 index = index + 1
             #test_index = test_index+1
-
+        #print "Work here  2"    
         # Sorting workflow based on QoS attribute
         if (qos and multi_plans):
             sorted_plans = sorted(all_workflow_plans, key=lambda workflow : workflow['info']['quality_attributes']['qos']['score_qos'],reverse=True)

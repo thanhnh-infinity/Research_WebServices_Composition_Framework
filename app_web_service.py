@@ -228,10 +228,12 @@ class Interact_Planning_Engine(object):
         fo.close()
         #=========================================================================================================
         if (len(json_output_re) == 1):
-            if ("resource_speciesTree" in json_output_re[i]["resource_ontology_id"]):
+            if ("resource_speciesTree" in json_output_re[0]["resource_ontology_id"]):
                 DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_9.lp")
-            elif ("resource_reconcileTree" in json_output_re[i]["resource_ontology_id"]):
+            elif ("resource_reconcileTree" in json_output_re[0]["resource_ontology_id"]):
                 DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")
+            else:
+                DEFAULT_STEP = os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")    
         else:
             DEFAULT_STEP = os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")       
                 
@@ -394,10 +396,15 @@ class Interact_Planning_Engine(object):
         print "ABC"    
 
 
-    # Use Case 1 : Generate Species Tree from Raw Text    
-    #curl -X POST "http://127.0.0.1:8000/planningEngine/recomposite" -H "content-type:application/json" -d '{"request_parameters" : {"input" : [{"name" : "A Raw Text mixes many types of encoding","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_FreeText","resource_ontology_id" : "resource_FreeText","resource_data_format_id":"raw_text","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#raw_text"}],"output" : [{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree","resource_ontology_id" : "resource_speciesTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}],"avoidance":["phylotastic_GetPhylogeneticTree_Phylomatic_POST","phylotastic_GetPhylogeneticTree_Phylomatic_GET"],"inclusion":[],"insertion":[],"current_workflow":[]},"models":{"number":1,"engine":1}}'
+    # Use Case 1 : Generate Species Tree from Raw Text
+    ## No Preference No Original Workflow
+    #curl -X POST "http://127.0.0.1:8000/planningEngine/recomposite" -H "content-type:application/json" -d '{"request_parameters" : {"input" : [{"name" : "A Raw Text mixes many types of encoding","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_FreeText","resource_ontology_id" : "resource_FreeText","resource_data_format_id":"raw_text","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#raw_text"}],"output" : [{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree","resource_ontology_id" : "resource_speciesTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}],"avoidance":[],"inclusion":[],"insertion":[],"original_workflow":[]},"models":{"number":1,"engine":1}}'
 
-    #curl -X POST "http://127.0.0.1:8000/planningEngine/recomposite" -H "content-type:application/json" -d '{"request_parameters" : {"input" : [{"name" : "A Raw Text mixes many types of encoding","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_FreeText","resource_ontology_id" : "resource_FreeText","resource_data_format_id":"raw_text","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#raw_text"}],"output" : [{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree","resource_ontology_id" : "resource_speciesTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}],"avoidance":["phylotastic_GetPhylogeneticTree_Phylomatic_POST","phylotastic_GetPhylogeneticTree_Phylomatic_GET"],"inclusion":["phylotastic_GetPhylogeneticTree_OT_POST"],"insertion":[],"current_workflow":[]},"models":{"number":1,"engine":1}}' 
+    ## No Original Workflow _ HAVE Preference
+    #curl -X POST "http://127.0.0.1:8000/planningEngine/recomposite" -H "content-type:application/json" -d '{"request_parameters" : {"input" : [{"name" : "A Raw Text mixes many types of encoding","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_FreeText","resource_ontology_id" : "resource_FreeText","resource_data_format_id":"raw_text","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#raw_text"}],"output" : [{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree","resource_ontology_id" : "resource_speciesTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}],"avoidance":["phylotastic_GetPhylogeneticTree_Phylomatic_POST","phylotastic_GetPhylogeneticTree_Phylomatic_GET"],"inclusion":["phylotastic_GetPhylogeneticTree_OT_POST"],"insertion":[],"original_workflow":[]},"models":{"number":1,"engine":1}}'
+
+    ## HAVE Original Workflow _ NO Preference
+    #curl -X POST "http://127.0.0.1:8000/planningEngine/recomposite" -H "content-type:application/json" -d '{"request_parameters" : {"input" : [{"name" : "A Raw Text mixes many types of encoding","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_FreeText","resource_ontology_id" : "resource_FreeText","resource_data_format_id":"raw_text","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#raw_text"}],"output" : [{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree","resource_ontology_id" : "resource_speciesTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}],"avoidance":[],"inclusion":[],"insertion":[],"original_workflow":["goal(8)", "map(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_FreeText,plain_text,1,convert_df_text_format_raw_to_plain,resource_FreeText,plain_text,1)", "map(convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_1,2,phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_SetOfSciName,raw_names_format_1,2)", "map(convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_3,3,convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_3,3)", "map(convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_5,4,convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_5,4)", "map(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfSciName,raw_names_format_OT,5,convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_OT,5)", "map(phylotastic_GetPhylogeneticTree_OT_POST,resource_SetOfTaxon,resolved_names_format_OT,6,phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfTaxon,resolved_names_format_OT,6)", "map(convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,nmsu_tree_format,7,phylotastic_GetPhylogeneticTree_OT_POST,resource_speciesTree,nmsu_tree_format,7)", "map(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,resource_speciesTree,newickTree,9,convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,newickTree,8)", "map(convert_df_text_format_raw_to_plain,resource_FreeText,raw_text,0,initial_state,resource_FreeText,raw_text,0)", "operation_has_input_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_FreeText,plain_text)", "operation_has_input_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfSciName,raw_names_format_OT)", "operation_has_input_has_data_format(phylotastic_GetPhylogeneticTree_OT_POST,resource_SetOfTaxon,resolved_names_format_OT)", "operation_has_input_has_data_format(convert_df_text_format_raw_to_plain,resource_FreeText,raw_text)", "operation_has_input_has_data_format(convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_1)", "operation_has_input_has_data_format(convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_3)", "operation_has_input_has_data_format(convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_5)", "operation_has_input_has_data_format(convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,nmsu_tree_format)", "operation_has_output_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_SetOfSciName,raw_names_format_1)", "operation_has_output_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_HTTPCode,integer)", "operation_has_output_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_ConnectionTime,integer)", "operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfTaxon,resolved_names_format_OT)", "operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfResolvedName,resolved_names_format_OT)", "operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_HTTPCode,integer)", "operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_OT_POST,resource_speciesTree,nmsu_tree_format)", "operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_OT_POST,resource_Tree,nmsu_tree_format)", "operation_has_output_has_data_format(convert_df_text_format_raw_to_plain,resource_FreeText,plain_text)", "operation_has_output_has_data_format(convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_3)", "operation_has_output_has_data_format(convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_5)", "operation_has_output_has_data_format(convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_OT)", "operation_has_output_has_data_format(convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,newickTree)", "occur(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,1)", "occur(phylotastic_ResolvedScientificNames_OT_TNRS_GET,5)", "occur(phylotastic_GetPhylogeneticTree_OT_POST,6)", "occur(convert_df_text_format_raw_to_plain,0)", "occur(convert_df_sci_names_format_1_to_3,2)", "occur(convert_df_sci_names_format_3_to_5,3)", "occur(convert_df_sci_names_format_5_to_OT,4)", "occur(convert_species_tree_format_NMSU_to_NewickTree,7)"]},"models":{"number":1,"engine":1}}' 
 
     # Re-Generate workflow - Recomposite 
     @cherrypy.tools.json_out()
@@ -431,7 +438,7 @@ class Interact_Planning_Engine(object):
                 "avoidance" : ["phylotastic_GetPhylogeneticTree_Phylomatic_POST","phylotastic_GetPhylogeneticTree_Phylomatic_GET"],
                 "inclusion" : ["phylotastic_GetPhylogeneticTree_OT_POST"],
                 "insertion" : [],
-                "current_workflow" : []
+                "original_workflow" : []
             },
             "models":{
                 "number":1,
@@ -460,6 +467,8 @@ class Interact_Planning_Engine(object):
         isAvoidance = True
         isInclusion = True
         isInsertion = True
+        isOriginalWorkflow = True
+        kindToRun = "NORMAL"
         
         json_input_re = request_parameters["input"]
         if ((json_input_re is None) or (json_input_re == '')):
@@ -491,18 +500,37 @@ class Interact_Planning_Engine(object):
 
         json_insertion_re = request_parameters["insertion"]
         if ((json_insertion_re is None) or (json_insertion_re == '')):
-            print "No inclusion request"
+            print "No insertion request"
             isInsertion = False
         if (len(json_insertion_re) <= 0):
-            print "No inclusion request"
+            print "No insertion request"
             isInsertion = False
+
+        json_original_workflows = request_parameters["original_workflow"]
+        if ((json_original_workflows is None) or (json_original_workflows == '')):
+            print "No Original Workflow - Simialrity Index will be terminated"
+            isOriginalWorkflow = False
+        if (len(json_original_workflows) <= 0):
+            print "No Original Workflow - Simialrity Index will be terminated"
+            isOriginalWorkflow = False    
         
+        is_Preference = True
         if (not isAvoidance) and (not isInclusion) and (not isInsertion):
-            print "Switch to Composition - Planning - Input/Output specified but NO Prefernce and Current Workflow"
-            #requests.post(url= HOST_PLANNING_ENGINE_URL_COMPOSITE, data=input_json)
-            #Maku CURL request
-            #print ultility.run_CURL_planning_engine_service(HOST_PLANNING_ENGINE_URL_COMPOSITE,"'" + str(input_json) + "'")
+            is_Preference = False
+            print "Switch to Composition - Planning - Input/Output specified but NO Prefernce and Current Workflow - Comming Soon"
+            #return return_response_error(300,"warnning","No request for Avoidance or Inclusion or Insertion - Back to original planning engine - Comming Soon","JSON") 
             
+        if (isOriginalWorkflow and is_Preference):
+            kindToRun = "NORMAL" # Normal running
+        elif (isOriginalWorkflow and not is_Preference):
+            kindToRun = "HAVE_ORIGINAL_WF_NO_PREFERENCE"
+        elif (not isOriginalWorkflow and is_Preference):
+            kindToRun = "NO_ORIGINAL_WF_HAVE_PREFERENCE"    
+        else :
+            kindToRun = "ORIGINAL_PLANNING"
+
+        print kindToRun
+
         # Step 2.1 : Write input/output to ASP files
         folder_name = self.prepareDistinguish_Input_Output_Folder_PerEachProcess()
         print folder_name
@@ -545,7 +573,7 @@ class Interact_Planning_Engine(object):
         #========================================================================================================= 
 
         # Step 2.2 : Write avoidance/inclusion/insertion to ASP files
-        fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"composite_preference.lp"),"wb")
+        fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"re_composite_preference.lp"),"wb")
         print("---Create Preferences and Constraint From--")
         if (isAvoidance):
             fo.write("%------------------------------------------------------------------------\n")
@@ -567,57 +595,48 @@ class Interact_Planning_Engine(object):
             fo.write("%------------------------------------------------------------------------\n")  
             fo.write("%------------------------------------------------------------------------\n")
         fo.close()
+
+        # Step 2.3 : Write Original Workflow Objet to python file
+        #fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"original_workflow.py"),"wb")
+
+
         #==========================================================================================
         if (len(json_output_re) == 1):
-            if ("resource_speciesTree" in json_output_re[i]["resource_ontology_id"]):
+            if ("resource_speciesTree" in json_output_re[0]["resource_ontology_id"]):
                 DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_9.lp")
-            elif ("resource_reconcileTree" in json_output_re[i]["resource_ontology_id"]):
+            elif ("resource_reconcileTree" in json_output_re[0]["resource_ontology_id"]):
+                DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")
+            else:
                 DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")
         else:
             DEFAULT_STEP = os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")       
                 
         # Step 3 : Run planning
-        # Solution 1 : Run S2_Node Similarity
-        if (engine == 1): # Solution 1 : Run simple Multi-shot LP program pick only 1
-            if (number_of_models > 1):
-                return return_response_error(303,"error","Engine 1 generated only one Plan with hightest App. Similarity Index - Node Similarity ONLY. Using Engine 2 in order to display more than one model with Exact Sim Index ","JSON")
-
-            #planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Composite.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),DEFAULT_STEP,str(1))
-            
-            '''
-            print("--DELETE Temp Input Folder and Output Folder Rosetta Model")
-            delete_path = os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name)
-            if (os.path.exists(delete_path)):
-                try:
-                    shutil.rmtree(delete_path)
-                except OSError:
-                    pass
-            '''
-
-            json_planning_data = json.loads(planing_data)
-            model_result = str(json_planning_data["Result"])
-            model_number = json_planning_data["Models"]["Number"]
-
-            if (model_result.strip().upper() == "SATISFIABLE"
-                    or model_result.strip().upper() == "UNKNOWN"
-                    or (model_number >= 1)):
-
-                    BIG_LIST_ANSWER_SETS = []
-                    array_plans_result_json = []
-                    for i in range(0,model_number):
-                        if (json_planning_data["Call"][i]["Witnesses"] is not None
-                            and len(json_planning_data["Call"][i]["Witnesses"]) > 0):
-                            array_plans_result_json = json_planning_data["Call"][i]["Witnesses"]
-                            BIG_LIST_ANSWER_SETS.append(array_plans_result_json)
-
-                    if (len(BIG_LIST_ANSWER_SETS) > 0):
-                        json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data,qos=False,multi_plans=False,quantity=1)
-                        if (json_output is not None):
-                            return return_success_get_json(json_output)
-                        else:
-                            return return_response_error(403,"error","Data error","JSON")
-                    else:
-                        return return_response_error(400,"error","engine error","JSON")      
+        if ("NORMAL" in kindToRun):
+            #print "Run normal with Original Workflow and Preference"
+            return return_response_error(300,"warnning","Run Normal with Original Workflow and Preference - Comming Soon","JSON")
+        elif ("HAVE_ORIGINAL_WF_NO_PREFERENCE" in kindToRun):
+            BIG_LIST_ANSWER_SETS = []
+            simulate_data = []
+            data = {}
+            data['Value'] = json_original_workflows
+            simulate_data.append(data)
+            BIG_LIST_ANSWER_SETS.append(simulate_data)
+            json_planning_data = {}
+            json_planning_data['Models'] = "Return data"
+            json_planning_data['Time'] = "1ms"
+            json_planning_data['Solver'] = "Clingo"
+            json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data,qos=False,multi_plans=False,quantity=1)
+            if (json_output is not None):
+                return return_success_get_json(json_output)
+            else:
+                return return_response_error(403,"error","Data error","JSON")
+        elif ("NO_ORIGINAL_WF_HAVE_PREFERENCE" in kindToRun):
+            return return_response_error(300,"warnning","Run Simple Planning with Preference - Comming Soon","JSON")
+        elif ("ORIGINAL_PLANNING" in kindToRun):
+            return return_response_error(300,"warnning","Back to Composite - Comming Soon","JSON")
+        else:
+            return return_response_error(300,"error","Unknown","JSON")
 
     #public generate workflow
     generateWorkflow.exposed = True

@@ -181,10 +181,11 @@ def run_planning_engine(path_to_clingo,path_to_main_base,path_to_initial,path_to
     out, err = p.communicate()
     #print err
     return out
+    
 #14rd : Run planning
-def run_re_planning_engine(path_to_clingo,path_to_main_base,path_to_initial,path_to_goal,path_to_preference,default_step,number_of_model):
+def run_re_planning_engine(path_to_clingo,path_to_main_base,path_to_initial,path_to_goal,path_to_preference,path_to_original_workflow,default_step,number_of_model):
     #p = subprocess.Popen([path_to_clingo, '--outf=2', '-n',number_of_model,path_to_planning_base,path_to_ontology_base,path_to_initial,path_to_goal], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    p = subprocess.Popen([path_to_clingo, '--outf=2', path_to_main_base,path_to_initial,path_to_goal,path_to_preference,default_step], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    p = subprocess.Popen([path_to_clingo, '--outf=2', path_to_main_base,path_to_initial,path_to_goal,path_to_preference,path_to_original_workflow,default_step], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = p.communicate()
     #print err
     return out
