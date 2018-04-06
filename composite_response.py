@@ -173,7 +173,7 @@ def calculate_QoS_For_Workflow(detail_workflow):
     score_qos_workflow = score_qos_response_time + score_qos_throughput + score_qos_reliability + score_qos_availability
     return score_qos_workflow,consider_QoS_Vector
 
-def process_a_plan_json_from_raw(big_list_answer_sets,json_in,json_planning_data,qos,multi_plans,quantity):
+def process_a_plan_json_from_raw(big_list_answer_sets,json_in,json_planning_data,qos,multi_plans,quantity,solver):
     try:
         remember_qos_total = []
 
@@ -200,6 +200,10 @@ def process_a_plan_json_from_raw(big_list_answer_sets,json_in,json_planning_data
             d['resource_data_format_id'] = output_object['resource_data_format_id']
             d['resource_data_format_uri'] = output_object['resource_data_format_uri']
             array_output.append(d)
+
+
+       
+
 
         # For only one plan
         data['workflow_plan'] = []
@@ -260,6 +264,13 @@ def process_a_plan_json_from_raw(big_list_answer_sets,json_in,json_planning_data
         #Full JSON data
         data['request_parameters']['input'] = array_input
         data['request_parameters']['output'] = array_output
+        if ("recomposite" in solver):
+            if (json_in['request_parameters']['avoidance'] is not None) and (len(json_in['request_parameters']['avoidance']) > 0):
+                data['request_parameters']['avoidance'] = json_in['request_parameters']['avoidance'] 
+            if (json_in['request_parameters']['inclusion'] is not None) and (len(json_in['request_parameters']['inclusion']) > 0):
+                data['request_parameters']['inclusion'] = json_in['request_parameters']['inclusion']
+            if (json_in['request_parameters']['insertion'] is not None) and (len(json_in['request_parameters']['insertion']) > 0):
+                data['request_parameters']['insertion'] = json_in['request_parameters']['insertion']  
         data['workflow_plan'] = final_worklfow_plans
         data['info']['moldes'] = json_planning_data['Models']
         data['info']['Time'] = json_planning_data['Time']

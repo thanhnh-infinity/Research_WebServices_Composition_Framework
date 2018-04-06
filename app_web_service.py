@@ -272,7 +272,7 @@ class Interact_Planning_Engine(object):
                             BIG_LIST_ANSWER_SETS.append(array_plans_result_json)
 
                     if (len(BIG_LIST_ANSWER_SETS) > 0):
-                        json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data,qos=False,multi_plans=False,quantity=1)
+                        json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data,qos=False,multi_plans=False,quantity=1,solver="planning")
                         if (json_output is not None):
                             return return_success_get_json(json_output)
                         else:
@@ -313,7 +313,7 @@ class Interact_Planning_Engine(object):
                         BIG_LIST_ANSWER_SETS.append(array_plans_result_json)
 
                 if (len(BIG_LIST_ANSWER_SETS) > 0):
-                    json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data,True,True,number_of_models)
+                    json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data,True,True,number_of_models,"planning")
                     if (json_output is not None):
                         return return_success_get_json(json_output)
                     else:
@@ -355,7 +355,7 @@ class Interact_Planning_Engine(object):
                         BIG_LIST_ANSWER_SETS.append(array_plans_result_json)
 
                 if (len(BIG_LIST_ANSWER_SETS) > 0):
-                    json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data,qos=False,multi_plans=False,quantity=1)
+                    json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data,qos=False,multi_plans=False,quantity=1,solver="planning")
                     if (json_output is not None):
                         return return_success_get_json(json_output)
                     else:
@@ -377,7 +377,7 @@ class Interact_Planning_Engine(object):
                             small_list.append(witness)
                             BIG_LIST_ANSWER_SETS.append(small_list)
                     if (len(BIG_LIST_ANSWER_SETS) > 0):
-                        json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data,qos=False,multi_plans=False,quantity=1)
+                        json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data,qos=False,multi_plans=False,quantity=1,solver="planning")
                         if (json_output is not None):
                             return return_success_get_json(json_output)
                         else:
@@ -405,6 +405,12 @@ class Interact_Planning_Engine(object):
 
     ## No Original Workflow _ HAVE Preference 2
     #curl -X POST "http://127.0.0.1:8000/planningEngine/recomposite" -H "content-type:application/json" -d '{"request_parameters" : {"input" : [{"name" : "A Raw Text mixes many types of encoding","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_FreeText","resource_ontology_id" : "resource_FreeText","resource_data_format_id":"raw_text","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#raw_text"}],"output" : [{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree","resource_ontology_id" : "resource_speciesTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}],"avoidance":["phylotastic_ResolvedScientificNames_GNR_TNRS_GET"],"inclusion":["phylotastic_GetPhylogeneticTree_PhyloT_POST"],"insertion":[],"original_workflow":[]},"models":{"number":1,"engine":1}}'
+
+    ## No Original Workflow _ HAVE Preference 3
+    #curl -X POST "http://127.0.0.1:8000/planningEngine/recomposite" -H "content-type:application/json" -d '{"request_parameters" : {"input" : [{"name" : "A Raw Text mixes many types of encoding","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_FreeText","resource_ontology_id" : "resource_FreeText","resource_data_format_id":"raw_text","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#raw_text"}],"output" : [{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree","resource_ontology_id" : "resource_speciesTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}],"avoidance":["phylotastic_ResolvedScientificNames_GNR_TNRS_GET"],"inclusion":["phylotastic_GetPhylogeneticTree_PhyloT_POST"],"insertion":[],"original_workflow":[]},"models":{"number":2,"engine":2}}'
+
+    ## No Original Workflow _ HAVE Preference 4
+    #curl -X POST "http://127.0.0.1:8000/planningEngine/recomposite" -H "content-type:application/json" -d '{"request_parameters" : {"input" : [{"name" : "A Raw Text mixes many types of encoding","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_FreeText","resource_ontology_id" : "resource_FreeText","resource_data_format_id":"raw_text","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#raw_text"}],"output" : [{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree","resource_ontology_id" : "resource_speciesTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}],"avoidance":["phylotastic_ResolvedScientificNames_GNR_TNRS_GET"],"inclusion":["phylotastic_GetPhylogeneticTree_PhyloT_POST"],"insertion":[],"original_workflow":[]},"models":{"number":1,"engine":3}}'
 
     ## HAVE Original Workflow _ NO Preference
     #curl -X POST "http://127.0.0.1:8000/planningEngine/recomposite" -H "content-type:application/json" -d '{"request_parameters" : {"input" : [{"name" : "A Raw Text mixes many types of encoding","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_FreeText","resource_ontology_id" : "resource_FreeText","resource_data_format_id":"raw_text","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#raw_text"}],"output" : [{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree","resource_ontology_id" : "resource_speciesTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}],"avoidance":[],"inclusion":[],"insertion":[],"original_workflow":["goal(8)", "map(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_FreeText,plain_text,1,convert_df_text_format_raw_to_plain,resource_FreeText,plain_text,1)", "map(convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_1,2,phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_SetOfSciName,raw_names_format_1,2)", "map(convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_3,3,convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_3,3)", "map(convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_5,4,convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_5,4)", "map(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfSciName,raw_names_format_OT,5,convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_OT,5)", "map(phylotastic_GetPhylogeneticTree_OT_POST,resource_SetOfTaxon,resolved_names_format_OT,6,phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfTaxon,resolved_names_format_OT,6)", "map(convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,nmsu_tree_format,7,phylotastic_GetPhylogeneticTree_OT_POST,resource_speciesTree,nmsu_tree_format,7)", "map(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,resource_speciesTree,newickTree,9,convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,newickTree,8)", "map(convert_df_text_format_raw_to_plain,resource_FreeText,raw_text,0,initial_state,resource_FreeText,raw_text,0)", "operation_has_input_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_FreeText,plain_text)", "operation_has_input_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfSciName,raw_names_format_OT)", "operation_has_input_has_data_format(phylotastic_GetPhylogeneticTree_OT_POST,resource_SetOfTaxon,resolved_names_format_OT)", "operation_has_input_has_data_format(convert_df_text_format_raw_to_plain,resource_FreeText,raw_text)", "operation_has_input_has_data_format(convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_1)", "operation_has_input_has_data_format(convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_3)", "operation_has_input_has_data_format(convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_5)", "operation_has_input_has_data_format(convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,nmsu_tree_format)", "operation_has_output_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_SetOfSciName,raw_names_format_1)", "operation_has_output_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_HTTPCode,integer)", "operation_has_output_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_ConnectionTime,integer)", "operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfTaxon,resolved_names_format_OT)", "operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfResolvedName,resolved_names_format_OT)", "operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_HTTPCode,integer)", "operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_OT_POST,resource_speciesTree,nmsu_tree_format)", "operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_OT_POST,resource_Tree,nmsu_tree_format)", "operation_has_output_has_data_format(convert_df_text_format_raw_to_plain,resource_FreeText,plain_text)", "operation_has_output_has_data_format(convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_3)", "operation_has_output_has_data_format(convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_5)", "operation_has_output_has_data_format(convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_OT)", "operation_has_output_has_data_format(convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,newickTree)", "occur(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,1)", "occur(phylotastic_ResolvedScientificNames_OT_TNRS_GET,5)", "occur(phylotastic_GetPhylogeneticTree_OT_POST,6)", "occur(convert_df_text_format_raw_to_plain,0)", "occur(convert_df_sci_names_format_1_to_3,2)", "occur(convert_df_sci_names_format_3_to_5,3)", "occur(convert_df_sci_names_format_5_to_OT,4)", "occur(convert_species_tree_format_NMSU_to_NewickTree,7)"]},"models":{"number":1,"engine":1}}' 
@@ -629,7 +635,7 @@ class Interact_Planning_Engine(object):
             json_planning_data['Models'] = "Return data"
             json_planning_data['Time'] = "1ms"
             json_planning_data['Solver'] = "Clingo"
-            json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data,qos=False,multi_plans=False,quantity=1)
+            json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data,qos=False,multi_plans=False,quantity=1,solver="recomposite")
             if (json_output is not None):
                 return return_success_get_json(json_output)
             else:
@@ -643,7 +649,7 @@ class Interact_Planning_Engine(object):
 
                 planing_data = OWLEngine.run_re_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Composite.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"re_composite_preference.lp"),None,DEFAULT_STEP,str(1))
                 
-                '''
+                
                 print("--DELETE Temp Input Folder and Output Folder Rosetta Model")
                 delete_path = os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name)
                 if (os.path.exists(delete_path)):
@@ -651,7 +657,7 @@ class Interact_Planning_Engine(object):
                         shutil.rmtree(delete_path)
                     except OSError:
                         pass
-                '''
+                
 
                 json_planning_data = json.loads(planing_data)
                 model_result = str(json_planning_data["Result"])
@@ -670,7 +676,7 @@ class Interact_Planning_Engine(object):
                                 BIG_LIST_ANSWER_SETS.append(array_plans_result_json)
 
                         if (len(BIG_LIST_ANSWER_SETS) > 0):
-                            json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data,qos=False,multi_plans=False,quantity=1)
+                            json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data,qos=False,multi_plans=False,quantity=1,solver="recomposite")
                             if (json_output is not None):
                                 return return_success_get_json(json_output)
                             else:
@@ -680,8 +686,8 @@ class Interact_Planning_Engine(object):
 
             elif (engine == 2): # Solution 2 : Multi-shot LP Program with QoS External Calculation
 
-                planing_data = OWLEngine.run_re_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "program_multiple_workflows.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"re_composite_preference.lp"),"",DEFAULT_STEP,str(1))
-                '''
+                planing_data = OWLEngine.run_re_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "program_multiple_workflows.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"re_composite_preference.lp"),None,DEFAULT_STEP,str(1))
+                
                 print("--DELETE Temp Input Folder and Output Folder Rosetta Model")
                 delete_path = os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name)
                 if (os.path.exists(delete_path)):
@@ -689,7 +695,7 @@ class Interact_Planning_Engine(object):
                         shutil.rmtree(delete_path)
                     except OSError:
                         pass
-                '''
+                
 
                 # Step 4 : Read planning data
                 json_planning_data = json.loads(planing_data)
@@ -710,7 +716,7 @@ class Interact_Planning_Engine(object):
                             BIG_LIST_ANSWER_SETS.append(array_plans_result_json)
 
                     if (len(BIG_LIST_ANSWER_SETS) > 0):
-                        json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data,True,True,number_of_models)
+                        json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data,True,True,number_of_models,"recomposite")
                         if (json_output is not None):
                             return return_success_get_json(json_output)
                         else:
@@ -723,9 +729,9 @@ class Interact_Planning_Engine(object):
                 if (number_of_models > 1):
                     return return_response_error(303,"error","Engine 3 generated only one Plan with maximum QoS by CLINGCON. Using Engine 2 in order to display more than one model ","JSON")
 
-                planing_data = OWLEngine.run_re_planning_engine(self.FULL_PATH_CLINGCON_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Composite_ForClingcon.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"re_composite_preference.lp"),"",DEFAULT_STEP,str(1))
+                planing_data = OWLEngine.run_re_planning_engine(self.FULL_PATH_CLINGCON_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Composite_ForClingcon.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"re_composite_preference.lp"),None,DEFAULT_STEP,str(1))
                 
-                '''
+                
                 print("--DELETE Temp Input Folder and Output Folder Rosetta Model")
                 delete_path = os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name)
                 if (os.path.exists(delete_path)):
@@ -733,7 +739,7 @@ class Interact_Planning_Engine(object):
                         shutil.rmtree(delete_path)
                     except OSError:
                         pass
-                '''
+                
 
                 json_planning_data = json.loads(planing_data)
                 model_result = str(json_planning_data["Result"])
@@ -752,7 +758,7 @@ class Interact_Planning_Engine(object):
                             BIG_LIST_ANSWER_SETS.append(array_plans_result_json)
 
                     if (len(BIG_LIST_ANSWER_SETS) > 0):
-                        json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data,qos=False,multi_plans=False,quantity=1)
+                        json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data,qos=False,multi_plans=False,quantity=1,solver="recomposite")
                         if (json_output is not None):
                             return return_success_get_json(json_output)
                         else:
@@ -774,7 +780,7 @@ class Interact_Planning_Engine(object):
                                 small_list.append(witness)
                                 BIG_LIST_ANSWER_SETS.append(small_list)
                         if (len(BIG_LIST_ANSWER_SETS) > 0):
-                            json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data,qos=False,multi_plans=False,quantity=1)
+                            json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data,qos=False,multi_plans=False,quantity=1,solver="recomposite")
                             if (json_output is not None):
                                 return return_success_get_json(json_output)
                             else:
