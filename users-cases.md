@@ -43,8 +43,8 @@ curl -X POST "http://127.0.0.1:8000/planningEngine/generateWorkflow" -H "content
 
 # Re-Composition with Preference and Constraint
 ## User Case 1 : Generate Species Tree from Raw Text 
-1. Engine 1 - Generate one Plan with Highest QoS
-### No Preference No Original Workflow
+###1. Engine 1 - Generate one Plan with Highest QoS
+#### No Preference No Original Workflow
 ```
 curl -X POST "http://127.0.0.1:8000/planningEngine/recomposite" -H "content-type:application/json" -d '{"request_parameters" : {"input" : [{"name" : "A Raw Text mixes many types of encoding","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_FreeText","resource_ontology_id" : "resource_FreeText","resource_data_format_id":"raw_text","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#raw_text"}],"output" : [{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree","resource_ontology_id" : "resource_speciesTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}],"avoidance":[],"inclusion":[],"insertion":[],"original_workflow":[]},"models":{"number":1,"engine":1}}'
 ```
@@ -55,4 +55,8 @@ curl -X POST "http://127.0.0.1:8000/planningEngine/recomposite" -H "content-type
 ### No Original Workflow _ HAVE Preference (ex 2)
 ```
 curl -X POST "http://127.0.0.1:8000/planningEngine/recomposite" -H "content-type:application/json" -d '{"request_parameters" : {"input" : [{"name" : "A Raw Text mixes many types of encoding","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_FreeText","resource_ontology_id" : "resource_FreeText","resource_data_format_id":"raw_text","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#raw_text"}],"output" : [{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree","resource_ontology_id" : "resource_speciesTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}],"avoidance":["phylotastic_ResolvedScientificNames_GNR_TNRS_GET"],"inclusion":["phylotastic_GetPhylogeneticTree_PhyloT_POST"],"insertion":[],"original_workflow":[]},"models":{"number":1,"engine":1}}'
+```
+### No Original Workflow _ HAVE Preference (ex 3)
+```
+curl -X POST "http://127.0.0.1:8000/planningEngine/recomposite" -H "content-type:application/json" -d '{"request_parameters" : {"input" : [{"name" : "A Raw Text mixes many types of encoding","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_FreeText","resource_ontology_id" : "resource_FreeText","resource_data_format_id":"raw_text","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#raw_text"}],"output" : [{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree","resource_ontology_id" : "resource_speciesTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}],"avoidance":["phylotastic_ResolvedScientificNames_GNR_TNRS_GET"],"inclusion":["phylotastic_GetPhylogeneticTree_PhyloT_POST"],"insertion":[],"original_workflow":[]},"models":{"number":2,"engine":2}}'
 ```
