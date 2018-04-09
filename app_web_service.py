@@ -392,10 +392,6 @@ class Interact_Planning_Engine(object):
         #--------------END-----------------------------------------
         #==========================================================
     
-    def back_end_process(json_input):
-        print "ABC"    
-
-
     # Use Case 1 : Generate Species Tree from Raw Text
     ## No Preference No Original Workflow
     #curl -X POST "http://127.0.0.1:8000/planningEngine/recomposite" -H "content-type:application/json" -d '{"request_parameters" : {"input" : [{"name" : "A Raw Text mixes many types of encoding","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_FreeText","resource_ontology_id" : "resource_FreeText","resource_data_format_id":"raw_text","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#raw_text"}],"output" : [{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree","resource_ontology_id" : "resource_speciesTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}],"avoidance":[],"inclusion":[],"insertion":[],"original_workflow":[]},"models":{"number":1,"engine":1}}'
@@ -532,9 +528,9 @@ class Interact_Planning_Engine(object):
         if (isOriginalWorkflow and is_Preference):
             kindToRun = "NORMAL" # Normal running
         elif (isOriginalWorkflow and not is_Preference):
-            kindToRun = "HAVE_ORIGINAL_WF_NO_PREFERENCE"
+            kindToRun = "HAVE_ORIGINAL_WF_NO_PREFERENCE" #Ok-Done
         elif (not isOriginalWorkflow and is_Preference):
-            kindToRun = "NO_ORIGINAL_WF_HAVE_PREFERENCE"    
+            kindToRun = "NO_ORIGINAL_WF_HAVE_PREFERENCE" #Ok-Done   
         else :
             kindToRun = "ORIGINAL_PLANNING"
 
@@ -607,8 +603,6 @@ class Interact_Planning_Engine(object):
 
         # Step 2.3 : Write Original Workflow Objet to python file
         #fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"original_workflow.py"),"wb")
-
-
         #==========================================================================================
         if (len(json_output_re) == 1):
             if ("resource_speciesTree" in json_output_re[0]["resource_ontology_id"]):
@@ -622,7 +616,6 @@ class Interact_Planning_Engine(object):
                 
         # Step 3 : Run planning
         if ("NORMAL" in kindToRun):
-            #print "Run normal with Original Workflow and Preference"
             return return_response_error(300,"warnning","Run Normal with Original Workflow and Preference - Comming Soon","JSON")
         elif ("HAVE_ORIGINAL_WF_NO_PREFERENCE" in kindToRun):
             BIG_LIST_ANSWER_SETS = []
@@ -641,7 +634,6 @@ class Interact_Planning_Engine(object):
             else:
                 return return_response_error(403,"error","Data error","JSON")
         elif ("NO_ORIGINAL_WF_HAVE_PREFERENCE" in kindToRun):
-            #return return_response_error(300,"warnning","Run Simple Planning with Preference - Comming Soon","JSON")
             # Solution 1 : Run Multi-shot LP program
             if (engine == 1): # Solution 1 : Run simple Multi-shot LP program pick only 1
                 if (number_of_models > 1):
