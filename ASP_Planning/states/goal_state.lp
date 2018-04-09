@@ -1,12 +1,12 @@
 % Generate OUTPUT
-%finally(resource_speciesTree,phylo4Tree).
-%goal(I) :- exists(resource_speciesTree,phylo4Tree,I), step(I).
+finally(resource_speciesTree,phylo4Tree).
+goal(I) :- exists(resource_speciesTree,phylo4Tree,I), step(I).
 
 %finally(resource_SetOfTaxon,resolved_names_format_GNR).
 %goal(I) :- exists(resource_SetOfTaxon,resolved_names_format_GNR,I), step(I).
 
-finally(resource_reconcileTree,newickTree).
-goal(I) :- exists(resource_reconcileTree,newickTree,I), step(I).
+%finally(resource_reconcileTree,newickTree).
+%goal(I) :- exists(resource_reconcileTree,newickTree,I), step(I).
 
 %finally(resource_AreSameTree,boolean).
 %goal(I) :- exists(resource_AreSameTree,boolean,I), step(I).

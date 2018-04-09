@@ -71,6 +71,9 @@ def main(prg):
             global GLOBAL_BEST_MATCH_WORKFLOW
             global GLOBAL_HIGHEST_SIM_INDEX
             old_workflow = get_CurrentModifying_Workflow()
+            #print "OLD :"
+            #print old_workflow
+
             new_workflow = []
             for atom in clingo_model.symbols(shown=True):
                 new_workflow.append(atom)
@@ -80,6 +83,7 @@ def main(prg):
                GLOBAL_HIGHEST_SIM_INDEX = sim_index
                GLOBAL_BEST_MATCH_WORKFLOW = new_workflow
   
+            #print "NEW :"    
             #print new_workflow 
             print "current sim index : " + str(sim_index)
          

@@ -350,9 +350,11 @@ def sim_topologies(WF_JSON_1, WF_JSON_2):
 ####### MAIN ###############################
 ############################################
 def sim_workflows_graphStructure(WF_JSON_1,WF_JSON_2):
+    
     JSON_WF_1 = json.loads(WF_JSON_1)
     JSON_WF_2 = json.loads(WF_JSON_2)
 
+  
     #print "Node sim : " + str(simNodes_workflow(JSON_WF_1,JSON_WF_2))
     #print "Topo : " + str(sim_topologies(JSON_WF_1,JSON_WF_2))
 
@@ -365,8 +367,9 @@ def sim_workflows(WF_1,WF_2,type):
             WF_JSON_1 =  convert_From_ClingoModels_toBasicGraphStructure(WF_1)
             WF_JSON_2 =  convert_From_ClingoModels_toBasicGraphStructure(WF_2)
 
+            #print "Thanh NH 1"
             #print WF_JSON_1
-            #print "ThanhNH"
+            #print "ThanhNH 2"
             #print WF_JSON_2
 
             return sim_workflows_graphStructure(WF_JSON_1,WF_JSON_2) 
@@ -381,7 +384,7 @@ def convert_From_ClingoModels_toBasicGraphStructure(Clingo_Models_WF):
     new_list = []
     for item in Clingo_Models_WF:
         new_list.append(str(item))
-    return json.dumps(composite_response.read_a_full_workflow_detail(new_list))
+    return json.dumps(composite_response.read_a_full_workflow_detail(new_list)[0])
 
 '''
 for i in range(0,3):

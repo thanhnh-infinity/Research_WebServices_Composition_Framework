@@ -7,7 +7,10 @@
 
 ### For Re-Composition (Inprogressive):
 #### Cases for Re-composite
-##### Case 1 : No Preference - Have Original Workflow => Return original workflow
+##### Case 1 : No Preference - Have Original Workflow => Return original workflow (DONE)
+##### Case 2 : No Preference - No Original Workflow => Return original planning (DONE)
+##### Case 3 : Have Preference - No Original Workflow => Planning with Preference (DONE)
+##### Case 4 : Have Preference - Have Original Workflow => Planning with Preference and Similarity Index (In-progressive)
 
 ## Sync Source Code internal Project
 ### Sync ASP source code between ASP_Planning and Original_ASP : (DONE)

@@ -183,15 +183,24 @@ def run_planning_engine(path_to_clingo,path_to_main_base,path_to_initial,path_to
     return out
     
 #14rd : Run planning
-def run_re_planning_engine(path_to_clingo,path_to_main_base,path_to_initial,path_to_goal,path_to_preference,specify_original_workflow,default_step,number_of_model):
-    if (specify_original_workflow is None or specify_original_workflow == ''):
+def run_re_planning_engine(path_to_clingo,path_to_main_base,path_to_initial,path_to_goal,path_to_preference,specify_id,default_step,number_of_model):
+    if (specify_id is None or specify_id == ''):
         p = subprocess.Popen([path_to_clingo, '--outf=2', path_to_main_base,path_to_initial,path_to_goal,path_to_preference,default_step], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        out, err = p.communicate()
+        print err
+        return out
     else:
-        p = subprocess.Popen([path_to_clingo, '--outf=2', path_to_main_base,path_to_initial,path_to_goal,path_to_preference,specify_original_workflow,default_step], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    out, err = p.communicate()
-    print err
-    return out
+        #print path_to_main_base
+        #print path_to_initial
+        #print path_to_goal
+        #print path_to_preference
+        #p = subprocess.Popen([path_to_clingo, '--outf=2', path_to_main_base,path_to_initial,path_to_goal,path_to_preference,'-c folder="' + specify_id +'"',default_step], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
+        command = 'clingo --outf=2 ' + path_to_main_base + ' ' + path_to_initial + ' ' + path_to_goal + ' ' + path_to_preference + ' ' + default_step
+        print command
+        p = os.popen(command)
+    
+        return p.read()
 def parser_occur_perdicate(occur_string):
     try:
         occur_info = MultipleLevelsOfDictionary()
