@@ -194,6 +194,8 @@ def run_re_planning_engine(path_to_clingo,path_to_main_base,path_to_initial,path
         #print path_to_initial
         #print path_to_goal
         #print path_to_preference
+        #specify_id = "A" + specify_id
+        #print specify_id
         if (engine == 2):
             p = subprocess.Popen([path_to_clingo, '--outf=3', path_to_main_base,path_to_initial,path_to_goal,path_to_preference,'-c folder="' + specify_id +'"',default_step], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             lines = []

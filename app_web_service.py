@@ -59,6 +59,7 @@ class Interact_Planning_Engine(object):
     # Function
     def prepareDistinguish_Input_Output_Folder_PerEachProcess(self):
         current = time.time()
+        current = "R" + str(current)
         states_file_directory = os.path.join(os.getcwd(),"ASP_Planning","states","%s" % str(current))
         if not os.path.exists(states_file_directory):
             os.makedirs(states_file_directory)
@@ -188,7 +189,7 @@ class Interact_Planning_Engine(object):
 
         # Step 2.1 : Write input/output to ASP files
         folder_name = self.prepareDistinguish_Input_Output_Folder_PerEachProcess()
-        print folder_name
+        #print folder_name
         fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),"wb")
         print("---Create Initial State--")
         fo.write("%------------------------------------------------------------------------\n")
@@ -541,7 +542,9 @@ class Interact_Planning_Engine(object):
 
         # Step 2.1 : Write input/output to ASP files
         folder_name = self.prepareDistinguish_Input_Output_Folder_PerEachProcess()
-        print folder_name
+        #print folder_name
+        #folder_name = "R" + str(folder_name)
+
         fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),"wb")
         print("---Create Initial State--")
         fo.write("%------------------------------------------------------------------------\n")
@@ -623,15 +626,20 @@ class Interact_Planning_Engine(object):
             if (isOriginalWorkflow):
                 original_workflow_removed = [str(i) for i in json_original_workflows]
                 fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"original_workflow_data.json"),"wb")
-                fo.write(str(original_workflow_removed))
+                for item in original_workflow_removed:
+                    fo.write(item)
+                    fo.write("\n")
                 fo.close()
 
             if (number_of_models > 1):
                  return return_response_error(300,"warnning","Multiple models have not supported yet","JSON")  
                     
-            if (engine == 2): 
-                planing_data = OWLEngine.run_re_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Re_Composite_S1_OnModel.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"re_composite_preference.lp"),folder_name,DEFAULT_STEP,str(number_of_models),engine)
+            if (engine == 2):
+
             
+
+                planing_data = OWLEngine.run_re_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Re_Composite_S1_OnModel.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"re_composite_preference.lp"),folder_name,DEFAULT_STEP,str(number_of_models),engine)
+                
                 print("--DELETE Temp Input Folder and Output Folder Rosetta Model")
                 delete_path = os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name)
                 if (os.path.exists(delete_path)):

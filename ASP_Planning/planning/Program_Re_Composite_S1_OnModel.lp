@@ -10,12 +10,13 @@ import sys
 import os
 import json
 import collections
+from pprint import pprint
 #----------------------------------------------------------    
 GLOBAL_BEST_MATCH_WORKFLOW = []
 GLOBAL_HIGHEST_SIM_INDEX = -9999999
+OLD_WORKFLOW = []
 
-OLD_WORKFLOW = ['goal(8)', 'map(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_FreeText,plain_text,1,convert_df_text_format_raw_to_plain,resource_FreeText,plain_text,1)', 'map(convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_1,2,phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_SetOfSciName,raw_names_format_1,2)', 'map(convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_3,3,convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_3,3)', 'map(convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_5,4,convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_5,4)', 'map(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfSciName,raw_names_format_OT,5,convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_OT,5)', 'map(phylotastic_GetPhylogeneticTree_OT_POST,resource_SetOfTaxon,resolved_names_format_OT,6,phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfTaxon,resolved_names_format_OT,6)', 'map(convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,nmsu_tree_format,7,phylotastic_GetPhylogeneticTree_OT_POST,resource_speciesTree,nmsu_tree_format,7)', 'map(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,resource_speciesTree,newickTree,9,convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,newickTree,8)', 'map(convert_df_text_format_raw_to_plain,resource_FreeText,raw_text,0,initial_state,resource_FreeText,raw_text,0)', 'operation_has_input_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_FreeText,plain_text)', 'operation_has_input_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfSciName,raw_names_format_OT)', 'operation_has_input_has_data_format(phylotastic_GetPhylogeneticTree_OT_POST,resource_SetOfTaxon,resolved_names_format_OT)', 'operation_has_input_has_data_format(convert_df_text_format_raw_to_plain,resource_FreeText,raw_text)', 'operation_has_input_has_data_format(convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_1)', 'operation_has_input_has_data_format(convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_3)', 'operation_has_input_has_data_format(convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_5)', 'operation_has_input_has_data_format(convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,nmsu_tree_format)', 'operation_has_output_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_SetOfSciName,raw_names_format_1)', 'operation_has_output_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_HTTPCode,integer)', 'operation_has_output_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_ConnectionTime,integer)', 'operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfTaxon,resolved_names_format_OT)', 'operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfResolvedName,resolved_names_format_OT)', 'operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_HTTPCode,integer)', 'operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_OT_POST,resource_speciesTree,nmsu_tree_format)', 'operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_OT_POST,resource_Tree,nmsu_tree_format)', 'operation_has_output_has_data_format(convert_df_text_format_raw_to_plain,resource_FreeText,plain_text)', 'operation_has_output_has_data_format(convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_3)', 'operation_has_output_has_data_format(convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_5)', 'operation_has_output_has_data_format(convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_OT)', 'operation_has_output_has_data_format(convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,newickTree)', 'occur(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,1)', 'occur(phylotastic_ResolvedScientificNames_OT_TNRS_GET,5)', 'occur(phylotastic_GetPhylogeneticTree_OT_POST,6)', 'occur(convert_df_text_format_raw_to_plain,0)', 'occur(convert_df_sci_names_format_1_to_3,2)', 'occur(convert_df_sci_names_format_3_to_5,3)', 'occur(convert_df_sci_names_format_5_to_OT,4)', 'occur(convert_species_tree_format_NMSU_to_NewickTree,7)']
-
+#----------------------------------------------------------    
 
 class MultipleLevelsOfDictionary(collections.OrderedDict):
     def __getitem__(self,item):
@@ -46,8 +47,20 @@ def build_no_op_rule_for_predicate_With_Active(answer_set_symbols,predicate_name
 def sim_matching(WF_1,WF_2):
   return similarity_matching.sim_workflows(WF_1,WF_2,"CLINGO_MODELS")
   #return randint(1000,2000) 
-def get_CurrentModifying_Workflow(prg):
-  return OLD_WORKFLOW
+def get_CurrentModifying_Workflow(prg,old_wf):
+  try:
+      if (len(old_wf) <= 0):
+          print "READ ONLY ONE"
+          folder = str(prg.get_const("folder").string)
+          original_workflowfile_name = os.path.join(os.getcwd(),"ASP_Planning","states",folder,"original_workflow_data.json")
+          with open(original_workflowfile_name) as f:
+               content = f.readlines()
+          old_wf = [x.strip() for x in content]
+          print old_wf
+      return old_wf
+  except  Exception, err:
+      print err
+      return []
 #---------------------------------------------------------- 
 def main(prg):
     def run_original_planning_with_sim_index(prg):
@@ -80,14 +93,15 @@ def main(prg):
         def real_time_check_model(clingo_model):
             global GLOBAL_BEST_MATCH_WORKFLOW
             global GLOBAL_HIGHEST_SIM_INDEX
-            #print "OLD : "
-            old_workflow = get_CurrentModifying_Workflow(prg)
-            #print old_workflow
+            global OLD_WORKFLOW
+        
+            OLD_WORKFLOW = get_CurrentModifying_Workflow(prg,OLD_WORKFLOW) 
+        
 
             new_workflow = []
             for atom in clingo_model.symbols(shown=True):
                 new_workflow.append(atom)
-            sim_index = sim_matching(old_workflow,new_workflow)
+            sim_index = sim_matching(OLD_WORKFLOW,new_workflow)
             current_highest_sim = GLOBAL_HIGHEST_SIM_INDEX
             if (sim_index > current_highest_sim):
                GLOBAL_HIGHEST_SIM_INDEX = sim_index
