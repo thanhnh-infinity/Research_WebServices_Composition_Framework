@@ -201,10 +201,6 @@ def process_a_plan_json_from_raw(big_list_answer_sets,json_in,json_planning_data
             d['resource_data_format_uri'] = output_object['resource_data_format_uri']
             array_output.append(d)
 
-
-       
-
-
         # For only one plan
         data['workflow_plan'] = []
         all_workflow_plans = []
@@ -231,8 +227,12 @@ def process_a_plan_json_from_raw(big_list_answer_sets,json_in,json_planning_data
 
                 d = MultipleLevelsOfDictionary()
                 d['info']['name'] = "Build Reconciliation Tree"
-                d['info']['project'] = "Phylotastic"
+                d['info']['project'] = solver
                 d['info']['step_quantity'] = len(array_plan)
+                #print workflow[0]["Sim_Index"]
+                if (workflow[0].has_key("Sim_Index")):
+                    if(workflow[0]["Sim_Index"] is not None):
+                            d['info']['sim_index'] = workflow[0]["Sim_Index"]
     
                 if (qos):
                     d['info']['quality_attributes']['qos']['score_qos'] = score_qos_workflow
@@ -275,8 +275,11 @@ def process_a_plan_json_from_raw(big_list_answer_sets,json_in,json_planning_data
         data['info']['moldes'] = json_planning_data['Models']
         data['info']['Time'] = json_planning_data['Time']
         data['info']['Solver'] = json_planning_data['Solver']
+        data['info']['Project'] = solver
         if (qos and multi_plans):
             data['info']['ordered_multiple_workflows'] = True
+        #print "ABC"
+        #print data
         return data
     except Exception,err:
         print err

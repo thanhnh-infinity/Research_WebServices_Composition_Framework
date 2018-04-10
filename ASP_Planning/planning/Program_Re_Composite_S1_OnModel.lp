@@ -9,12 +9,21 @@ import similarity_matching
 import sys
 import os
 import json
+import collections
 #----------------------------------------------------------    
 GLOBAL_BEST_MATCH_WORKFLOW = []
 GLOBAL_HIGHEST_SIM_INDEX = -9999999
 
 OLD_WORKFLOW = ['goal(8)', 'map(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_FreeText,plain_text,1,convert_df_text_format_raw_to_plain,resource_FreeText,plain_text,1)', 'map(convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_1,2,phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_SetOfSciName,raw_names_format_1,2)', 'map(convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_3,3,convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_3,3)', 'map(convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_5,4,convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_5,4)', 'map(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfSciName,raw_names_format_OT,5,convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_OT,5)', 'map(phylotastic_GetPhylogeneticTree_OT_POST,resource_SetOfTaxon,resolved_names_format_OT,6,phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfTaxon,resolved_names_format_OT,6)', 'map(convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,nmsu_tree_format,7,phylotastic_GetPhylogeneticTree_OT_POST,resource_speciesTree,nmsu_tree_format,7)', 'map(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,resource_speciesTree,newickTree,9,convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,newickTree,8)', 'map(convert_df_text_format_raw_to_plain,resource_FreeText,raw_text,0,initial_state,resource_FreeText,raw_text,0)', 'operation_has_input_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_FreeText,plain_text)', 'operation_has_input_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfSciName,raw_names_format_OT)', 'operation_has_input_has_data_format(phylotastic_GetPhylogeneticTree_OT_POST,resource_SetOfTaxon,resolved_names_format_OT)', 'operation_has_input_has_data_format(convert_df_text_format_raw_to_plain,resource_FreeText,raw_text)', 'operation_has_input_has_data_format(convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_1)', 'operation_has_input_has_data_format(convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_3)', 'operation_has_input_has_data_format(convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_5)', 'operation_has_input_has_data_format(convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,nmsu_tree_format)', 'operation_has_output_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_SetOfSciName,raw_names_format_1)', 'operation_has_output_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_HTTPCode,integer)', 'operation_has_output_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_ConnectionTime,integer)', 'operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfTaxon,resolved_names_format_OT)', 'operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfResolvedName,resolved_names_format_OT)', 'operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_HTTPCode,integer)', 'operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_OT_POST,resource_speciesTree,nmsu_tree_format)', 'operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_OT_POST,resource_Tree,nmsu_tree_format)', 'operation_has_output_has_data_format(convert_df_text_format_raw_to_plain,resource_FreeText,plain_text)', 'operation_has_output_has_data_format(convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_3)', 'operation_has_output_has_data_format(convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_5)', 'operation_has_output_has_data_format(convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_OT)', 'operation_has_output_has_data_format(convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,newickTree)', 'occur(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,1)', 'occur(phylotastic_ResolvedScientificNames_OT_TNRS_GET,5)', 'occur(phylotastic_GetPhylogeneticTree_OT_POST,6)', 'occur(convert_df_text_format_raw_to_plain,0)', 'occur(convert_df_sci_names_format_1_to_3,2)', 'occur(convert_df_sci_names_format_3_to_5,3)', 'occur(convert_df_sci_names_format_5_to_OT,4)', 'occur(convert_species_tree_format_NMSU_to_NewickTree,7)']
 
+
+class MultipleLevelsOfDictionary(collections.OrderedDict):
+    def __getitem__(self,item):
+        try:
+            return collections.OrderedDict.__getitem__(self,item)
+        except:
+            value = self[item] = type(self)()
+            return value
 #---------------------------------------------------------- 
 # Generate 1{not a; not b;...}.
 def build_no_op_rule_for_predicate_With_Active(answer_set_symbols,predicate_name,index,level):
@@ -86,9 +95,9 @@ def main(prg):
             
             #print "New : "
             #print new_workflow 
-            print "current sim index : " + str(sim_index)
+            #print "current sim index : " + str(sim_index)
          
-            print "\n=================================================="    
+            #print "\n=================================================="    
         def load_asp(prg):
             prg.load(os.path.join(os.getcwd(),"ASP_Planning","planning","single_level_planning_Working.lp"))
             prg.load(os.path.join(os.getcwd(),"ASP_Planning","planning","ontology_TESTING_Working.lp"))
@@ -105,11 +114,11 @@ def main(prg):
 
         # Star to find 1st answer set
         t0 = time.time()
-        print("---Start grounding---")
+        #print("---Start grounding---")
         prg.ground(base_program)
-        print("---End grounding---")
+        #print("---End grounding---")
         t1 = time.time()
-        print("---Time : %s ms" %(str(t1 - t0)))
+        #print("---Time : %s ms" %(str(t1 - t0)))
         enable_active_rule_for_subprogram(prg,1,"single_level")
         while (True):     
             if (multi_shot_id == 1):
@@ -158,13 +167,21 @@ def main(prg):
       answer_sets = run_original_planning_with_sim_index(prg)
       print("---->Original Planning + New Preference : DONE------\n")
 
-      print("===========================Result======================================\n")
-      print("-----> Result \n")
-      print("-----> Best Matched Workflow : ")
-      print GLOBAL_BEST_MATCH_WORKFLOW
-      print("\n-----> Highest Sim Index : " + str(GLOBAL_HIGHEST_SIM_INDEX)) 
-      print("=======================================================================\n")
 
+      d = MultipleLevelsOfDictionary()
+      data = MultipleLevelsOfDictionary()
+      workflows_list = []
+      print("====START-RESULT-THE-BEST-MATCH=====")
+      TEMP_WORKFLOW = []
+      for item in GLOBAL_BEST_MATCH_WORKFLOW:
+          TEMP_WORKFLOW.append(str(item))
+      d['workflow'] = TEMP_WORKFLOW
+      d['sim_index'] = GLOBAL_HIGHEST_SIM_INDEX
+      workflows_list.append(d)
+      data['workflows_list'] = workflows_list
+      print json.dumps(data)
+      print("====END-RESULT-THE-BEST-MATCH======\n")
+     
       # Read the final results : RE-composision collection to work on Similarity
       return GLOBAL_BEST_MATCH_WORKFLOW,GLOBAL_HIGHEST_SIM_INDEX
     #----------------------------------------

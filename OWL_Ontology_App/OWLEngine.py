@@ -183,7 +183,7 @@ def run_planning_engine(path_to_clingo,path_to_main_base,path_to_initial,path_to
     return out
     
 #14rd : Run planning
-def run_re_planning_engine(path_to_clingo,path_to_main_base,path_to_initial,path_to_goal,path_to_preference,specify_id,default_step,number_of_model):
+def run_re_planning_engine(path_to_clingo,path_to_main_base,path_to_initial,path_to_goal,path_to_preference,specify_id,default_step,number_of_model,engine):
     if (specify_id is None or specify_id == ''):
         p = subprocess.Popen([path_to_clingo, '--outf=2', path_to_main_base,path_to_initial,path_to_goal,path_to_preference,default_step], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = p.communicate()
@@ -194,13 +194,29 @@ def run_re_planning_engine(path_to_clingo,path_to_main_base,path_to_initial,path
         #print path_to_initial
         #print path_to_goal
         #print path_to_preference
-        #p = subprocess.Popen([path_to_clingo, '--outf=2', path_to_main_base,path_to_initial,path_to_goal,path_to_preference,'-c folder="' + specify_id +'"',default_step], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if (engine == 2):
+            p = subprocess.Popen([path_to_clingo, '--outf=3', path_to_main_base,path_to_initial,path_to_goal,path_to_preference,'-c folder="' + specify_id +'"',default_step], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            lines = []
+            data = ""
+            with p.stdout:
+                for line in iter(p.stdout.readline, b''):
+                    lines.append(line)        
+            p.wait()
 
-        command = 'clingo --outf=2 ' + path_to_main_base + ' ' + path_to_initial + ' ' + path_to_goal + ' ' + path_to_preference + ' ' + default_step
-        print command
-        p = os.popen(command)
+            for i in range(0,len(lines)):
+                line = lines[i]
+                #print "Fuck" + line
+                if ("====START-RESULT-THE-BEST-MATCH=====" in str(line)):
+                    if ("END-RESULT-THE-BEST-MATCH" in str(lines[i+2])):
+                        data = lines[i+1]
+            return data
+            
+        #out,err = p.communicate()
+        #print err
+        #return out 
+        
     
-        return p.read()
+        #return p.read()
 def parser_occur_perdicate(occur_string):
     try:
         occur_info = MultipleLevelsOfDictionary()

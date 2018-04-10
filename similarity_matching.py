@@ -344,7 +344,7 @@ def generateEdgeLabel(edgeJSON):
 ############################################
 def sim_topologies(WF_JSON_1, WF_JSON_2):
     dist_topology = graph.distance_topology(WF_JSON_1,WF_JSON_2)
-    print dist_topology
+    #print dist_topology
     return 1 / (1 + float(dist_topology))
 ############################################
 ####### MAIN ###############################
