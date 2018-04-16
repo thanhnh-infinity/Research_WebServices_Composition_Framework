@@ -1,3 +1,0 @@
-1. Able to inlcuded QoS calculation in ASP 100% BUT the performance is very BAD for grounding
-
-2. Still using external lib to calculate QoS and sort 
