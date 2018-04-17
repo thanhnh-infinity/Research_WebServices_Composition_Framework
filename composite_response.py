@@ -282,8 +282,8 @@ def process_a_plan_json_from_raw(big_list_answer_sets,json_in,json_planning_data
         #print "ABC"
         #print data
         return data
-    except Exception,err:
-        print err
+    except Exception as inst:
+        #print err
         return None
 def read_a_full_workflow_detail(json_a_workflow_object):
     full_plan = []
