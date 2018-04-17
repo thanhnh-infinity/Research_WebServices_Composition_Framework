@@ -3,10 +3,8 @@ import Global_Parameters
 import OWLUltility
 import sys
 import os
-import urllib2
 import collections
 import subprocess
-import commands
 import json
 
 #CDAO_PHYLOTASTIC_ONT = ontospy.Ontospy(Global_Parameters.GLOBAL_CDAO_PHYLOTASTIC_ONTOLOGY_URL)
