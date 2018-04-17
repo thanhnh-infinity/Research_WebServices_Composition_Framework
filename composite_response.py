@@ -5,8 +5,10 @@ import json
 import pprint
 import composite_parser
 import collections
-import commands
-import math
+try:
+    import math
+except:
+    print("Do not need math")    
 from sklearn.preprocessing import normalize
 import configuration
 import test
