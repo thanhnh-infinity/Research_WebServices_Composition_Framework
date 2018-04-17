@@ -182,49 +182,51 @@ def run_planning_engine(path_to_clingo,path_to_main_base,path_to_initial,path_to
     
 #14rd : Run planning
 def run_re_planning_engine(path_to_clingo,path_to_main_base,path_to_initial,path_to_goal,path_to_preference,specify_id,default_step,number_of_model,engine):
-    if (specify_id is None or specify_id == ''):
-        p = subprocess.Popen([path_to_clingo, '--outf=2', path_to_main_base,path_to_initial,path_to_goal,path_to_preference,default_step], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        out, err = p.communicate()
-        print err
-        return out
-    else:
-        #print path_to_main_base
-        #print path_to_initial
-        #print path_to_goal
-        #print path_to_preference
-        #specify_id = "A" + specify_id
-        #print specify_id
-        if (engine == 2):
-            p = subprocess.Popen([path_to_clingo, '--outf=3', path_to_main_base,path_to_initial,path_to_goal,path_to_preference,'-c folder="' + specify_id +'"',default_step], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            lines = []
-            data = ""
-            with p.stdout:
-                for line in iter(p.stdout.readline, b''):
-                    lines.append(line)        
-            p.wait()
-
-            for i in range(0,len(lines)):
-                line = lines[i]
-                #print "Fuck" + line
-                if ("====START-RESULT-THE-BEST-MATCH=====" in str(line)):
-                    if ("END-RESULT-THE-BEST-MATCH" in str(lines[i+2])):
-                        data = lines[i+1]
-            return data
-        elif (engine == 1):
-            #print "Vao day nao"
-            p = subprocess.Popen([path_to_clingo, '--outf=2', path_to_main_base,path_to_initial,path_to_goal,path_to_preference,'-c folder="' + specify_id +'"',default_step], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    try:
+        if (specify_id is None or specify_id == ''):
+            p = subprocess.Popen([path_to_clingo, '--outf=2', path_to_main_base,path_to_initial,path_to_goal,path_to_preference,default_step], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             out, err = p.communicate()
-            #print "Thanh Nguyen"
-            #print out
-            #print "------"
-            print err
-            return out    
-        #out,err = p.communicate()
-        #print err
-        #return out 
-        
-    
-        #return p.read()
+            print(err)
+            return out
+        else:
+            #print path_to_main_base
+            #print path_to_initial
+            #print path_to_goal
+            #print path_to_preference
+            #specify_id = "A" + specify_id
+            #print specify_id
+            if (engine == 2):
+                p = subprocess.Popen([path_to_clingo, '--outf=3', path_to_main_base,path_to_initial,path_to_goal,path_to_preference,'-c folder="' + specify_id +'"',default_step], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                lines = []
+                data = ""
+                with p.stdout:
+                    for line in iter(p.stdout.readline, b''):
+                        lines.append(line)        
+                p.wait()
+
+                for i in range(0,len(lines)):
+                    line = lines[i]
+                    #print "Fuck" + line
+                    if ("====START-RESULT-THE-BEST-MATCH=====" in str(line)):
+                        if ("END-RESULT-THE-BEST-MATCH" in str(lines[i+2])):
+                            data = lines[i+1]
+                return data
+            elif (engine == 1):
+                #print "Vao day nao"
+                p = subprocess.Popen([path_to_clingo, '--outf=2', path_to_main_base,path_to_initial,path_to_goal,path_to_preference,'-c folder="' + specify_id +'"',default_step], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                out, err = p.communicate()
+                #print "Thanh Nguyen"
+                #print out
+                #print "------"
+                print(err)
+                return out    
+            #out,err = p.communicate()
+            #print err
+            #return out 
+            #return p.read()
+    except Exception as inst:
+        print inst
+        return []
 def parser_occur_perdicate(occur_string):
     try:
         occur_info = MultipleLevelsOfDictionary()
@@ -250,8 +252,8 @@ def parser_occur_perdicate(occur_string):
             return None
 
         return occur_info
-    except Exception,err:
-        print err
+    except Exception as inst:
+        print inst
         return None
 
 #get_all_instances_of_a_directed_class("phylotastic_resources")
