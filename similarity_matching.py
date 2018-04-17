@@ -2,7 +2,8 @@ import nltk
 import string
 import os
 import json
-from sets import Set
+
+#from sets import Set
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.stem.porter import PorterStemmer
