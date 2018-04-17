@@ -1,5 +1,9 @@
-GLOBAL_CDAO_PHYLOTASTIC_ONTOLOGY_URL = "/Volumes/Develop_Data_MacOS/All_Workspace/Python_Workspace/Planning_Project/OWL_Ontology_App/Ontology/cdao_phylotastic.owl"
-GLOBAL_PHYLO_METHODS_ONTOLOGY_URL = "/Volumes/Develop_Data_MacOS/All_Workspace/Python_Workspace/Planning_Project/OWL_Ontology_App/Ontology/phylogenetic_methods.owl"
+import os
+
+#GLOBAL_CDAO_PHYLOTASTIC_ONTOLOGY_URL = "/Volumes/Develop_Data_MacOS/All_Workspace/Python_Workspace/Planning_Project/OWL_Ontology_App/Ontology/cdao_phylotastic.owl"
+#GLOBAL_PHYLO_METHODS_ONTOLOGY_URL = "/Volumes/Develop_Data_MacOS/All_Workspace/Python_Workspace/Planning_Project/OWL_Ontology_App/Ontology/phylogenetic_methods.owl"
+GLOBAL_CDAO_PHYLOTASTIC_ONTOLOGY_URL = os.path.join(os.getcwd(),"OWL_Ontology_App","Ontology","cdao_phylotastic.owl")
+GLOBAL_PHYLO_METHODS_ONTOLOGY_URL = os.path.join(os.getcwd(),"OWL_Ontology_App","Ontology","phylogenetic_methods.owl") 
 
 #GLOBAL_CDAO_PHYLOTASTIC_ONTOLOGY_URL = "/var/web_service/Research_Planning_Ontology_Core_API/Ontology/cdao_phylotastic.owl"
 #GLOBAL_PHYLO_METHODS_ONTOLOGY_URL = "/var/web_service/Research_Planning_Ontology_Core_API/Ontology/phylogenetic_methods.owl"
