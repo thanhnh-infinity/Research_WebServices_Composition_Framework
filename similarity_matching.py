@@ -5,7 +5,7 @@ import json
 try:
   from sets import Set
 except:
-  print "Do not need set"  
+  print("Do not need set")  
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.stem.porter import PorterStemmer
