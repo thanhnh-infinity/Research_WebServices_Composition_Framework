@@ -212,7 +212,15 @@ def run_re_planning_engine(path_to_clingo,path_to_main_base,path_to_initial,path
                     if ("END-RESULT-THE-BEST-MATCH" in str(lines[i+2])):
                         data = lines[i+1]
             return data
-            
+        elif (engine == 1):
+            #print "Vao day nao"
+            p = subprocess.Popen([path_to_clingo, '--outf=2', path_to_main_base,path_to_initial,path_to_goal,path_to_preference,'-c folder="' + specify_id +'"',default_step], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            out, err = p.communicate()
+            #print "Thanh Nguyen"
+            #print out
+            #print "------"
+            print err
+            return out    
         #out,err = p.communicate()
         #print err
         #return out 

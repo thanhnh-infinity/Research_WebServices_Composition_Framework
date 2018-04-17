@@ -31,6 +31,7 @@ HAS_QOS_RESPONSE_TIME_INVOLVED_CONRETE = "HAS_QOS_RESPONSE_TIME_INVOLVED_CONCRET
 HAS_QOS_AVAILABILITY_INVOLVED_CONRETE = "HAS_QOS_AVAILABILITY_INVOLVED_CONCRETE"
 HAS_QOS_THROUGHPUT_INVOLVED_CONRETE = "HAS_QOS_THROUGHPUT_INVOLVED_CONCRETE"
 HAS_QOS_RELIABILITY_INVOLVED_CONRETE = "HAS_QOS_RELIABILITY_INVOLVED_CONCRETE"
+SIM_NODES_WORKFLOWS = "SIM_NODES_WORKFLOWS"
 
 
 class MultipleLevelsOfDictionary(collections.OrderedDict):
@@ -304,7 +305,9 @@ def read_a_full_workflow_detail(json_a_workflow_object):
             raw_plan.append(predicate)
             goal_in = composite_parser.parse_goal_in_predicate(predicate)
         if (SCORE_QOS_WORKFLOW in predicate.strip().upper()):
-            raw_plan.append(predicate)    
+            raw_plan.append(predicate)
+        if (SIM_NODES_WORKFLOWS in predicate.strip().upper()):
+            raw_plan.append(predicate)
     
 
     for predicate in json_a_workflow_object:

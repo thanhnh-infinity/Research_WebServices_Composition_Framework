@@ -17,7 +17,6 @@ GLOBAL_HIGHEST_SIM_INDEX = -9999999
 OLD_WORKFLOW = []
 
 #----------------------------------------------------------    
-
 class MultipleLevelsOfDictionary(collections.OrderedDict):
     def __getitem__(self,item):
         try:
