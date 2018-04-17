@@ -4,7 +4,6 @@ import json
 #import utility
 import pprint
 import composite_parser
-import urllib2
 import collections
 import commands
 import math
