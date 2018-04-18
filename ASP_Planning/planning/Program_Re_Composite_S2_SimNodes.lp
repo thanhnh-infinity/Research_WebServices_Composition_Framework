@@ -55,7 +55,7 @@ def get_CurrentModifying_Workflow(prg):
           old_wf = [x.strip() for x in content]
           #print old_wf
       return old_wf
-  except  Exception, err:
+  except:
       #print err
       return []
 #------------------------------------------------------------

@@ -4,10 +4,11 @@ import json
 #import utility
 import pprint
 import composite_parser
-import urllib2
 import collections
-import commands
-import math
+try:
+    import math
+except:
+    pass    
 from sklearn.preprocessing import normalize
 import configuration
 import test
@@ -282,8 +283,7 @@ def process_a_plan_json_from_raw(big_list_answer_sets,json_in,json_planning_data
         #print "ABC"
         #print data
         return data
-    except Exception,err:
-        print err
+    except:
         return None
 def read_a_full_workflow_detail(json_a_workflow_object):
     full_plan = []

@@ -1,5 +1,4 @@
 import subprocess
-import commands
 import json
 import sys
 import os
