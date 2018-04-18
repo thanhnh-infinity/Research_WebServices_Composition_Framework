@@ -171,7 +171,7 @@ class Interact_Planning_Engine(object):
             engine = models["engine"]
             
         except Exception, err:
-            print err
+            print(err)
             number_of_models = 1
             engine = 1
   
@@ -472,7 +472,7 @@ class Interact_Planning_Engine(object):
             number_of_models = models["number"]
             engine = models["engine"]
         except Exception, err:
-            print err
+            print(err)
             number_of_models = 1
             engine = 1
   
@@ -497,23 +497,23 @@ class Interact_Planning_Engine(object):
 
         json_avoidance_re = request_parameters["avoidance"]
         if ((json_avoidance_re is None) or (json_avoidance_re == '')):
-            print "No avoidance request"
+            print("No avoidance request")
             isAvoidance = False
         if (len(json_avoidance_re) <= 0):
-            print "No avoidance request"
+            print("No avoidance request")
             isAvoidance = False
 
         json_inclusion_re = request_parameters["inclusion"]
         if ((json_inclusion_re is None) or (json_inclusion_re == '')):
-            print "No inclusion request"
+            print("No inclusion request")
             isInclusion = False
         if (len(json_inclusion_re) <= 0):
-            print "No inclusion request"
+            print("No inclusion request")
             isInclusion = False
 
         json_insertion_re = request_parameters["insertion"]
         if ((json_insertion_re is None) or (json_insertion_re == '')):
-            print "No insertion request"
+            print("No insertion request")
             isInsertion = False
         if (len(json_insertion_re) <= 0):
             print "No insertion request"
@@ -521,16 +521,16 @@ class Interact_Planning_Engine(object):
 
         json_original_workflows = request_parameters["original_workflow"]
         if ((json_original_workflows is None) or (json_original_workflows == '')):
-            print "No Original Workflow - Simialrity Index will be terminated"
+            print("No Original Workflow - Simialrity Index will be terminated")
             isOriginalWorkflow = False
         if (len(json_original_workflows) <= 0):
-            print "No Original Workflow - Simialrity Index will be terminated"
+            print("No Original Workflow - Simialrity Index will be terminated")
             isOriginalWorkflow = False    
         
         is_Preference = True
         if (not isAvoidance) and (not isInclusion) and (not isInsertion):
             is_Preference = False
-            print "Switch to Composition - Planning - Input/Output specified but NO Prefernce and Current Workflow - Comming Soon"
+            print("Switch to Composition - Planning - Input/Output specified but NO Prefernce and Current Workflow - Comming Soon")
             #return return_response_error(300,"warnning","No request for Avoidance or Inclusion or Insertion - Back to original planning engine - Comming Soon","JSON") 
             
         if (isOriginalWorkflow and is_Preference):
@@ -542,7 +542,7 @@ class Interact_Planning_Engine(object):
         else :
             kindToRun = "ORIGINAL_PLANNING"
 
-        print kindToRun
+        print(kindToRun)
 
         # Step 2.1 : Write input/output to ASP files
         folder_name = self.prepareDistinguish_Input_Output_Folder_PerEachProcess()
@@ -850,11 +850,10 @@ class Interact_Planning_Engine(object):
                
             elif (engine == 3): # Solutioon 3 : Run Clingcon-3.3.0 with QoS Internal Calculation - Ranking by the best QoS too
                 if (number_of_models > 1):
-                    return return_response_error(303,"error","Engine 3 generated only one Plan with maximum QoS by CLINGCON. Using Engine 2 in order to display more than one model ","JSON")
-                print "Vao day"    
+                    return return_response_error(303,"error","Engine 3 generated only one Plan with maximum QoS by CLINGCON. Using Engine 2 in order to display more than one model ","JSON")  
                 planing_data = OWLEngine.run_re_planning_engine(self.FULL_PATH_CLINGCON_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Composite_ForClingcon.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"re_composite_preference.lp"),None,DEFAULT_STEP,str(1),engine)
                 
-                print planning_data
+                #print planning_data
                 print("--DELETE Temp Input Folder and Output Folder Rosetta Model")
                 delete_path = os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name)
                 if (os.path.exists(delete_path)):
