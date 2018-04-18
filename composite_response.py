@@ -8,7 +8,8 @@ import collections
 try:
     import math
 except:
-    print("Do not need math")    
+    #print("Do not need math")    
+    pass
 from sklearn.preprocessing import normalize
 import configuration
 import test
