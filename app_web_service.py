@@ -639,7 +639,7 @@ class Interact_Planning_Engine(object):
                     
             if (engine == 2):
                 planing_data = OWLEngine.run_re_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Re_Composite_S1_OnModel.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"re_composite_preference.lp"),folder_name,DEFAULT_STEP,str(number_of_models),engine)
-                print planing_data
+                #print planing_data
                 print("--DELETE Temp Input Folder and Output Folder Rosetta Model")
                 delete_path = os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name)
                 if (os.path.exists(delete_path)):
@@ -676,9 +676,9 @@ class Interact_Planning_Engine(object):
                     return return_response_error(400,"error","engine error","JSON") 
             elif (engine == 1):
                 planing_data = OWLEngine.run_re_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Re_Composite_S2_SimNodes.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"re_composite_preference.lp"),folder_name,DEFAULT_STEP,str(number_of_models),engine)
-                print "-------------"
-                print planing_data
-                print "-------------"
+                #print "-------------"
+                #print planing_data
+                #print "-------------"
                 print("--DELETE Temp Input Folder and Output Folder Rosetta Model --- 123")
                 delete_path = os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name)
                 if (os.path.exists(delete_path)):
@@ -852,10 +852,10 @@ class Interact_Planning_Engine(object):
             elif (engine == 3): # Solutioon 3 : Run Clingcon-3.3.0 with QoS Internal Calculation - Ranking by the best QoS too
                 if (number_of_models > 1):
                     return return_response_error(303,"error","Engine 3 generated only one Plan with maximum QoS by CLINGCON. Using Engine 2 in order to display more than one model ","JSON")
-                print "Vao day"    
+                #print "Vao day"    
                 planing_data = OWLEngine.run_re_planning_engine(self.FULL_PATH_CLINGCON_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Composite_ForClingcon.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"re_composite_preference.lp"),None,DEFAULT_STEP,str(1),engine)
                 
-                print planning_data
+                #print planning_data
                 print("--DELETE Temp Input Folder and Output Folder Rosetta Model")
                 delete_path = os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name)
                 if (os.path.exists(delete_path)):
