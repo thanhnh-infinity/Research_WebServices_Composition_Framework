@@ -49,16 +49,16 @@ def sim_matching(WF_1,WF_2):
 def get_CurrentModifying_Workflow(prg,old_wf):
   try:
       if (len(old_wf) <= 0):
-          print "READ ONLY ONE"
+          print("READ ONLY ONE")
           folder = str(prg.get_const("folder").string)
           original_workflowfile_name = os.path.join(os.getcwd(),"ASP_Planning","states",folder,"original_workflow_data.json")
           with open(original_workflowfile_name) as f:
                content = f.readlines()
           old_wf = [x.strip() for x in content]
-          print old_wf
+          print(old_wf)
       return old_wf
   except  Exception as inst:
-      print inst
+      print(inst)
       return []
 #---------------------------------------------------------- 
 def main(prg):
@@ -192,7 +192,7 @@ def main(prg):
       d['sim_index'] = GLOBAL_HIGHEST_SIM_INDEX
       workflows_list.append(d)
       data['workflows_list'] = workflows_list
-      print json.dumps(data)
+      print(json.dumps(data))
       print("====END-RESULT-THE-BEST-MATCH======\n")
      
       # Read the final results : RE-composision collection to work on Similarity
