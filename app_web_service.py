@@ -171,7 +171,7 @@ class Interact_Planning_Engine(object):
             engine = models["engine"]
             
         except Exception, err:
-            print err
+            print(err)
             number_of_models = 1
             engine = 1
   
@@ -472,7 +472,7 @@ class Interact_Planning_Engine(object):
             number_of_models = models["number"]
             engine = models["engine"]
         except Exception, err:
-            print err
+            print(err)
             number_of_models = 1
             engine = 1
   
@@ -497,40 +497,40 @@ class Interact_Planning_Engine(object):
 
         json_avoidance_re = request_parameters["avoidance"]
         if ((json_avoidance_re is None) or (json_avoidance_re == '')):
-            print "No avoidance request"
+            print("No avoidance request")
             isAvoidance = False
         if (len(json_avoidance_re) <= 0):
-            print "No avoidance request"
+            print("No avoidance request")
             isAvoidance = False
 
         json_inclusion_re = request_parameters["inclusion"]
         if ((json_inclusion_re is None) or (json_inclusion_re == '')):
-            print "No inclusion request"
+            print("No inclusion request")
             isInclusion = False
         if (len(json_inclusion_re) <= 0):
-            print "No inclusion request"
+            print("No inclusion request")
             isInclusion = False
 
         json_insertion_re = request_parameters["insertion"]
         if ((json_insertion_re is None) or (json_insertion_re == '')):
-            print "No insertion request"
+            print("No insertion request")
             isInsertion = False
         if (len(json_insertion_re) <= 0):
-            print "No insertion request"
+            print("No insertion request")
             isInsertion = False
 
         json_original_workflows = request_parameters["original_workflow"]
         if ((json_original_workflows is None) or (json_original_workflows == '')):
-            print "No Original Workflow - Simialrity Index will be terminated"
+            print("No Original Workflow - Simialrity Index will be terminated")
             isOriginalWorkflow = False
         if (len(json_original_workflows) <= 0):
-            print "No Original Workflow - Simialrity Index will be terminated"
+            print("No Original Workflow - Simialrity Index will be terminated")
             isOriginalWorkflow = False    
         
         is_Preference = True
         if (not isAvoidance) and (not isInclusion) and (not isInsertion):
             is_Preference = False
-            print "Switch to Composition - Planning - Input/Output specified but NO Prefernce and Current Workflow - Comming Soon"
+            print("Switch to Composition - Planning - Input/Output specified but NO Prefernce and Current Workflow - Comming Soon")
             #return return_response_error(300,"warnning","No request for Avoidance or Inclusion or Insertion - Back to original planning engine - Comming Soon","JSON") 
             
         if (isOriginalWorkflow and is_Preference):
@@ -542,7 +542,7 @@ class Interact_Planning_Engine(object):
         else :
             kindToRun = "ORIGINAL_PLANNING"
 
-        print kindToRun
+        print(kindToRun)
 
         # Step 2.1 : Write input/output to ASP files
         folder_name = self.prepareDistinguish_Input_Output_Folder_PerEachProcess()
