@@ -1,34 +1,41 @@
 # Composition
 ## Standard request
 __URI End Point :__  http://104.197.193.57:7000/planningEngine/generateWorkflow
+
 __HTTP Method:__    POST
+
 __Input Data format:__ JSON
+
 __Input Data Format structure :___
+
+input : is an array of objects
+output : is an array of objects
+
 ```json
 {
             "request_parameters" : {
-                "input" : [ //is an array
+                "input" : [ 
                     {
-                        "name" : <name of component>,
-                        "resource_ontology_uri" : <owl uri>,
-                        "resource_ontology_id" : <owl id - MANDATORY>,
-                        "resource_data_format_id":<owl data format id - MANDATORY>,
-                        "resource_data_format_uri":<owl uri link>
+                        "name" : "name of component- OPTIONAL ",
+                        "resource_ontology_uri" : "owl uri - OPTIONAL",
+                        "resource_ontology_id" : "owl id - MANDATORY",
+                        "resource_data_format_id":"owl data format id - MANDATORY",
+                        "resource_data_format_uri":"owl uri link - OPTIONAL"
                     }
                 ],
-                "output" : [ // is an array
+                "output" : [ 
                     {
-                        "name" : <name of component>,
-                        "resource_ontology_uri" : <owl uri>,
-                        "resource_ontology_id" : <owl id - MANDATORY>,
-                        "resource_data_format_id":<owl data format id - MANDATORY>,
-                        "resource_data_format_uri":<owl uri link>
+                        "name" : "name of component - OPTIONAL",
+                        "resource_ontology_uri" : "owl uri - OPTIONAL",
+                        "resource_ontology_id" : "owl id - MANDATORY",
+                        "resource_data_format_id":"owl data format id - MANDATORY",
+                        "resource_data_format_uri":"owl uri link - OPTIONAL"
                     }
                 ]
             },
             "models":{
-                "number":<number of model - OPTIONAL>,
-                "engine":<engine - MANDATORY>
+                "number":"number of model - OPTIONAL",
+                "engine":"engine - MANDATORY"
             }
         }
 ```
