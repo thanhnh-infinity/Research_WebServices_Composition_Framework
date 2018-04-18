@@ -1,4 +1,39 @@
 # Composition
+## Standard request
+__URI End Point :__  http://104.197.193.57:7000/planningEngine/generateWorkflow
+__HTTP Method:__    POST
+__Input Data format:__ JSON
+__Input Data Format structure :___
+```json
+{
+            "request_parameters" : {
+                "input" : [ //is an array
+                    {
+                        "name" : <name of component>,
+                        "resource_ontology_uri" : <owl uri>,
+                        "resource_ontology_id" : <owl id - MANDATORY>,
+                        "resource_data_format_id":<owl data format id - MANDATORY>,
+                        "resource_data_format_uri":<owl uri link>
+                    }
+                ],
+                "output" : [ // is an array
+                    {
+                        "name" : <name of component>,
+                        "resource_ontology_uri" : <owl uri>,
+                        "resource_ontology_id" : <owl id - MANDATORY>,
+                        "resource_data_format_id":<owl data format id - MANDATORY>,
+                        "resource_data_format_uri":<owl uri link>
+                    }
+                ]
+            },
+            "models":{
+                "number":<number of model - OPTIONAL>,
+                "engine":<engine - MANDATORY>
+            }
+        }
+```
+
+
 ## User Case 1 : Generate Species Tree from Raw Text    
 1. Engine 1 - Generate one Plan with Highest QoS
 ```
