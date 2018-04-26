@@ -351,6 +351,7 @@ def read_a_full_workflow_detail(json_a_workflow_object):
 
                         if (match_obj[0].strip() == service_name.strip()
                             and match_obj[1].strip() == hasIn_resource
+                            and match_obj[6].strip() == hasIn_data_format
                             and match_obj[3] == step):
                             input_com['map']['resource_ontology_id'] = match_obj[5]
                             input_com['map']['resource_data_format'] = match_obj[6]

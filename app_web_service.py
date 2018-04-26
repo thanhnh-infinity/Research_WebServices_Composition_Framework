@@ -281,7 +281,7 @@ class Interact_Planning_Engine(object):
                     shutil.rmtree(delete_path)
                 except OSError:
                     pass
-            
+        
 
             json_planning_data = json.loads(planing_data)
             model_result = str(json_planning_data["Result"])
@@ -313,7 +313,7 @@ class Interact_Planning_Engine(object):
             planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "program_multiple_workflows.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),DEFAULT_STEP,str(1))
 
 
-        
+            
             print("--DELETE Temp Input Folder and Output Folder Rosetta Model")
             delete_path = os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name)
             if (os.path.exists(delete_path)):

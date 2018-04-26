@@ -145,18 +145,23 @@ is_ordered_services(C,D) :- operation(C),
 % Generate INPUT
 initially(resource_FreeText,plain_text).
 %initially(resource_WebURL,http_url).
+
 %initially(resource_SetOfGeneStrings,list_of_strings).
 %initially(resource_geneTree,newickTree).
 
 %initially(resource_speciesTree,newickTree).
-initially(phylomatic_method,string).
+%initially(phylomatic_method,string).
 
 
 %initially(resource_WebURL,http_url).
 %initially(phylomatic_method,string).
 
 %initially(resource_FreeText,raw_text).
-%initially(resource_speciesTree,compare_tree_format).
+initially(resource_speciesTree,compare_tree_format).
+
+%initially(resource_SetOfTaxon,list_of_strings).
+
+
 
 % Generate OUTPUT
 %finally(resource_speciesTree,phylo4Tree).
@@ -171,8 +176,8 @@ initially(phylomatic_method,string).
 %finally(resource_reconcileTree,newickTree).
 %goal(I) :- exists(resource_reconcileTree,newickTree,I), step(I).
 
-%finally(resource_AreSameTree,boolean).
-%goal(I) :- exists(resource_AreSameTree,boolean,I), step(I).
+finally(resource_AreSameTree,boolean).
+goal(I) :- exists(resource_AreSameTree,boolean,I), step(I).
 
 %finally(resource_geneTree,phylo4Tree).
 %goal(I) :- exists(resource_geneTree,phylo4Tree,I), step(I).
@@ -180,8 +185,8 @@ initially(phylomatic_method,string).
 %finally(resource_metadata_tree_scaling,list_of_strings).
 %goal(I) :- exists(resource_metadata_tree_scaling,list_of_strings,I), step(I).
 
-finally(resource_speciesTree_with_BranchLengths,newickTree).
-goal(I) :- exists(resource_speciesTree_with_BranchLengths,newickTree,I), step(I).
+%finally(resource_speciesTree_with_BranchLengths,newickTree).
+%goal(I) :- exists(resource_speciesTree_with_BranchLengths,newickTree,I), step(I).
 
 %finally(resource_metadata_tree_scaling,list_of_strings).
 %goal(I) :- exists(resource_metadata_tree_scaling,list_of_strings,I), exists(resource_speciesTree_with_BranchLengths,newickTree,J), step(I), step(J), M = #max{I;J}.
