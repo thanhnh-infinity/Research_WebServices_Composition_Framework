@@ -1112,6 +1112,46 @@
     
 
 
+    <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#has_QoS_Availability -->
+
+    <owl:DatatypeProperty rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#has_QoS_Availability">
+        <rdfs:subPropertyOf rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#has_Float_Value"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+        <rdfs:comment>QoS Availability, Units : (no) probability : Range 0.0 - 1.0</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#has_QoS_Reliability -->
+
+    <owl:DatatypeProperty rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#has_QoS_Reliability">
+        <rdfs:subPropertyOf rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#has_Float_Value"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+        <rdfs:comment>QoS Reliability, Units : Hours/failure, which is how many hours to appear an error</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#has_QoS_Response_Time -->
+
+    <owl:DatatypeProperty rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#has_QoS_Response_Time">
+        <rdfs:subPropertyOf rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#has_Float_Value"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+        <rdfs:comment>QoS Response Time, Unit : Seconds</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#has_QoS_Throughput -->
+
+    <owl:DatatypeProperty rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#has_QoS_Throughput">
+        <rdfs:subPropertyOf rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#has_Float_Value"/>
+        <rdfs:range rdf:resource="http://www.w3.org/2001/XMLSchema#float"/>
+        <rdfs:comment>QoS Throughput  with Unit : requests per second</rdfs:comment>
+    </owl:DatatypeProperty>
+    
+
+
     <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#has_Range_End_Value -->
 
     <owl:DatatypeProperty rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#has_Range_End_Value">
@@ -2690,6 +2730,34 @@
 
     <owl:Class rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#branch_length_comparison_operation">
         <rdfs:subClassOf rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#tree_comparison"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#operation_class_has_input"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">2</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_Tree"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#operation_class_has_output"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_AreSameTree"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#operation_class_has_output"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_HTTPCode"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#operation_class_has_output"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#ws_response_message"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
     </owl:Class>
     
 
@@ -2722,11 +2790,33 @@
     <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#common_name_to_scientific_name -->
 
     <owl:Class rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#common_name_to_scientific_name">
-        <rdfs:subClassOf rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#look_up_scientific_name"/>
+        <rdfs:subClassOf rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#names_conversion_operation"/>
         <rdfs:subClassOf>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#operation_class_has_input"/>
-                <owl:someValuesFrom rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_Name"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_CommonName"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#operation_class_has_output"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_HTTPCode"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#operation_class_has_output"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_ScientificName"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#operation_class_has_output"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_WebURL"/>
             </owl:Restriction>
         </rdfs:subClassOf>
     </owl:Class>
@@ -3134,16 +3224,17 @@
         <rdfs:subClassOf>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#operation_class_has_output"/>
-                <owl:someValuesFrom rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_taxon"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_taxon"/>
             </owl:Restriction>
         </rdfs:subClassOf>
     </owl:Class>
     
 
 
-    <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#method -->
+    <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#message -->
 
-    <owl:Class rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#method">
+    <owl:Class rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#message">
         <rdfs:subClassOf rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_String"/>
     </owl:Class>
     
@@ -3153,6 +3244,15 @@
 
     <owl:Class rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#molecularRecombination">
         <rdfs:subClassOf rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#recombination"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#names_conversion_operation -->
+
+    <owl:Class rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#names_conversion_operation">
+        <rdfs:subClassOf rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#convert_operation"/>
+        <rdfs:subClassOf rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#names_operation"/>
     </owl:Class>
     
 
@@ -3420,7 +3520,14 @@
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#operation_class_has_input"/>
                 <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
-                <owl:onClass rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_SetOfResolvedName"/>
+                <owl:onClass rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_SetOfTaxon"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#operation_class_has_output"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_HTTPCode"/>
             </owl:Restriction>
         </rdfs:subClassOf>
     </owl:Class>
@@ -3430,7 +3537,7 @@
     <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylomatic_method -->
 
     <owl:Class rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylomatic_method">
-        <rdfs:subClassOf rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#method"/>
+        <rdfs:subClassOf rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_method"/>
     </owl:Class>
     
 
@@ -3455,6 +3562,30 @@
 
     <owl:Class rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#recombination">
         <rdfs:subClassOf rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#geneticEvent"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_AreSameTree -->
+
+    <owl:Class rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_AreSameTree">
+        <rdfs:subClassOf rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_Boolean"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_Boolean -->
+
+    <owl:Class rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_Boolean">
+        <rdfs:subClassOf rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_Text"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_CommonName -->
+
+    <owl:Class rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_CommonName">
+        <rdfs:subClassOf rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_SpeciesName"/>
     </owl:Class>
     
 
@@ -3558,7 +3689,7 @@
     <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_ScientificName -->
 
     <owl:Class rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_ScientificName">
-        <rdfs:subClassOf rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_Name"/>
+        <rdfs:subClassOf rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_SpeciesName"/>
     </owl:Class>
     
 
@@ -3683,6 +3814,14 @@
     
 
 
+    <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_SpeciesName -->
+
+    <owl:Class rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_SpeciesName">
+        <rdfs:subClassOf rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_Name"/>
+    </owl:Class>
+    
+
+
     <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_String -->
 
     <owl:Class rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_String">
@@ -3748,6 +3887,22 @@
     
 
 
+    <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_metadata_tree_scaling -->
+
+    <owl:Class rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_metadata_tree_scaling">
+        <rdfs:subClassOf rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_SetOfStrings"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_method -->
+
+    <owl:Class rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_method">
+        <rdfs:subClassOf rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_String"/>
+    </owl:Class>
+    
+
+
     <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_reconcileTree -->
 
     <owl:Class rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_reconcileTree">
@@ -3782,6 +3937,14 @@
     
 
 
+    <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree_with_BranchLengths -->
+
+    <owl:Class rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree_with_BranchLengths">
+        <rdfs:subClassOf rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree"/>
+    </owl:Class>
+    
+
+
     <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_taxon -->
 
     <owl:Class rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_taxon">
@@ -3805,7 +3968,8 @@
         <rdfs:subClassOf>
             <owl:Restriction>
                 <owl:onProperty rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#operation_class_has_input"/>
-                <owl:someValuesFrom rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_ScientificName"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_ScientificName"/>
             </owl:Restriction>
         </rdfs:subClassOf>
     </owl:Class>
@@ -3860,6 +4024,35 @@
     
 
 
+    <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#species_tree_scaling -->
+
+    <owl:Class rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#species_tree_scaling">
+        <rdfs:subClassOf rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#tree_scaling_operation"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#operation_class_has_input"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylomatic_method"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#operation_class_has_input"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#operation_class_has_output"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree_with_BranchLengths"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
     <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#species_url_operation -->
 
     <owl:Class rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#species_url_operation">
@@ -3880,6 +4073,34 @@
 
     <owl:Class rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#symmetric_comparison_operation">
         <rdfs:subClassOf rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#tree_comparison"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#operation_class_has_input"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">2</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_Tree"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#operation_class_has_output"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_AreSameTree"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#operation_class_has_output"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_HTTPCode"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#operation_class_has_output"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#ws_response_message"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
     </owl:Class>
     
 
@@ -4068,6 +4289,36 @@
     
 
 
+    <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#tree_metadata -->
+
+    <owl:Class rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#tree_metadata">
+        <rdfs:subClassOf rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#tree_information"/>
+    </owl:Class>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#tree_metadata_chronogram -->
+
+    <owl:Class rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#tree_metadata_chronogram">
+        <rdfs:subClassOf rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#tree_metadata"/>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#operation_class_has_input"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+        <rdfs:subClassOf>
+            <owl:Restriction>
+                <owl:onProperty rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#operation_class_has_output"/>
+                <owl:qualifiedCardinality rdf:datatype="http://www.w3.org/2001/XMLSchema#nonNegativeInteger">1</owl:qualifiedCardinality>
+                <owl:onClass rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_metadata_tree_scaling"/>
+            </owl:Restriction>
+        </rdfs:subClassOf>
+    </owl:Class>
+    
+
+
     <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#tree_publifications -->
 
     <owl:Class rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#tree_publifications">
@@ -4191,6 +4442,14 @@
     <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#web_services_collection -->
 
     <owl:Class rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#web_services_collection"/>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#ws_response_message -->
+
+    <owl:Class rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#ws_response_message">
+        <rdfs:subClassOf rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#message"/>
+    </owl:Class>
     
 
 
@@ -4968,10 +5227,46 @@
     
 
 
+    <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_ComparePhylogeneticTrees_Symmetric_POST -->
+
+    <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_ComparePhylogeneticTrees_Symmetric_POST">
+        <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#symmetric_comparison_operation"/>
+        <rdf:type rdf:resource="http://www.mygrid.org.uk/mygrid-moby-service#operation"/>
+        <has_QoS_Availability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</has_QoS_Availability>
+        <has_QoS_Reliability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">520.12</has_QoS_Reliability>
+        <has_QoS_Response_Time rdf:datatype="http://www.w3.org/2001/XMLSchema#float">2.0</has_QoS_Response_Time>
+        <has_QoS_Throughput rdf:datatype="http://www.w3.org/2001/XMLSchema#float">12.5</has_QoS_Throughput>
+        <mygrid-moby-service:hasOperationNameText rdf:datatype="http://www.w3.org/2001/XMLSchema#token">Compare Phylogenetic Trees - Symmetric - POST</mygrid-moby-service:hasOperationNameText>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_CompareTrees_BL_Dendropy_POST -->
+
+    <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_CompareTrees_BL_Dendropy_POST">
+        <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#branch_length_comparison_operation"/>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_CompareTrees_Sym_Dendropy_POST -->
+
+    <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_CompareTrees_Sym_Dendropy_POST">
+        <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#symmetric_comparison_operation"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET -->
 
     <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET">
         <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#names_extraction_tree"/>
+        <rdf:type rdf:resource="http://www.mygrid.org.uk/mygrid-moby-service#operation"/>
+        <has_QoS_Availability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</has_QoS_Availability>
+        <has_QoS_Reliability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">576.41</has_QoS_Reliability>
+        <has_QoS_Response_Time rdf:datatype="http://www.w3.org/2001/XMLSchema#float">15.67</has_QoS_Response_Time>
+        <has_QoS_Throughput rdf:datatype="http://www.w3.org/2001/XMLSchema#float">27.78</has_QoS_Throughput>
+        <mygrid-moby-service:hasOperationNameText rdf:datatype="http://www.w3.org/2001/XMLSchema#token">Extract Species Names From Gene Tree (Fake)</mygrid-moby-service:hasOperationNameText>
     </owl:NamedIndividual>
     
 
@@ -4981,8 +5276,10 @@
     <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_FindScientificNamesFromFreeText_GNRD_GET">
         <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#names_extraction_text"/>
         <rdf:type rdf:resource="http://www.mygrid.org.uk/mygrid-moby-service#operation"/>
-        <phylogenetic_methods:has_input rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_FindScientificNames_FromText_GNRD_GET_In"/>
-        <phylogenetic_methods:has_output rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_FindScientificNames_FromText_GNRD_GET_Out"/>
+        <has_QoS_Availability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</has_QoS_Availability>
+        <has_QoS_Reliability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">576.34</has_QoS_Reliability>
+        <has_QoS_Response_Time rdf:datatype="http://www.w3.org/2001/XMLSchema#float">0.45</has_QoS_Response_Time>
+        <has_QoS_Throughput rdf:datatype="http://www.w3.org/2001/XMLSchema#float">27.17</has_QoS_Throughput>
         <mygrid-moby-service:hasOperationNameText rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FindScientificNamesFromFreeText_GNRD_GET</mygrid-moby-service:hasOperationNameText>
     </owl:NamedIndividual>
     
@@ -4993,6 +5290,11 @@
     <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET">
         <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#names_extraction_web"/>
         <rdf:type rdf:resource="http://www.mygrid.org.uk/mygrid-moby-service#operation"/>
+        <has_QoS_Availability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">0.75</has_QoS_Availability>
+        <has_QoS_Reliability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">600.0</has_QoS_Reliability>
+        <has_QoS_Response_Time rdf:datatype="http://www.w3.org/2001/XMLSchema#float">5.0</has_QoS_Response_Time>
+        <has_QoS_Throughput rdf:datatype="http://www.w3.org/2001/XMLSchema#float">23.8</has_QoS_Throughput>
+        <mygrid-moby-service:hasOperationNameText rdf:datatype="http://www.w3.org/2001/XMLSchema#token">Find Scientific Names From Web-Site NMSU Engine</mygrid-moby-service:hasOperationNameText>
     </owl:NamedIndividual>
     
 
@@ -5002,8 +5304,10 @@
     <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_FindScientificNamesFromWeb_GNRD_GET">
         <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#names_extraction_web"/>
         <rdf:type rdf:resource="http://www.mygrid.org.uk/mygrid-moby-service#operation"/>
-        <phylogenetic_methods:has_input rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_FindScientificNames_Web_GNRD_GET_IN"/>
-        <phylogenetic_methods:has_output rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_FindScientificNames_Web_GNRD_GET_Out"/>
+        <has_QoS_Availability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</has_QoS_Availability>
+        <has_QoS_Reliability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">576.3</has_QoS_Reliability>
+        <has_QoS_Response_Time rdf:datatype="http://www.w3.org/2001/XMLSchema#float">4.81</has_QoS_Response_Time>
+        <has_QoS_Throughput rdf:datatype="http://www.w3.org/2001/XMLSchema#float">5.56</has_QoS_Throughput>
         <mygrid-moby-service:hasOperationNameText rdf:datatype="http://www.w3.org/2001/XMLSchema#string">FindScienticNamesFromWebPage_GNRD_GET</mygrid-moby-service:hasOperationNameText>
     </owl:NamedIndividual>
     
@@ -5057,6 +5361,12 @@
 
     <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GeneTree_Scaling">
         <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#gene_tree_scaling"/>
+        <rdf:type rdf:resource="http://www.mygrid.org.uk/mygrid-moby-service#operation"/>
+        <has_QoS_Availability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</has_QoS_Availability>
+        <has_QoS_Reliability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">577.23</has_QoS_Reliability>
+        <has_QoS_Response_Time rdf:datatype="http://www.w3.org/2001/XMLSchema#float">4.2</has_QoS_Response_Time>
+        <has_QoS_Throughput rdf:datatype="http://www.w3.org/2001/XMLSchema#float">6.3</has_QoS_Throughput>
+        <mygrid-moby-service:hasOperationNameText rdf:datatype="http://www.w3.org/2001/XMLSchema#token">Scalling Tree Service - ThanhNH - Fake</mygrid-moby-service:hasOperationNameText>
     </owl:NamedIndividual>
     
 
@@ -5065,6 +5375,12 @@
 
     <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GenerateGeneTree_From_Genes">
         <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#gene_based_extraction"/>
+        <rdf:type rdf:resource="http://www.mygrid.org.uk/mygrid-moby-service#operation"/>
+        <has_QoS_Availability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</has_QoS_Availability>
+        <has_QoS_Reliability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">300.98</has_QoS_Reliability>
+        <has_QoS_Response_Time rdf:datatype="http://www.w3.org/2001/XMLSchema#float">5.05</has_QoS_Response_Time>
+        <has_QoS_Throughput rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.78</has_QoS_Throughput>
+        <mygrid-moby-service:hasOperationNameText rdf:datatype="http://www.w3.org/2001/XMLSchema#token">GenerateGeneTree_From_Genes_POST</mygrid-moby-service:hasOperationNameText>
     </owl:NamedIndividual>
     
 
@@ -5073,8 +5389,11 @@
 
     <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetAllSpeciesFromTaxon_Country_OT_GET">
         <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#taxon_to_species_by_country"/>
-        <phylogenetic_methods:has_input rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetAllSpeciesFromTaxon_Country_OT_GET_In"/>
-        <phylogenetic_methods:has_output rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetAllSpeciesFromTaxon_Country_OT_GET_Out"/>
+        <rdf:type rdf:resource="http://www.mygrid.org.uk/mygrid-moby-service#operation"/>
+        <has_QoS_Availability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</has_QoS_Availability>
+        <has_QoS_Reliability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">577.78</has_QoS_Reliability>
+        <has_QoS_Response_Time rdf:datatype="http://www.w3.org/2001/XMLSchema#float">0.32</has_QoS_Response_Time>
+        <has_QoS_Throughput rdf:datatype="http://www.w3.org/2001/XMLSchema#float">28.56</has_QoS_Throughput>
         <mygrid-moby-service:hasOperationNameText rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Get all Species from a Taxon filtered by country</mygrid-moby-service:hasOperationNameText>
     </owl:NamedIndividual>
     
@@ -5107,8 +5426,11 @@
 
     <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetAllSpeciesFromTaxon_OT_GET">
         <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#taxon_to_species_operation"/>
-        <phylogenetic_methods:has_input rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetAllSpeciesFromTaxon_OT_GET_In"/>
-        <phylogenetic_methods:has_output rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetAllSpeciesFromTaxon_OT_GET_Out"/>
+        <rdf:type rdf:resource="http://www.mygrid.org.uk/mygrid-moby-service#operation"/>
+        <has_QoS_Availability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</has_QoS_Availability>
+        <has_QoS_Reliability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">577.76</has_QoS_Reliability>
+        <has_QoS_Response_Time rdf:datatype="http://www.w3.org/2001/XMLSchema#float">0.33</has_QoS_Response_Time>
+        <has_QoS_Throughput rdf:datatype="http://www.w3.org/2001/XMLSchema#float">28.92</has_QoS_Throughput>
         <mygrid-moby-service:hasOperationNameText rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GetAllSpeciesFromATaxon OpenTree Taxonomy Service</mygrid-moby-service:hasOperationNameText>
     </owl:NamedIndividual>
     
@@ -5136,10 +5458,29 @@
     
 
 
+    <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST -->
+
+    <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST">
+        <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#species_tree_scaling"/>
+        <has_QoS_Availability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</has_QoS_Availability>
+        <has_QoS_Reliability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1173.06</has_QoS_Reliability>
+        <has_QoS_Response_Time rdf:datatype="http://www.w3.org/2001/XMLSchema#float">3.56</has_QoS_Response_Time>
+        <has_QoS_Throughput rdf:datatype="http://www.w3.org/2001/XMLSchema#float">0.91</has_QoS_Throughput>
+        <mygrid-moby-service:hasOperationNameText rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Scale Phylogenetic Trees with Branch Lengths - DateLife - POST</mygrid-moby-service:hasOperationNameText>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetImageURLsOfSpecies_EOL_GET -->
 
     <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetImageURLsOfSpecies_EOL_GET">
         <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#species_images_operation"/>
+        <rdf:type rdf:resource="http://www.mygrid.org.uk/mygrid-moby-service#operation"/>
+        <has_QoS_Availability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</has_QoS_Availability>
+        <has_QoS_Reliability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">577.84</has_QoS_Reliability>
+        <has_QoS_Response_Time rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.69</has_QoS_Response_Time>
+        <has_QoS_Throughput rdf:datatype="http://www.w3.org/2001/XMLSchema#float">5.55</has_QoS_Throughput>
+        <mygrid-moby-service:hasOperationNameText rdf:datatype="http://www.w3.org/2001/XMLSchema#token">Get image urls of a list of species - EOL - GET</mygrid-moby-service:hasOperationNameText>
     </owl:NamedIndividual>
     
 
@@ -5148,6 +5489,12 @@
 
     <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetImageURLsOfSpecies_EOL_POST">
         <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#species_images_operation"/>
+        <rdf:type rdf:resource="http://www.mygrid.org.uk/mygrid-moby-service#operation"/>
+        <has_QoS_Availability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</has_QoS_Availability>
+        <has_QoS_Reliability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">577.84</has_QoS_Reliability>
+        <has_QoS_Response_Time rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.69</has_QoS_Response_Time>
+        <has_QoS_Throughput rdf:datatype="http://www.w3.org/2001/XMLSchema#float">5.55</has_QoS_Throughput>
+        <mygrid-moby-service:hasOperationNameText rdf:datatype="http://www.w3.org/2001/XMLSchema#token">Get image urls of a list of species - EOL - POST</mygrid-moby-service:hasOperationNameText>
     </owl:NamedIndividual>
     
 
@@ -5156,9 +5503,12 @@
 
     <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetInformationURLsOfSpecies_EOL_GET">
         <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#species_url_operation"/>
-        <phylogenetic_methods:has_input rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetInformationURLsOfSpecies_EOL_GET_In"/>
-        <phylogenetic_methods:has_output rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetInformationURLsOfSpecies_EOL_GET_Out"/>
-        <mygrid-moby-service:hasOperationNameText rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Get information urls of a list of species</mygrid-moby-service:hasOperationNameText>
+        <rdf:type rdf:resource="http://www.mygrid.org.uk/mygrid-moby-service#operation"/>
+        <has_QoS_Availability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</has_QoS_Availability>
+        <has_QoS_Reliability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">577.93</has_QoS_Reliability>
+        <has_QoS_Response_Time rdf:datatype="http://www.w3.org/2001/XMLSchema#float">0.31</has_QoS_Response_Time>
+        <has_QoS_Throughput rdf:datatype="http://www.w3.org/2001/XMLSchema#float">22.92</has_QoS_Throughput>
+        <mygrid-moby-service:hasOperationNameText rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Get information urls of a list of species - GET - EOL</mygrid-moby-service:hasOperationNameText>
     </owl:NamedIndividual>
     
 
@@ -5188,8 +5538,11 @@
 
     <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetInformationURLsOfSpecies_EOL_POST">
         <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#species_url_operation"/>
-        <phylogenetic_methods:has_input rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetInformationURLsOfSpecies_EOL_POST_In"/>
-        <phylogenetic_methods:has_output rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetInformationURLsOfSpecies_EOL_POST_Out"/>
+        <rdf:type rdf:resource="http://www.mygrid.org.uk/mygrid-moby-service#operation"/>
+        <has_QoS_Availability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</has_QoS_Availability>
+        <has_QoS_Reliability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">577.93</has_QoS_Reliability>
+        <has_QoS_Response_Time rdf:datatype="http://www.w3.org/2001/XMLSchema#float">0.31</has_QoS_Response_Time>
+        <has_QoS_Throughput rdf:datatype="http://www.w3.org/2001/XMLSchema#float">22.92</has_QoS_Throughput>
         <mygrid-moby-service:hasOperationNameText rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Get information urls of a list of species POST method</mygrid-moby-service:hasOperationNameText>
     </owl:NamedIndividual>
     
@@ -5216,14 +5569,24 @@
     
 
 
+    <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetMetadata_Chronogram_DateLife_POST -->
+
+    <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetMetadata_Chronogram_DateLife_POST">
+        <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#tree_metadata_chronogram"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetPhylogeneticTree_OT_GET -->
 
     <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetPhylogeneticTree_OT_GET">
         <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#taxonomy_based_extraction"/>
         <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#tree_generation"/>
         <rdf:type rdf:resource="http://www.mygrid.org.uk/mygrid-moby-service#operation"/>
-        <phylogenetic_methods:has_input rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetPhylogeneticTree_OT_GET_In"/>
-        <phylogenetic_methods:has_output rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetPhylogeneticTree_OT_GET_Out"/>
+        <has_QoS_Availability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</has_QoS_Availability>
+        <has_QoS_Reliability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">577.45</has_QoS_Reliability>
+        <has_QoS_Response_Time rdf:datatype="http://www.w3.org/2001/XMLSchema#float">4.04</has_QoS_Response_Time>
+        <has_QoS_Throughput rdf:datatype="http://www.w3.org/2001/XMLSchema#float">4.33</has_QoS_Throughput>
         <mygrid-moby-service:hasOperationNameText rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GetPhylogeneticTree_OT_GET</mygrid-moby-service:hasOperationNameText>
     </owl:NamedIndividual>
     
@@ -5256,8 +5619,10 @@
         <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#taxonomy_based_extraction"/>
         <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#tree_generation"/>
         <rdf:type rdf:resource="http://www.mygrid.org.uk/mygrid-moby-service#operation"/>
-        <phylogenetic_methods:has_input rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetPhylogeneticTree_OT_POST_In"/>
-        <phylogenetic_methods:has_output rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetPhylogeneticTree_OT_POST_Out"/>
+        <has_QoS_Availability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</has_QoS_Availability>
+        <has_QoS_Reliability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">577.45</has_QoS_Reliability>
+        <has_QoS_Response_Time rdf:datatype="http://www.w3.org/2001/XMLSchema#float">4.04</has_QoS_Response_Time>
+        <has_QoS_Throughput rdf:datatype="http://www.w3.org/2001/XMLSchema#float">4.33</has_QoS_Throughput>
         <mygrid-moby-service:hasOperationNameText rdf:datatype="http://www.w3.org/2001/XMLSchema#string">GetPhylogeneticTree_OT_POST</mygrid-moby-service:hasOperationNameText>
     </owl:NamedIndividual>
     
@@ -5284,10 +5649,72 @@
     
 
 
+    <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetPhylogeneticTree_PhyloT_GET -->
+
+    <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetPhylogeneticTree_PhyloT_GET">
+        <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#taxonomy_based_extraction"/>
+        <rdf:type rdf:resource="http://www.mygrid.org.uk/mygrid-moby-service#operation"/>
+        <has_QoS_Availability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</has_QoS_Availability>
+        <has_QoS_Reliability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">586.09</has_QoS_Reliability>
+        <has_QoS_Response_Time rdf:datatype="http://www.w3.org/2001/XMLSchema#float">3.99</has_QoS_Response_Time>
+        <has_QoS_Throughput rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.25</has_QoS_Throughput>
+        <mygrid-moby-service:hasOperationNameText rdf:datatype="http://www.w3.org/2001/XMLSchema#token">Get Phylogenetic Trees from PhyloT - GET</mygrid-moby-service:hasOperationNameText>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetPhylogeneticTree_PhyloT_POST -->
+
+    <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetPhylogeneticTree_PhyloT_POST">
+        <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#taxonomy_based_extraction"/>
+        <rdf:type rdf:resource="http://www.mygrid.org.uk/mygrid-moby-service#operation"/>
+        <has_QoS_Availability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</has_QoS_Availability>
+        <has_QoS_Reliability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">586.09</has_QoS_Reliability>
+        <has_QoS_Response_Time rdf:datatype="http://www.w3.org/2001/XMLSchema#float">3.99</has_QoS_Response_Time>
+        <has_QoS_Throughput rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.25</has_QoS_Throughput>
+        <mygrid-moby-service:hasOperationNameText rdf:datatype="http://www.w3.org/2001/XMLSchema#token">Get Phylogenetic Trees from PhyloT - POST</mygrid-moby-service:hasOperationNameText>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetPhylogeneticTree_Phylomatic_GET -->
+
+    <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetPhylogeneticTree_Phylomatic_GET">
+        <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylogeny_based_extraction"/>
+        <rdf:type rdf:resource="http://www.mygrid.org.uk/mygrid-moby-service#operation"/>
+        <has_QoS_Availability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</has_QoS_Availability>
+        <has_QoS_Reliability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">586.08</has_QoS_Reliability>
+        <has_QoS_Response_Time rdf:datatype="http://www.w3.org/2001/XMLSchema#float">2.03</has_QoS_Response_Time>
+        <has_QoS_Throughput rdf:datatype="http://www.w3.org/2001/XMLSchema#float">5.62</has_QoS_Throughput>
+        <mygrid-moby-service:hasOperationNameText rdf:datatype="http://www.w3.org/2001/XMLSchema#token">Get Phylogenetic Trees from phylomatic - GET</mygrid-moby-service:hasOperationNameText>
+    </owl:NamedIndividual>
+    
+
+
+    <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetPhylogeneticTree_Phylomatic_POST -->
+
+    <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetPhylogeneticTree_Phylomatic_POST">
+        <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylogeny_based_extraction"/>
+        <rdf:type rdf:resource="http://www.mygrid.org.uk/mygrid-moby-service#operation"/>
+        <has_QoS_Availability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</has_QoS_Availability>
+        <has_QoS_Reliability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">586.08</has_QoS_Reliability>
+        <has_QoS_Response_Time rdf:datatype="http://www.w3.org/2001/XMLSchema#float">2.03</has_QoS_Response_Time>
+        <has_QoS_Throughput rdf:datatype="http://www.w3.org/2001/XMLSchema#float">5.62</has_QoS_Throughput>
+        <mygrid-moby-service:hasOperationNameText rdf:datatype="http://www.w3.org/2001/XMLSchema#token">Get Phylogenetic Trees from phylomatic - POST</mygrid-moby-service:hasOperationNameText>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetReconciliationTree_GET -->
 
     <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetReconciliationTree_GET">
         <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#tree_reconciliation"/>
+        <rdf:type rdf:resource="http://www.mygrid.org.uk/mygrid-moby-service#operation"/>
+        <has_QoS_Availability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">0.85</has_QoS_Availability>
+        <has_QoS_Reliability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">580.87</has_QoS_Reliability>
+        <has_QoS_Response_Time rdf:datatype="http://www.w3.org/2001/XMLSchema#float">6.12</has_QoS_Response_Time>
+        <has_QoS_Throughput rdf:datatype="http://www.w3.org/2001/XMLSchema#float">15.12</has_QoS_Throughput>
+        <mygrid-moby-service:hasOperationNameText rdf:datatype="http://www.w3.org/2001/XMLSchema#token">Generate Reconciliation Tree GET</mygrid-moby-service:hasOperationNameText>
     </owl:NamedIndividual>
     
 
@@ -5296,8 +5723,11 @@
 
     <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetSpeciesOfTaxon_Genome_NCBI_GET">
         <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#taxon_to_species_by_genome"/>
-        <phylogenetic_methods:has_input rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetSpeciesOfTaxon_Genome_NCBI_GET_In"/>
-        <phylogenetic_methods:has_output rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetSpeciesOfTaxon_Genome_NCBI_GET_Out"/>
+        <rdf:type rdf:resource="http://www.mygrid.org.uk/mygrid-moby-service#operation"/>
+        <has_QoS_Availability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</has_QoS_Availability>
+        <has_QoS_Reliability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">577.81</has_QoS_Reliability>
+        <has_QoS_Response_Time rdf:datatype="http://www.w3.org/2001/XMLSchema#float">2.1</has_QoS_Response_Time>
+        <has_QoS_Throughput rdf:datatype="http://www.w3.org/2001/XMLSchema#float">6.6</has_QoS_Throughput>
         <mygrid-moby-service:hasOperationNameText rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Get Species (of a Taxon) that have genome sequence in NCBI</mygrid-moby-service:hasOperationNameText>
     </owl:NamedIndividual>
     
@@ -5325,12 +5755,23 @@
     
 
 
+    <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetSpeciesScientificNameFromCommonName_NCBI_GET -->
+
+    <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_GetSpeciesScientificNameFromCommonName_NCBI_GET">
+        <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#common_name_to_scientific_name"/>
+    </owl:NamedIndividual>
+    
+
+
     <!-- http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_ResolvedScientificNames_GNR_TNRS_GET -->
 
     <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_ResolvedScientificNames_GNR_TNRS_GET">
         <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#names_resolution_operation"/>
-        <phylogenetic_methods:has_input rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_ResolvedScientificNames_GNR_TNRS_GET_In"/>
-        <phylogenetic_methods:has_output rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_ResolvedScientificNames_GNR_TNRS_GET_Out"/>
+        <rdf:type rdf:resource="http://www.mygrid.org.uk/mygrid-moby-service#operation"/>
+        <has_QoS_Availability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</has_QoS_Availability>
+        <has_QoS_Reliability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">576.44</has_QoS_Reliability>
+        <has_QoS_Response_Time rdf:datatype="http://www.w3.org/2001/XMLSchema#float">0.68</has_QoS_Response_Time>
+        <has_QoS_Throughput rdf:datatype="http://www.w3.org/2001/XMLSchema#float">19.41</has_QoS_Throughput>
         <mygrid-moby-service:hasOperationNameText rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Resolved Scientific Names TNRS GET method GNR services</mygrid-moby-service:hasOperationNameText>
     </owl:NamedIndividual>
     
@@ -5361,8 +5802,11 @@
 
     <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_ResolvedScientificNames_GNR_TNRS_POST">
         <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#names_resolution_operation"/>
-        <phylogenetic_methods:has_input rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_ResolvedScientificNames_GNR_TNRS_POST_In"/>
-        <phylogenetic_methods:has_output rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_ResolvedScientificNames_GNR_TNRS_POST_Out"/>
+        <rdf:type rdf:resource="http://www.mygrid.org.uk/mygrid-moby-service#operation"/>
+        <has_QoS_Availability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</has_QoS_Availability>
+        <has_QoS_Reliability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">576.44</has_QoS_Reliability>
+        <has_QoS_Response_Time rdf:datatype="http://www.w3.org/2001/XMLSchema#float">0.68</has_QoS_Response_Time>
+        <has_QoS_Throughput rdf:datatype="http://www.w3.org/2001/XMLSchema#float">19.41</has_QoS_Throughput>
         <mygrid-moby-service:hasOperationNameText rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Resolved Scientific Names GNR TNRS Service Post method</mygrid-moby-service:hasOperationNameText>
     </owl:NamedIndividual>
     
@@ -5394,8 +5838,10 @@
     <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_ResolvedScientificNames_OT_TNRS_GET">
         <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#names_resolution_operation"/>
         <rdf:type rdf:resource="http://www.mygrid.org.uk/mygrid-moby-service#operation"/>
-        <phylogenetic_methods:has_input rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_ResolvedScientificNames_OT_TNRS_GET_In"/>
-        <phylogenetic_methods:has_output rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_ResolvedScientificNames_OT_TNRS_GET_Out"/>
+        <has_QoS_Availability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</has_QoS_Availability>
+        <has_QoS_Reliability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">576.48</has_QoS_Reliability>
+        <has_QoS_Response_Time rdf:datatype="http://www.w3.org/2001/XMLSchema#float">0.44</has_QoS_Response_Time>
+        <has_QoS_Throughput rdf:datatype="http://www.w3.org/2001/XMLSchema#float">27.49</has_QoS_Throughput>
         <mygrid-moby-service:hasOperationNameText rdf:datatype="http://www.w3.org/2001/XMLSchema#string">ResolvedScientificNames_OT_TNRS_GET</mygrid-moby-service:hasOperationNameText>
     </owl:NamedIndividual>
     
@@ -5426,8 +5872,11 @@
 
     <owl:NamedIndividual rdf:about="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_ResolvedScientificNames_OT_TNRS_POST">
         <rdf:type rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#names_resolution_operation"/>
-        <phylogenetic_methods:has_input rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_ResolvedScientificNames_OT_TNRS_POST_In"/>
-        <phylogenetic_methods:has_output rdf:resource="http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#phylotastic_ResolvedScientificNames_OT_TNRS_POST_Out"/>
+        <rdf:type rdf:resource="http://www.mygrid.org.uk/mygrid-moby-service#operation"/>
+        <has_QoS_Availability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">1.0</has_QoS_Availability>
+        <has_QoS_Reliability rdf:datatype="http://www.w3.org/2001/XMLSchema#float">576.48</has_QoS_Reliability>
+        <has_QoS_Response_Time rdf:datatype="http://www.w3.org/2001/XMLSchema#float">0.44</has_QoS_Response_Time>
+        <has_QoS_Throughput rdf:datatype="http://www.w3.org/2001/XMLSchema#float">27.49</has_QoS_Throughput>
         <mygrid-moby-service:hasOperationNameText rdf:datatype="http://www.w3.org/2001/XMLSchema#string">Resolved Scientific Names Open Tree TNRS POST method</mygrid-moby-service:hasOperationNameText>
     </owl:NamedIndividual>
     

@@ -185,6 +185,7 @@ class(tree_retrieval_operation).
 class(tree_extraction_operation).
 class(tree_reconciliation).
 class(tree_support_studies).
+class(tree_metadata_chronogram).
 class(branch_length_comparison_operation).
 class(symmetric_comparison_operation).
 class(tree_scaling_operation).
@@ -244,6 +245,8 @@ subClass(tree_retrieval_operation,tree_generation).
 subClass(tree_extraction_operation,tree_generation).
 subClass(tree_reconciliation,tree_generation).
 subClass(tree_support_studies,tree_information).
+subClass(tree_metadata,tree_information).
+subClass(tree_metadata_chronogram,tree_metadata).
 subClass(branch_length_comparison_operation,tree_comparison).
 subClass(symmetric_comparison_operation,tree_comparison).
 subClass(tree_scaling_operation,tree_transformation).
@@ -293,6 +296,7 @@ class(resource_contentURL).
 class(resource_WebURL).
 class(resource_SetOfScientificNames).
 class(resource_SetOfGeneStrings).
+class(resource_metadata_tree_scaling).
 class(resource_Name).
 class(resource_method).
 class(phylomatic_method).
@@ -346,6 +350,7 @@ subClass(resource_contentURL,resource_URI).
 subClass(resource_WebURL,resource_URI).
 subClass(resource_SetOfScientificNames,resource_SetOfNames).
 subClass(resource_SetOfGeneStrings,resource_SetOfNames).
+subClass(resource_metadata_tree_scaling,resource_SetOfStrings).
 subClass(resource_Name,resource_String).
 subClass(resource_HTTPCode,resource_Number).
 subClass(resource_ConnectionTime,resource_Number).
@@ -391,9 +396,17 @@ instance(phylotastic_FindScientificNamesFromWeb_GNRD_GET).
 instance(phylotastic_FindScientificNamesFromFreeText_GNRD_GET).
 instance(phylotastic_GetSpeciesOfTaxon_Genome_NCBI_GET).
 instance(phylotastic_GetAllSpeciesFromTaxon_Country_OT_GET).
-instance(phylotastic_ComparePhylogeneticTrees_Symmetric_POST).
+
+% Tree transformation
 instance(phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST).
 instance(phylotastic_GetSpeciesScientificNameFromCommonName_NCBI_GET).
+
+% Tree Information
+instance(phylotastic_GetMetadata_Chronogram_DateLife_POST).
+
+% Tree Comparison
+instance(phylotastic_CompareTrees_Sym_Dendropy_POST).
+instance(phylotastic_CompareTrees_BL_Dendropy_POST).
 
 % Add for test - Co trong Ontoloy - But Do not have real services
 instance(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET).
@@ -406,6 +419,7 @@ instance(phylotastic_GeneTree_Scaling).
 instance(google_ConvertCountryCodeToName_GET).
 instance(openTree_GetTaxonomyNameFromSciName_GET).
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Detect instances of classes -- immediate class
 isInstanceOf_immediate(phylotastic_ResolvedScientificNames_GNR_TNRS_GET,names_resolution_operation).
@@ -431,9 +445,20 @@ isInstanceOf_immediate(phylotastic_GetPhylogeneticTree_Phylomatic_POST,phylogeny
 isInstanceOf_immediate(phylotastic_GetPhylogeneticTree_PhyloT_GET,taxonomy_based_extraction).
 isInstanceOf_immediate(phylotastic_GetPhylogeneticTree_PhyloT_POST,taxonomy_based_extraction).
 
-isInstanceOf_immediate(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,symmetric_comparison_operation).
-isInstanceOf_immediate(phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST,species_tree_scaling).
+% Tree Comparison
+isInstanceOf_immediate(phylotastic_CompareTrees_Sym_Dendropy_POST,symmetric_comparison_operation).
+isInstanceOf_immediate(phylotastic_CompareTrees_BL_Dendropy_POST,branch_length_comparison_operation).
+
+% Tree Information
+isInstanceOf_immediate(phylotastic_GetMetadata_Chronogram_DateLife_POST,tree_metadata_chronogram).
+
+
 isInstanceOf_immediate(phylotastic_GetSpeciesScientificNameFromCommonName_NCBI_GET,common_name_to_scientific_name).
+
+% Tree Transformation
+%% tree_transformation/tree_scaling_operation/species_tree_scaling
+isInstanceOf_immediate(phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST,species_tree_scaling).
+
 
 % Add more for testing - CHUA CO TRONG OWL
 isInstanceOf_immediate(google_ConvertCountryCodeToName_GET,country_code_to_name).
@@ -576,22 +601,31 @@ instance_operation_has_output_has_data_format(phylotastic_GetSpeciesScientificNa
 instance_operation_has_output_has_data_format(phylotastic_GetSpeciesScientificNameFromCommonName_NCBI_GET, resource_WebURL, http_url).
 
 
-instance_operation_has_input_has_data_format(phylotastic_ComparePhylogeneticTrees_Symmetric_POST, resource_speciesTree, newickTree).
-instance_operation_has_input_has_data_format(phylotastic_ComparePhylogeneticTrees_Symmetric_POST, resource_speciesTree, newickTree).
-instance_operation_has_output_has_data_format(phylotastic_ComparePhylogeneticTrees_Symmetric_POST, resource_AreSameTree, boolean).
-instance_operation_has_output_has_data_format(phylotastic_ComparePhylogeneticTrees_Symmetric_POST, resource_HTTPCode, integer).
-instance_operation_has_output_has_data_format(phylotastic_ComparePhylogeneticTrees_Symmetric_POST, ws_response_message, string).
+instance_operation_has_input_has_data_format(phylotastic_CompareTrees_Sym_Dendropy_POST, resource_speciesTree, newickTree).
+instance_operation_has_input_has_data_format(phylotastic_CompareTrees_Sym_Dendropy_POST, resource_speciesTree, compare_tree_format).
+instance_operation_has_output_has_data_format(phylotastic_CompareTrees_Sym_Dendropy_POST, resource_AreSameTree, boolean).
+instance_operation_has_output_has_data_format(phylotastic_CompareTrees_Sym_Dendropy_POST, resource_HTTPCode, integer).
+instance_operation_has_output_has_data_format(phylotastic_CompareTrees_Sym_Dendropy_POST, ws_response_message, string).
+
+instance_operation_has_input_has_data_format(phylotastic_CompareTrees_BL_Dendropy_POST, resource_speciesTree, newickTree).
+instance_operation_has_input_has_data_format(phylotastic_CompareTrees_BL_Dendropy_POST, resource_speciesTree, compare_tree_format).
+instance_operation_has_output_has_data_format(phylotastic_CompareTrees_BL_Dendropy_POST, resource_AreSameTree, boolean).
+instance_operation_has_output_has_data_format(phylotastic_CompareTrees_BL_Dendropy_POST, resource_HTTPCode, integer).
+instance_operation_has_output_has_data_format(phylotastic_CompareTrees_BL_Dendropy_POST, ws_response_message, string).
 
 instance_operation_has_input_has_data_format(phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST, phylomatic_method, string).
 instance_operation_has_input_has_data_format(phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST, resource_speciesTree, newickTree).
 instance_operation_has_output_has_data_format(phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST, resource_speciesTree_with_BranchLengths, newickTree).
 
+instance_operation_has_input_has_data_format(phylotastic_GetMetadata_Chronogram_DateLife_POST, resource_speciesTree, newickTree).
+instance_operation_has_output_has_data_format(phylotastic_GetMetadata_Chronogram_DateLife_POST, resource_metadata_tree_scaling, list_of_strings).
+
 %%%
 % Add more for testing == CHUA CO TRONG OWL
 %%%
 
-instance_operation_has_input_has_data_format(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET, resource_WebURL, data_format_E).
-instance_operation_has_output_has_data_format(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET, resource_SetOfSciName, raw_names_format_2).
+instance_operation_has_input_has_data_format(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET, resource_WebURL, http_url).
+instance_operation_has_output_has_data_format(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET, resource_SetOfSciName, raw_names_format_6).
 instance_operation_has_output_has_data_format(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET, resource_HTTPCode, integer).
 instance_operation_has_output_has_data_format(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET, resource_ConnectionTime, integer).
 %instance_operation_has_output_has_data_format(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET, resource_SetOfNames, list_of_strings).
@@ -658,7 +692,6 @@ has_qos_response_time(phylotastic_GetPhylogeneticTree_Phylomatic_POST,2030).
 %has_qos_response_time(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,"0.45").
 %has_qos_response_time(phylotastic_GetSpeciesOfTaxon_Genome_NCBI_GET,"2.1").
 %has_qos_response_time(phylotastic_GetAllSpeciesFromTaxon_Country_OT_GET,"0.32").
-%has_qos_response_time(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,"2.0").
 %has_qos_response_time(phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST,"3.56").
 
 has_qos_response_time(phylotastic_GetInformationURLsOfSpecies_EOL_POST,310).
@@ -669,8 +702,10 @@ has_qos_response_time(phylotastic_FindScientificNamesFromWeb_GNRD_GET,4810).
 has_qos_response_time(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,450).
 has_qos_response_time(phylotastic_GetSpeciesOfTaxon_Genome_NCBI_GET,2100).
 has_qos_response_time(phylotastic_GetAllSpeciesFromTaxon_Country_OT_GET,320).
-has_qos_response_time(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,2000).
+has_qos_response_time(phylotastic_CompareTrees_Sym_Dendropy_POST,2000).
+has_qos_response_time(phylotastic_CompareTrees_BL_Dendropy_POST,3000).
 has_qos_response_time(phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST,3560).
+has_qos_response_time(phylotastic_GetMetadata_Chronogram_DateLife_POST,1830).
 
 % Add for test - Co trong Ontoloy - But Do not have real services
 %has_qos_response_time(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET,"5.1").
@@ -793,7 +828,6 @@ has_qos_throughput(phylotastic_GetPhylogeneticTree_Phylomatic_POST,6200).
 %has_qos_throughput(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,"27.17").
 %has_qos_throughput(phylotastic_GetSpeciesOfTaxon_Genome_NCBI_GET,"6.6").
 %has_qos_throughput(phylotastic_GetAllSpeciesFromTaxon_Country_OT_GET,"28.56").
-%has_qos_throughput(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,"12.5").
 %has_qos_throughput(phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST,"0.91").
 
 has_qos_throughput(phylotastic_GetInformationURLsOfSpecies_EOL_POST,2292).
@@ -804,8 +838,10 @@ has_qos_throughput(phylotastic_FindScientificNamesFromWeb_GNRD_GET,5560).
 has_qos_throughput(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,27170).
 has_qos_throughput(phylotastic_GetSpeciesOfTaxon_Genome_NCBI_GET,6600).
 has_qos_throughput(phylotastic_GetAllSpeciesFromTaxon_Country_OT_GET,28560).
-has_qos_throughput(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,12500).
+has_qos_throughput(phylotastic_CompareTrees_Sym_Dendropy_POST,12500).
+has_qos_throughput(phylotastic_CompareTrees_BL_Dendropy_POST,13500).
 has_qos_throughput(phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST,910).
+has_qos_throughput(phylotastic_GetMetadata_Chronogram_DateLife_POST,1200).
 
 % Add for test - Co trong Ontoloy - But Do not have real services
 %has_qos_throughput(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET,"23.8").
@@ -930,7 +966,6 @@ has_qos_reliability(phylotastic_GetPhylogeneticTree_Phylomatic_POST,586080).
 %has_qos_reliability(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,"576.34").
 %has_qos_reliability(phylotastic_GetSpeciesOfTaxon_Genome_NCBI_GET,"577.81").
 %has_qos_reliability(phylotastic_GetAllSpeciesFromTaxon_Country_OT_GET,"577.78").
-%has_qos_reliability(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,"520.12").
 %has_qos_reliability(phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST,"1173.06").
 
 
@@ -942,8 +977,10 @@ has_qos_reliability(phylotastic_FindScientificNamesFromWeb_GNRD_GET,576300).
 has_qos_reliability(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,576340).
 has_qos_reliability(phylotastic_GetSpeciesOfTaxon_Genome_NCBI_GET,577810).
 has_qos_reliability(phylotastic_GetAllSpeciesFromTaxon_Country_OT_GET,577780).
-has_qos_reliability(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,520120).
+has_qos_reliability(phylotastic_CompareTrees_Sym_Dendropy_POST,520120).
+has_qos_reliability(phylotastic_CompareTrees_BL_Dendropy_POST,510120).
 has_qos_reliability(phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST,1173060).
+has_qos_reliability(phylotastic_GetMetadata_Chronogram_DateLife_POST,1173060).
 
 % Add for test - Co trong Ontoloy - But Do not have real services
 %has_qos_reliability(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET,"600.0").
@@ -1067,7 +1104,6 @@ has_qos_availability(phylotastic_GetPhylogeneticTree_Phylomatic_POST,1000).
 %has_qos_availability(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,"1.0").
 %has_qos_availability(phylotastic_GetSpeciesOfTaxon_Genome_NCBI_GET,"1.0").
 %has_qos_availability(phylotastic_GetAllSpeciesFromTaxon_Country_OT_GET,"1.0").
-%has_qos_availability(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,"1.0").
 %has_qos_availability(phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST,"1.0").
 
 has_qos_availability(phylotastic_GetInformationURLsOfSpecies_EOL_POST,1000).
@@ -1078,8 +1114,10 @@ has_qos_availability(phylotastic_FindScientificNamesFromWeb_GNRD_GET,1000).
 has_qos_availability(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,1000).
 has_qos_availability(phylotastic_GetSpeciesOfTaxon_Genome_NCBI_GET,1000).
 has_qos_availability(phylotastic_GetAllSpeciesFromTaxon_Country_OT_GET,1000).
-has_qos_availability(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,1000).
+has_qos_availability(phylotastic_CompareTrees_Sym_Dendropy_POST,1000).
+has_qos_availability(phylotastic_CompareTrees_BL_Dendropy_POST,1000).
 has_qos_availability(phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST,1000).
+has_qos_availability(phylotastic_GetMetadata_Chronogram_DateLife_POST,1000).
 
 % Add for test - Co trong Ontoloy - But Do not have real services
 %has_qos_availability(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET,"0.75").
@@ -1228,11 +1266,13 @@ class(tree_format_2).
 class(tree_format_3).
 class(tree_format_4).
 class(nmsu_tree_format).
+class(compare_tree_format).
 subClass(tree_format_1,treeFormat).
 subClass(tree_format_2,treeFormat).
 subClass(tree_format_3,treeFormat).
 subClass(tree_format_4,treeFormat).
 subClass(nmsu_tree_format,treeFormat).
+subClass(compare_tree_format,treeFormat).
 
 
 % INSTANCES Data format Conversion operation
@@ -1975,6 +2015,10 @@ output(tree_reconciliation, tree_3, resource_reconcileTree).
 
 %%% Parent class : tree_operation/tree_information
 % class tree_support_studies
+
+% class tree_metadata_chronogram
+input(tree_metadata_chronogram,phylo_tree_1,resource_speciesTree).
+output(tree_metadata_chronogram,metadata_list_1,resource_metadata_tree_scaling).
 
 %%% Parent class : tree_operation/tree_transformation
 % class tree_scaling_operation

@@ -6,7 +6,7 @@
 % HAVE TO USE
 %used_operation(phylotastic_GetPhylogeneticTree_Phylomatic_GET).
 %used_operation(phylotastic_GetPhylogeneticTree_OT_GET).
-%used_operation(phylotastic_GetPhylogeneticTree_OT_POST).
+used_operation(phylotastic_GetPhylogeneticTree_OT_POST).
 %used_operation(phylotastic_GetPhylogeneticTree_PhyloT_GET).
 %used_operation(phylotastic_GetPhylogeneticTree_PhyloT_POST).
 %used_operation(phylotastic_GetPhylogeneticTree_Phylomatic_POST).

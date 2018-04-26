@@ -2,6 +2,7 @@
 % PLANNING PART : Build WorkFlow for SINGLE LEVEL OF PLANNING
 %========================================================================
 %#const n = 1.
+%#const n = 3.
 %#const n = 6.
 %#const n = 9.
 %#const n = 11.
@@ -136,30 +137,54 @@ is_ordered_services(C,D) :- operation(C),
                             occur(C,T1),
                             occur(D,T2),
                             T1 < T2.
+
+%:- exists(R,DF_R,0), not map(_,_,_,_,initial_state,R,DF_R,0).
 %========================================================================
 % Basic part : initial and goal state (SHOULD BE IN DIFFERENT FILES - INIITAL and GOAL FILES)
 
 % Generate INPUT
-%initially(resource_FreeText,raw_text).
+initially(resource_FreeText,plain_text).
 %initially(resource_WebURL,http_url).
-initially(resource_SetOfGeneStrings,list_of_strings).
+%initially(resource_SetOfGeneStrings,list_of_strings).
 %initially(resource_geneTree,newickTree).
+
+%initially(resource_speciesTree,newickTree).
+initially(phylomatic_method,string).
+
+
+%initially(resource_WebURL,http_url).
+%initially(phylomatic_method,string).
+
+%initially(resource_FreeText,raw_text).
+%initially(resource_speciesTree,compare_tree_format).
 
 % Generate OUTPUT
 %finally(resource_speciesTree,phylo4Tree).
 %goal(I) :- exists(resource_speciesTree,phylo4Tree,I), step(I).
 
+%finally(resource_speciesTree,newickTree).
+%goal(I) :- exists(resource_speciesTree,newickTree,I), step(I).
+
 %finally(resource_SetOfTaxon,resolved_names_format_GNR).
 %goal(I) :- exists(resource_SetOfTaxon,resolved_names_format_GNR,I), step(I).
 
-finally(resource_reconcileTree,newickTree).
-goal(I) :- exists(resource_reconcileTree,newickTree,I), step(I).
+%finally(resource_reconcileTree,newickTree).
+%goal(I) :- exists(resource_reconcileTree,newickTree,I), step(I).
 
 %finally(resource_AreSameTree,boolean).
 %goal(I) :- exists(resource_AreSameTree,boolean,I), step(I).
 
 %finally(resource_geneTree,phylo4Tree).
 %goal(I) :- exists(resource_geneTree,phylo4Tree,I), step(I).
+
+%finally(resource_metadata_tree_scaling,list_of_strings).
+%goal(I) :- exists(resource_metadata_tree_scaling,list_of_strings,I), step(I).
+
+finally(resource_speciesTree_with_BranchLengths,newickTree).
+goal(I) :- exists(resource_speciesTree_with_BranchLengths,newickTree,I), step(I).
+
+%finally(resource_metadata_tree_scaling,list_of_strings).
+%goal(I) :- exists(resource_metadata_tree_scaling,list_of_strings,I), exists(resource_speciesTree_with_BranchLengths,newickTree,J), step(I), step(J), M = #max{I;J}.
 
 
 % Componet
