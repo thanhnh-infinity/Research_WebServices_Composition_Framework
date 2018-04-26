@@ -657,6 +657,8 @@ class Interact_Planning_Engine(object):
               DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_11.lp")    
         elif ("resource_reconcileTree" in output_resource_string):
             DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")
+        elif ("resource_AreSameTree" in output_resource_string):
+            DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_11.lp")
         elif (("resource_speciesTree_with_BranchLengths" in output_resource_string) or ("resource_metadata_tree_scaling" in output_resource_string)):
             if ("resource_FreeText" in input_resource_string):
               DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_11.lp")
