@@ -111,6 +111,7 @@ def main(prg):
                 #print "current sim index : " + str(sim_index)
                 #print "\n=================================================="    
             except Exception as inst:
+                #print("Error : ")
                 #print(inst)
                 pass
         def load_asp(prg):
