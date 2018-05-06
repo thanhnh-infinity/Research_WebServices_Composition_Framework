@@ -205,7 +205,7 @@ def run_re_planning_engine(path_to_clingo,path_to_main_base,path_to_initial,path
 
             for i in range(0,len(lines)):
                 line = lines[i]
-                #print "Fuck" + line
+                #print "THANH:" + line
                 if ("====START-RESULT-THE-BEST-MATCH=====" in str(line)):
                     if ("END-RESULT-THE-BEST-MATCH" in str(lines[i+2])):
                         data = lines[i+1]
