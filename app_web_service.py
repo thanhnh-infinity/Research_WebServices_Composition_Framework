@@ -121,7 +121,10 @@ class Interact_Planning_Engine(object):
                         "resource_data_format_id":"newickTree",
                         "resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"
                    }
-                ]
+                ],
+                "avoidance" : ["phylotastic_GetPhylogeneticTree_Phylomatic_POST","phylotastic_GetPhylogeneticTree_Phylomatic_GET"],
+                "inclusion" : ["phylotastic_GetPhylogeneticTree_OT_POST"],
+                "insertion" : []
             },
             "models":{
                 "number":1,
@@ -148,7 +151,10 @@ class Interact_Planning_Engine(object):
                         "resource_data_format_id":"newickTree",
                         "resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"
                    }
-                ]
+                ],
+                "avoidance" : ["phylotastic_GetPhylogeneticTree_Phylomatic_POST","phylotastic_GetPhylogeneticTree_Phylomatic_GET"],
+                "inclusion" : ["phylotastic_GetPhylogeneticTree_OT_POST"],
+                "insertion" : []
             },
             "models":{
                 "number":1,
@@ -187,6 +193,34 @@ class Interact_Planning_Engine(object):
             return return_response_error(400,"error","Missing output","JSON")
         if (len(json_output_re) <= 0):
             return return_response_error(400,"error","Empty Output","JSON")
+
+        isAvoidance = True
+        isInclusion = True
+        isInsertion = True
+        
+        json_avoidance_re = request_parameters["avoidance"]
+        if ((json_avoidance_re is None) or (json_avoidance_re == '')):
+            print("Planning -- No avoidance request")
+            isAvoidance = False
+        if (len(json_avoidance_re) <= 0):
+            print("Planning -- No avoidance request")
+            isAvoidance = False
+
+        json_inclusion_re = request_parameters["inclusion"]
+        if ((json_inclusion_re is None) or (json_inclusion_re == '')):
+            print("Planning -- No inclusion request")
+            isInclusion = False
+        if (len(json_inclusion_re) <= 0):
+            print("Planning --  No inclusion request")
+            isInclusion = False
+
+        json_insertion_re = request_parameters["insertion"]
+        if ((json_insertion_re is None) or (json_insertion_re == '')):
+            print("Planning -- No insertion request")
+            isInsertion = False
+        if (len(json_insertion_re) <= 0):
+            print "Planning -- No insertion request"
+            isInsertion = False    
 
         # Step 2.1 : Write input/output to ASP files
         folder_name = self.prepareDistinguish_Input_Output_Folder_PerEachProcess()
@@ -232,6 +266,31 @@ class Interact_Planning_Engine(object):
         #fo.write("goal(I) :- %s step(I).\n" %(content))
         fo.write("%------------------------------------------------------------------------\n")
         fo.close()
+
+        # Step 2.2 : Write avoidance/inclusion/insertion to ASP files
+        fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"composite_preference.lp"),"wb")
+        print("---Create Preferences and Constraint From--")
+        if (isAvoidance):
+            fo.write("%------------------------------------------------------------------------\n")
+            fo.write("% AVOIDANCE  SERVICES \n")
+            fo.write("%------------------------------------------------------------------------\n")
+            for i in range(0,len(json_avoidance_re)):
+                fo.write("do_not_use_operation(%s).\n" %(str(json_avoidance_re[i])))
+            fo.write("%------------------------------------------------------------------------\n")
+        if (isInclusion):
+            fo.write("%------------------------------------------------------------------------\n")
+            fo.write("% INCLUSION  SERVICES \n")
+            fo.write("%------------------------------------------------------------------------\n")
+            for i in range(0,len(json_inclusion_re)):
+                fo.write("used_operation(%s).\n" %(str(json_inclusion_re[i])))
+            fo.write("%------------------------------------------------------------------------\n")
+        if (isInsertion):
+            fo.write("%------------------------------------------------------------------------\n")
+            fo.write("% INSERTION  SERVICES \n")
+            fo.write("%------------------------------------------------------------------------\n")  
+            fo.write("%------------------------------------------------------------------------\n")
+        fo.close()
+
         #=========================================================================================================
         if (("resource_speciesTree" in output_resource_string) and ("resource_speciesTree_with_BranchLengths" not in output_resource_string)):
             if ("resource_FreeText" in input_resource_string):
@@ -271,7 +330,7 @@ class Interact_Planning_Engine(object):
             if (number_of_models > 1):
                 return return_response_error(303,"error","Engine 1 generated only one Plan with maximum QoS and It has not supported multiple models. Using Engine 2 in order to display more than one model ","JSON")
 
-            planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Composite.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),DEFAULT_STEP,str(1))
+            planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Composite.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"composite_preference.lp"),DEFAULT_STEP,str(1))
             
             
             print("--DELETE Temp Input Folder and Output Folder Rosetta Model")
@@ -310,7 +369,7 @@ class Interact_Planning_Engine(object):
 
         elif (engine == 2): # Solution 2 : Multi-shot LP Program with QoS External Calculation
             print(DEFAULT_STEP)
-            planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "program_multiple_workflows.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),DEFAULT_STEP,str(1))
+            planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "program_multiple_workflows.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"composite_preference.lp"),DEFAULT_STEP,str(1))
 
 
             
@@ -355,7 +414,7 @@ class Interact_Planning_Engine(object):
             if (number_of_models > 1):
                 return return_response_error(303,"error","Engine 3 generated only one Plan with maximum QoS by CLINGCON. Using Engine 2 in order to display more than one model ","JSON")
 
-            planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGCON_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Composite_ForClingcon.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),DEFAULT_STEP,str(1))
+            planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGCON_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Composite_ForClingcon.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"composite_preference.lp"),DEFAULT_STEP,str(1))
             
             
             print("--DELETE Temp Input Folder and Output Folder Rosetta Model")
