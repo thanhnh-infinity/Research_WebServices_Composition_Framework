@@ -14,7 +14,7 @@ import requests
 import ultility
 
 HOST_PLANNING_ENGINE_URL_COMPOSITE = "http://127.0.0.1:8000/planningEngine/generateWorkflow"
-PORT = 8000
+PORT = 7000
 
 def CORS():
     cherrypy.response.headers["Access-Control-Allow-Origin"] = "*"
