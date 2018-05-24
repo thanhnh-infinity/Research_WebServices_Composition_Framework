@@ -8,8 +8,7 @@ import collections
 try:
     import math
 except:
-    #print("Do not need math")    
-    pass
+    pass    
 from sklearn.preprocessing import normalize
 import configuration
 import test
@@ -284,8 +283,7 @@ def process_a_plan_json_from_raw(big_list_answer_sets,json_in,json_planning_data
         #print "ABC"
         #print data
         return data
-    except Exception as inst:
-        #print err
+    except:
         return None
 def read_a_full_workflow_detail(json_a_workflow_object):
     full_plan = []
@@ -353,6 +351,7 @@ def read_a_full_workflow_detail(json_a_workflow_object):
 
                         if (match_obj[0].strip() == service_name.strip()
                             and match_obj[1].strip() == hasIn_resource
+                            and match_obj[6].strip() == hasIn_data_format
                             and match_obj[3] == step):
                             input_com['map']['resource_ontology_id'] = match_obj[5]
                             input_com['map']['resource_data_format'] = match_obj[6]

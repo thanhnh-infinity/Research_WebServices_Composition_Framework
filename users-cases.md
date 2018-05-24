@@ -1,4 +1,46 @@
 # Composition
+## Standard request
+__URI End Point :__  http://104.197.193.57:7000/planningEngine/generateWorkflow
+
+__HTTP Method:__    POST
+
+__Input Data format:__ JSON
+
+__Input Data Format structure :__
+
+input : is an array of objects
+output : is an array of objects
+
+```json
+{
+            "request_parameters" : {
+                "input" : [ 
+                    {
+                        "name" : "name of component- OPTIONAL ",
+                        "resource_ontology_uri" : "owl uri - OPTIONAL",
+                        "resource_ontology_id" : "owl id - __MANDATORY__",
+                        "resource_data_format_id":"owl data format id - __MANDATORY__",
+                        "resource_data_format_uri":"owl uri link - OPTIONAL"
+                    }
+                ],
+                "output" : [ 
+                    {
+                        "name" : "name of component - OPTIONAL",
+                        "resource_ontology_uri" : "owl uri - OPTIONAL",
+                        "resource_ontology_id" : "owl id - __MANDATORY__",
+                        "resource_data_format_id":"owl data format id - __MANDATORY__",
+                        "resource_data_format_uri":"owl uri link - OPTIONAL"
+                    }
+                ]
+            },
+            "models":{
+                "number":"number of model - OPTIONAL",
+                "engine":"engine - __MANDATORY__"
+            }
+        }
+```
+
+
 ## User Case 1 : Generate Species Tree from Raw Text    
 1. Engine 1 - Generate one Plan with Highest QoS
 ```
@@ -66,6 +108,52 @@ curl -X POST "http://127.0.0.1:8000/planningEngine/generateWorkflow" -H "content
 curl -X POST "http://104.197.193.57:7000/planningEngine/generateWorkflow" -H "content-type:application/json" -d '{"models":{"number":1,"engine":3},"request_parameters":{"input":[{"name" : "Set of gene names","resource_ontology_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_SetOfGeneStrings","resource_ontology_id":"resource_SetOfGeneStrings","resource_data_format_id":"list_of_strings","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#list_of_strings"}],"output":[{"name" : "Reconciliation Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_reconcileTree","resource_ontology_id" : "resource_reconcileTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}]}}'
 ```
 # Re-Composition with Preference and Constraint
+
+## Standard request
+__URI End Point :__  http://104.197.193.57:7000/planningEngine/recomposite
+
+__HTTP Method:__    POST
+
+__Input Data format:__ JSON
+
+__Input Data Format structure :__
+
+input : is an array of objects
+output : is an array of objects
+
+```json
+{
+            "request_parameters" : {
+                "input" : [ 
+                    {
+                        "name" : "name of component- OPTIONAL ",
+                        "resource_ontology_uri" : "owl uri - OPTIONAL",
+                        "resource_ontology_id" : "owl id - __MANDATORY__",
+                        "resource_data_format_id":"owl data format id - __MANDATORY__",
+                        "resource_data_format_uri":"owl uri link - OPTIONAL"
+                    }
+                ],
+                "output" : [ 
+                    {
+                        "name" : "name of component - OPTIONAL",
+                        "resource_ontology_uri" : "owl uri - OPTIONAL",
+                        "resource_ontology_id" : "owl id - __MANDATORY__",
+                        "resource_data_format_id":"owl data format id - __MANDATORY__",
+                        "resource_data_format_uri":"owl uri link - OPTIONAL"
+                    }
+                ],
+                "avoidance" : ["service 1","service 2"],
+                "inclusion" : ["service 3"],
+                "insertion" : [],
+                "original_workflow" : ["list of all predicate in original workflow from planning step"]
+            },
+            "models":{
+                "number":"number of model - OPTIONAL",
+                "engine":"engine - __MANDATORY__"
+            }
+        }
+```
+
 ## User Case 1 : Generate Species Tree from Raw Text 
 1. Engine 1 - Generate one Plan with Highest Sim  - App. Sim Nodes only
     #### No Preference No Original Workflow

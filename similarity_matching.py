@@ -3,10 +3,9 @@ import string
 import os
 import json
 try:
-  from sets import Set
+    from sets import Set
 except:
-  #print("Do not need set")  
-  pass
+    pass
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.stem.porter import PorterStemmer
