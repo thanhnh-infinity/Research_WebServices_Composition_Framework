@@ -57,8 +57,7 @@ def get_CurrentModifying_Workflow(prg,old_wf):
           old_wf = [x.strip() for x in content]
           print(old_wf)
       return old_wf
-  except  Exception as inst:
-      print(inst)
+  except:
       return []
 #---------------------------------------------------------- 
 def main(prg):
@@ -90,27 +89,31 @@ def main(prg):
                  #symbols = m.symbols()
             return symbols
         def real_time_check_model(clingo_model):
-            global GLOBAL_BEST_MATCH_WORKFLOW
-            global GLOBAL_HIGHEST_SIM_INDEX
-            global OLD_WORKFLOW
-        
-            OLD_WORKFLOW = get_CurrentModifying_Workflow(prg,OLD_WORKFLOW) 
-        
-
-            new_workflow = []
-            for atom in clingo_model.symbols(shown=True):
-                new_workflow.append(atom)
-            sim_index = sim_matching(OLD_WORKFLOW,new_workflow)
-            current_highest_sim = GLOBAL_HIGHEST_SIM_INDEX
-            if (sim_index > current_highest_sim):
-               GLOBAL_HIGHEST_SIM_INDEX = sim_index
-               GLOBAL_BEST_MATCH_WORKFLOW = new_workflow
+            try:
+                global GLOBAL_BEST_MATCH_WORKFLOW
+                global GLOBAL_HIGHEST_SIM_INDEX
+                global OLD_WORKFLOW
             
-            #print "New : "
-            #print new_workflow 
-            #print "current sim index : " + str(sim_index)
-         
-            #print "\n=================================================="    
+                OLD_WORKFLOW = get_CurrentModifying_Workflow(prg,OLD_WORKFLOW) 
+            
+
+                new_workflow = []
+                for atom in clingo_model.symbols(shown=True):
+                    new_workflow.append(atom)
+                sim_index = sim_matching(OLD_WORKFLOW,new_workflow)
+                current_highest_sim = GLOBAL_HIGHEST_SIM_INDEX
+                if (sim_index > current_highest_sim):
+                   GLOBAL_HIGHEST_SIM_INDEX = sim_index
+                   GLOBAL_BEST_MATCH_WORKFLOW = new_workflow
+                
+                #print "New : "
+                #print new_workflow 
+                #print "current sim index : " + str(sim_index)
+                #print "\n=================================================="    
+            except Exception as inst:
+                #print("Error : ")
+                #print(inst)
+                pass
         def load_asp(prg):
             prg.load(os.path.join(os.getcwd(),"ASP_Planning","planning","single_level_planning_Working.lp"))
             prg.load(os.path.join(os.getcwd(),"ASP_Planning","planning","ontology_TESTING_Working.lp"))
@@ -177,7 +180,10 @@ def main(prg):
       print("--> Start Re-Composition : \n")
       answer_sets = []
       print("---->Original Planning + New Preference : START------")
+      #try:
       answer_sets = run_original_planning_with_sim_index(prg)
+      #except Exception as inst:
+        #print(inst)  
       print("---->Original Planning + New Preference : DONE------\n")
 
 

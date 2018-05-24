@@ -14,7 +14,7 @@ import requests
 import ultility
 
 HOST_PLANNING_ENGINE_URL_COMPOSITE = "http://127.0.0.1:8000/planningEngine/generateWorkflow"
-PORT = 7000
+PORT = 8000
 
 def CORS():
     cherrypy.response.headers["Access-Control-Allow-Origin"] = "*"
@@ -121,7 +121,10 @@ class Interact_Planning_Engine(object):
                         "resource_data_format_id":"newickTree",
                         "resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"
                    }
-                ]
+                ],
+                "avoidance" : ["phylotastic_GetPhylogeneticTree_Phylomatic_POST","phylotastic_GetPhylogeneticTree_Phylomatic_GET"],
+                "inclusion" : ["phylotastic_GetPhylogeneticTree_OT_POST"],
+                "insertion" : []
             },
             "models":{
                 "number":1,
@@ -148,7 +151,10 @@ class Interact_Planning_Engine(object):
                         "resource_data_format_id":"newickTree",
                         "resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"
                    }
-                ]
+                ],
+                "avoidance" : ["phylotastic_GetPhylogeneticTree_Phylomatic_POST","phylotastic_GetPhylogeneticTree_Phylomatic_GET"],
+                "inclusion" : ["phylotastic_GetPhylogeneticTree_OT_POST"],
+                "insertion" : []
             },
             "models":{
                 "number":1,
@@ -188,6 +194,34 @@ class Interact_Planning_Engine(object):
         if (len(json_output_re) <= 0):
             return return_response_error(400,"error","Empty Output","JSON")
 
+        isAvoidance = True
+        isInclusion = True
+        isInsertion = True
+        
+        json_avoidance_re = request_parameters["avoidance"]
+        if ((json_avoidance_re is None) or (json_avoidance_re == '')):
+            print("Planning -- No avoidance request")
+            isAvoidance = False
+        if (len(json_avoidance_re) <= 0):
+            print("Planning -- No avoidance request")
+            isAvoidance = False
+
+        json_inclusion_re = request_parameters["inclusion"]
+        if ((json_inclusion_re is None) or (json_inclusion_re == '')):
+            print("Planning -- No inclusion request")
+            isInclusion = False
+        if (len(json_inclusion_re) <= 0):
+            print("Planning --  No inclusion request")
+            isInclusion = False
+
+        json_insertion_re = request_parameters["insertion"]
+        if ((json_insertion_re is None) or (json_insertion_re == '')):
+            print("Planning -- No insertion request")
+            isInsertion = False
+        if (len(json_insertion_re) <= 0):
+            print "Planning -- No insertion request"
+            isInsertion = False    
+
         # Step 2.1 : Write input/output to ASP files
         folder_name = self.prepareDistinguish_Input_Output_Folder_PerEachProcess()
         #print folder_name
@@ -196,7 +230,9 @@ class Interact_Planning_Engine(object):
         fo.write("%------------------------------------------------------------------------\n")
         fo.write("% INPUT PART : Initial State\n")
         fo.write("%------------------------------------------------------------------------\n")
+        input_resource_string = ""
         for i in range(0,len(json_input_re)):
+            input_resource_string = input_resource_string + " | " + str(json_input_re[i]["resource_ontology_id"])
             fo.write("initially(%s,%s).\n" %(str(json_input_re[i]["resource_ontology_id"]),str(json_input_re[i]["resource_data_format_id"])))
         fo.write("%------------------------------------------------------------------------\n")
         fo.close()
@@ -208,7 +244,9 @@ class Interact_Planning_Engine(object):
         fo.write("%------------------------------------------------------------------------\n")
         content = ""
         max_content = ""
+        output_resource_string = ""
         for i in range(0,len(json_output_re)):
+            output_resource_string = output_resource_string + " | " + str(json_output_re[i]["resource_ontology_id"])
             fo.write("finally(%s, %s).\n" %(str(json_output_re[i]["resource_ontology_id"]),str(json_output_re[i]["resource_data_format_id"])))
             # Cho nay can lam phuc tap hon nua
             if (len(json_output_re) > 1):
@@ -228,16 +266,63 @@ class Interact_Planning_Engine(object):
         #fo.write("goal(I) :- %s step(I).\n" %(content))
         fo.write("%------------------------------------------------------------------------\n")
         fo.close()
+
+        # Step 2.2 : Write avoidance/inclusion/insertion to ASP files
+        fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"composite_preference.lp"),"wb")
+        print("---Create Preferences and Constraint From--")
+        if (isAvoidance):
+            fo.write("%------------------------------------------------------------------------\n")
+            fo.write("% AVOIDANCE  SERVICES \n")
+            fo.write("%------------------------------------------------------------------------\n")
+            for i in range(0,len(json_avoidance_re)):
+                fo.write("do_not_use_operation(%s).\n" %(str(json_avoidance_re[i])))
+            fo.write("%------------------------------------------------------------------------\n")
+        if (isInclusion):
+            fo.write("%------------------------------------------------------------------------\n")
+            fo.write("% INCLUSION  SERVICES \n")
+            fo.write("%------------------------------------------------------------------------\n")
+            for i in range(0,len(json_inclusion_re)):
+                fo.write("used_operation(%s).\n" %(str(json_inclusion_re[i])))
+            fo.write("%------------------------------------------------------------------------\n")
+        if (isInsertion):
+            fo.write("%------------------------------------------------------------------------\n")
+            fo.write("% INSERTION  SERVICES \n")
+            fo.write("%------------------------------------------------------------------------\n")  
+            fo.write("%------------------------------------------------------------------------\n")
+        fo.close()
+
         #=========================================================================================================
-        if (len(json_output_re) == 1):
-            if ("resource_speciesTree" in json_output_re[0]["resource_ontology_id"]):
-                DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_9.lp")
-            elif ("resource_reconcileTree" in json_output_re[0]["resource_ontology_id"]):
-                DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")
+        if (("resource_speciesTree" in output_resource_string) and ("resource_speciesTree_with_BranchLengths" not in output_resource_string)):
+            if ("resource_FreeText" in input_resource_string):
+              DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_9.lp")
+            elif ("resource_WebURL" in input_resource_string):  
+              DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_9.lp")
+            elif ("resource_SetOfGeneStrings" in input_resource_string):    
+              DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_11.lp")
             else:
-                DEFAULT_STEP = os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")    
+              DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")    
+        elif ("resource_reconcileTree" in output_resource_string):
+            DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")
+        elif (("resource_speciesTree_with_BranchLengths" in output_resource_string) or ("resource_metadata_tree_scaling" in output_resource_string)):
+            if ("resource_FreeText" in input_resource_string):
+              DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_9.lp")
+            elif ("resource_WebURL" in input_resource_string):  
+              DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_9.lp")
+            elif ("resource_SetOfGeneStrings" in input_resource_string):
+              DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_10.lp")
+            else:
+              DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_11.lp")
+            if (("resource_speciesTree_with_BranchLengths" in output_resource_string) and ("resource_metadata_tree_scaling" in output_resource_string)):
+                if ("resource_FreeText" in input_resource_string):
+                  DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_10.lp")
+                elif ("resource_WebURL" in input_resource_string):  
+                  DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_10.lp")
+                elif ("resource_SetOfGeneStrings" in input_resource_string):
+                  DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_11.lp")
+                else:
+                  DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")       
         else:
-            DEFAULT_STEP = os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")       
+            DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")       
                 
         # Step 3 : Run planning
         # Solution 1 : Run Multi-shot LP program
@@ -245,7 +330,7 @@ class Interact_Planning_Engine(object):
             if (number_of_models > 1):
                 return return_response_error(303,"error","Engine 1 generated only one Plan with maximum QoS and It has not supported multiple models. Using Engine 2 in order to display more than one model ","JSON")
 
-            planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Composite.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),DEFAULT_STEP,str(1))
+            planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Composite.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"composite_preference.lp"),DEFAULT_STEP,str(1))
             
             
             print("--DELETE Temp Input Folder and Output Folder Rosetta Model")
@@ -255,7 +340,7 @@ class Interact_Planning_Engine(object):
                     shutil.rmtree(delete_path)
                 except OSError:
                     pass
-            
+        
 
             json_planning_data = json.loads(planing_data)
             model_result = str(json_planning_data["Result"])
@@ -283,10 +368,11 @@ class Interact_Planning_Engine(object):
                         return return_response_error(400,"error","engine error","JSON")                   
 
         elif (engine == 2): # Solution 2 : Multi-shot LP Program with QoS External Calculation
-            planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "program_multiple_workflows.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),DEFAULT_STEP,str(1))
+            print(DEFAULT_STEP)
+            planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "program_multiple_workflows.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"composite_preference.lp"),DEFAULT_STEP,str(1))
 
 
-        
+            
             print("--DELETE Temp Input Folder and Output Folder Rosetta Model")
             delete_path = os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name)
             if (os.path.exists(delete_path)):
@@ -328,7 +414,7 @@ class Interact_Planning_Engine(object):
             if (number_of_models > 1):
                 return return_response_error(303,"error","Engine 3 generated only one Plan with maximum QoS by CLINGCON. Using Engine 2 in order to display more than one model ","JSON")
 
-            planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGCON_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Composite_ForClingcon.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),DEFAULT_STEP,str(1))
+            planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGCON_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Composite_ForClingcon.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"composite_preference.lp"),DEFAULT_STEP,str(1))
             
             
             print("--DELETE Temp Input Folder and Output Folder Rosetta Model")
@@ -516,7 +602,7 @@ class Interact_Planning_Engine(object):
             print("No insertion request")
             isInsertion = False
         if (len(json_insertion_re) <= 0):
-            print("No insertion request")
+            print "No insertion request"
             isInsertion = False
 
         json_original_workflows = request_parameters["original_workflow"]
@@ -554,7 +640,9 @@ class Interact_Planning_Engine(object):
         fo.write("%------------------------------------------------------------------------\n")
         fo.write("% INPUT PART : Initial State\n")
         fo.write("%------------------------------------------------------------------------\n")
+        input_resource_string = ""
         for i in range(0,len(json_input_re)):
+            input_resource_string = input_resource_string + " | " + str(json_input_re[i]["resource_ontology_id"])
             fo.write("initially(%s,%s).\n" %(str(json_input_re[i]["resource_ontology_id"]),str(json_input_re[i]["resource_data_format_id"])))
         fo.write("%------------------------------------------------------------------------\n")
         fo.close()
@@ -566,7 +654,10 @@ class Interact_Planning_Engine(object):
         fo.write("%------------------------------------------------------------------------\n")
         content = ""
         max_content = ""
+        output_resource_string = ""
+
         for i in range(0,len(json_output_re)):
+            output_resource_string = output_resource_string + " | " + str(json_output_re[i]["resource_ontology_id"])
             fo.write("finally(%s, %s).\n" %(str(json_output_re[i]["resource_ontology_id"]),str(json_output_re[i]["resource_data_format_id"])))
             if (len(json_output_re) > 1):
                 content += "exists(%s,%s,I%s),step(I%s)," %(str(json_output_re[i]["resource_ontology_id"]),str(json_output_re[i]["resource_data_format_id"]),str(i),str(i))
@@ -614,15 +705,40 @@ class Interact_Planning_Engine(object):
         # Step 2.3 : Write Original Workflow Objet to python file
         #fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"original_workflow.py"),"wb")
         #==========================================================================================
-        if (len(json_output_re) == 1):
-            if ("resource_speciesTree" in json_output_re[0]["resource_ontology_id"]):
-                DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_9.lp")
-            elif ("resource_reconcileTree" in json_output_re[0]["resource_ontology_id"]):
-                DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")
+        if (("resource_speciesTree" in output_resource_string) and ("resource_speciesTree_with_BranchLengths" not in output_resource_string)):
+            if ("resource_FreeText" in input_resource_string):
+              DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_8.lp")
+            elif ("resource_WebURL" in input_resource_string):  
+              DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_8.lp")
+            elif ("resource_SetOfGeneStrings" in input_resource_string):
+              DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_10.lp")
             else:
-                DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")
+              DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_11.lp")    
+        elif ("resource_reconcileTree" in output_resource_string):
+            DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")
+        elif ("resource_AreSameTree" in output_resource_string):
+            DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_11.lp")
+        elif (("resource_speciesTree_with_BranchLengths" in output_resource_string) or ("resource_metadata_tree_scaling" in output_resource_string)):
+            if ("resource_FreeText" in input_resource_string):
+              DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_11.lp")
+            elif ("resource_WebURL" in input_resource_string):  
+              DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_11.lp")
+            elif ("resource_SetOfGeneStrings" in input_resource_string):
+              DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")
+            else:
+              DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_13.lp")
+
+            if (("resource_speciesTree_with_BranchLengths" in output_resource_string) and ("resource_metadata_tree_scaling" in output_resource_string)):
+                if ("resource_FreeText" in input_resource_string):
+                  DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_10.lp")
+                elif ("resource_WebURL" in input_resource_string):  
+                  DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_10.lp")
+                elif ("resource_SetOfGeneStrings" in input_resource_string):
+                  DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")
+                else:
+                  DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_13.lp")        
         else:
-            DEFAULT_STEP = os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")       
+            DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_20.lp")
                 
         # Step 3 : Run planning
         if ("NORMAL" in kindToRun):    
@@ -638,10 +754,9 @@ class Interact_Planning_Engine(object):
                  return return_response_error(300,"warnning","Multiple models have not supported yet","JSON")  
                     
             if (engine == 2):
+                print(DEFAULT_STEP)
                 planing_data = OWLEngine.run_re_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Re_Composite_S1_OnModel.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"re_composite_preference.lp"),folder_name,DEFAULT_STEP,str(number_of_models),engine)
-                #print("------------")
-                #print planing_data
-                #print("------------")
+            
                 print("--DELETE Temp Input Folder and Output Folder Rosetta Model")
                 delete_path = os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name)
                 if (os.path.exists(delete_path)):
@@ -678,9 +793,8 @@ class Interact_Planning_Engine(object):
                     return return_response_error(400,"error","engine error","JSON") 
             elif (engine == 1):
                 planing_data = OWLEngine.run_re_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Re_Composite_S2_SimNodes.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"re_composite_preference.lp"),folder_name,DEFAULT_STEP,str(number_of_models),engine)
-                #print "-------------"
-                #print planing_data
-                #print "-------------"
+
+
                 print("--DELETE Temp Input Folder and Output Folder Rosetta Model --- 123")
                 delete_path = os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name)
                 if (os.path.exists(delete_path)):
@@ -853,8 +967,7 @@ class Interact_Planning_Engine(object):
                
             elif (engine == 3): # Solutioon 3 : Run Clingcon-3.3.0 with QoS Internal Calculation - Ranking by the best QoS too
                 if (number_of_models > 1):
-                    return return_response_error(303,"error","Engine 3 generated only one Plan with maximum QoS by CLINGCON. Using Engine 2 in order to display more than one model ","JSON")
-                #print "Vao day"    
+                    return return_response_error(303,"error","Engine 3 generated only one Plan with maximum QoS by CLINGCON. Using Engine 2 in order to display more than one model ","JSON")  
                 planing_data = OWLEngine.run_re_planning_engine(self.FULL_PATH_CLINGCON_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Composite_ForClingcon.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"re_composite_preference.lp"),None,DEFAULT_STEP,str(1),engine)
                 
                 #print planning_data
