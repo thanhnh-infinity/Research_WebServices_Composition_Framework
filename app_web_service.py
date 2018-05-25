@@ -1062,6 +1062,10 @@ class OntologyAPI_Service(object):
     def index(self):
         return "OntologyAPI_Service"
     def query(self, **request_data):
+        CORS()
+        if cherrypy.request.method == "OPTIONS":
+             print("Thay OPTIONS - IGNORES")
+             return ""
         try:
             request = str(request_data['request']).strip()
         except:
@@ -1239,6 +1243,9 @@ class OntologyAPI_Service(object):
                     return return_success_get_json(message)
     # Build Graph
     def buildGraph(self, **request_data):
+        CORS()
+        if cherrypy.request.method == "OPTIONS":
+             return ""
         try:
             graph_type = str(request_data['graph_type']).strip()
         except:
@@ -1259,6 +1266,9 @@ class OntologyAPI_Service(object):
 
     # Get Triple Data
     def getTriples(self, **request_data):
+        CORS()
+        if cherrypy.request.method == "OPTIONS":
+             return ""
         try:
             triple_type = str(request_data['triple_type']).strip()
         except:
