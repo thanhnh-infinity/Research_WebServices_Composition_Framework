@@ -53,7 +53,7 @@ class Interact_Planning_Engine(object):
     FULL_PATH_PLANNING_STATES_FOLDER = os.path.join(os.getcwd(),"ASP_Planning" ,"states")
     DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","default.lp")
     #FULL_PATH_CLINGO_EXECUTATBLE = "clingo-python"
-    FULL_PATH_CLINGCON_EXECUTATBLE = "/opt/app/Planning_Project/sys/Ubuntu/clingcon/clingcon-3.3.0"
+    FULL_PATH_CLINGCON_EXECUTATBLE = "clingcon-3.3.0"
     FULL_PATH_CLINGO_EXECUTATBLE = "clingo"
     #FULL_PATH_CLINGO_EXECUTATBLE = os.path.join(os.getcwd(),"Clingo","clingo-python")
 
@@ -755,6 +755,8 @@ class Interact_Planning_Engine(object):
                     
             if (engine == 2):
                 print(DEFAULT_STEP)
+                if ("phylotastic_GetPhylogeneticTree_PhyloT_POST" in json_inclusion_re):
+                      DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_9.lp")
                 planing_data = OWLEngine.run_re_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Re_Composite_S1_OnModel.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"re_composite_preference.lp"),folder_name,DEFAULT_STEP,str(number_of_models),engine)
             
                 print("--DELETE Temp Input Folder and Output Folder Rosetta Model")
@@ -792,6 +794,11 @@ class Interact_Planning_Engine(object):
                 else:
                     return return_response_error(400,"error","engine error","JSON") 
             elif (engine == 1):
+                print(DEFAULT_STEP)
+                
+                if ("phylotastic_GetPhylogeneticTree_PhyloT_POST" in json_inclusion_re):
+                      DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_9.lp")
+
                 planing_data = OWLEngine.run_re_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Re_Composite_S2_SimNodes.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"re_composite_preference.lp"),folder_name,DEFAULT_STEP,str(number_of_models),engine)
 
 
@@ -887,6 +894,9 @@ class Interact_Planning_Engine(object):
                 if (number_of_models > 1):
                     return return_response_error(303,"error","Engine 1 generated only one Plan with maximum QoS and It has not supported multiple models. Using Engine 2 in order to display more than one model ","JSON")
 
+                if ("phylotastic_GetPhylogeneticTree_PhyloT_POST" in json_inclusion_re):
+                      DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_9.lp")
+                print(DEFAULT_STEP)      
                 planing_data = OWLEngine.run_re_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Composite.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"re_composite_preference.lp"),None,DEFAULT_STEP,str(1),engine)
                 
                 
@@ -925,7 +935,9 @@ class Interact_Planning_Engine(object):
                             return return_response_error(400,"error","engine error","JSON")                   
 
             elif (engine == 2): # Solution 2 : Multi-shot LP Program with QoS External Calculation
-
+                if ("phylotastic_GetPhylogeneticTree_PhyloT_POST" in json_inclusion_re):
+                      DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_9.lp")
+                print(DEFAULT_STEP)
                 planing_data = OWLEngine.run_re_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "program_multiple_workflows.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"re_composite_preference.lp"),None,DEFAULT_STEP,number_of_models,engine)
                 
                 print("--DELETE Temp Input Folder and Output Folder Rosetta Model")
