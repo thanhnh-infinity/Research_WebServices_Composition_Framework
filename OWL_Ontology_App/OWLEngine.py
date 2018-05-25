@@ -182,6 +182,7 @@ def run_planning_engine(path_to_clingo,path_to_main_base,path_to_initial,path_to
 #14rd : Run planning
 def run_re_planning_engine(path_to_clingo,path_to_main_base,path_to_initial,path_to_goal,path_to_preference,specify_id,default_step,number_of_model,engine):
     if (specify_id is None or specify_id == ''):
+        print "HERERERER"
         p = subprocess.Popen([path_to_clingo, '--outf=2', path_to_main_base,path_to_initial,path_to_goal,path_to_preference,default_step], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = p.communicate()
         print err
