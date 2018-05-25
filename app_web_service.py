@@ -14,7 +14,7 @@ import requests
 import ultility
 
 HOST_PLANNING_ENGINE_URL_COMPOSITE = "http://127.0.0.1:8000/planningEngine/generateWorkflow"
-PORT = 8000
+PORT = 7000
 
 def CORS():
     cherrypy.response.headers["Access-Control-Allow-Origin"] = "*"
@@ -53,7 +53,7 @@ class Interact_Planning_Engine(object):
     FULL_PATH_PLANNING_STATES_FOLDER = os.path.join(os.getcwd(),"ASP_Planning" ,"states")
     DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","default.lp")
     #FULL_PATH_CLINGO_EXECUTATBLE = "clingo-python"
-    FULL_PATH_CLINGCON_EXECUTATBLE = "clingcon-3.3.0"
+    FULL_PATH_CLINGCON_EXECUTATBLE = "/opt/app/Planning_Project/sys/Ubuntu/clingcon/clingcon-3.3.0"
     FULL_PATH_CLINGO_EXECUTATBLE = "clingo"
     #FULL_PATH_CLINGO_EXECUTATBLE = os.path.join(os.getcwd(),"Clingo","clingo-python")
 
