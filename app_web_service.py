@@ -55,7 +55,7 @@ class Interact_Planning_Engine(object):
     #FULL_PATH_CLINGO_EXECUTATBLE = "clingo-python"
     FULL_PATH_CLINGCON_EXECUTATBLE = "clingcon-3.3.0"
     FULL_PATH_CLINGO_EXECUTATBLE = "clingo"
-    #FULL_PATH_CLINGO_EXECUTATBLE = os.path.join(os.getcwd(),"Clingo","clingo-python")
+   
 
     # Function
     def prepareDistinguish_Input_Output_Folder_PerEachProcess(self):
