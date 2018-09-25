@@ -1,7 +1,7 @@
 #import ontospy
 #import Global_Parameters
-import OWL_Ontology_App.Global_Parameters
-import OWL_Ontology_App.OWLUltility
+import OWL_Ontology_App.Global_Parameters as Global_Parameters
+import OWL_Ontology_App.OWLUltility as OWLUltility
 import sys
 import os
 import collections
