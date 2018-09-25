@@ -1,6 +1,7 @@
 #import ontospy
-import Global_Parameters
-import OWLUltility
+#import Global_Parameters
+import OWL_Ontology_App.Global_Parameters
+import OWL_Ontology_App.OWLUltility
 import sys
 import os
 import collections
@@ -176,16 +177,16 @@ def get_build_graph_of_ontology_entity(entity_uri,strType):
 def run_planning_engine(path_to_clingo,path_to_main_base,path_to_initial,path_to_goal,path_to_preference,default_step,number_of_model):
     p = subprocess.Popen([path_to_clingo, '--outf=2', path_to_main_base,path_to_initial,path_to_goal,path_to_preference,default_step], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = p.communicate()
-    print err
+    print(err)
     return out
     
 #14rd : Run planning
 def run_re_planning_engine(path_to_clingo,path_to_main_base,path_to_initial,path_to_goal,path_to_preference,specify_id,default_step,number_of_model,engine):
     if (specify_id is None or specify_id == ''):
-        print "HERERERER"
+        #print "HERERERER"
         p = subprocess.Popen([path_to_clingo, '--outf=2', path_to_main_base,path_to_initial,path_to_goal,path_to_preference,default_step], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         out, err = p.communicate()
-        print err
+        print(err)
         return out
     else:
         #print path_to_main_base
@@ -217,7 +218,7 @@ def run_re_planning_engine(path_to_clingo,path_to_main_base,path_to_initial,path
             #print "Thanh Nguyen"
             #print out
             #print "------"
-            print err
+            print(err)
             return out    
         #out,err = p.communicate()
         #print err
@@ -250,8 +251,8 @@ def parser_occur_perdicate(occur_string):
             return None
 
         return occur_info
-    except Exception,err:
-        print err
+    except Exception as err:
+        print(err)
         return None
 
 #get_all_instances_of_a_directed_class("phylotastic_resources")

@@ -176,7 +176,7 @@ class Interact_Planning_Engine(object):
             number_of_models = models["number"]
             engine = models["engine"]
             
-        except Exception, err:
+        except Exception as err:
             print(err)
             number_of_models = 1
             engine = 1
@@ -219,7 +219,7 @@ class Interact_Planning_Engine(object):
             print("Planning -- No insertion request")
             isInsertion = False
         if (len(json_insertion_re) <= 0):
-            print "Planning -- No insertion request"
+            print("Planning -- No insertion request")
             isInsertion = False    
 
         # Step 2.1 : Write input/output to ASP files
@@ -557,7 +557,7 @@ class Interact_Planning_Engine(object):
             models = input_json['models']
             number_of_models = models["number"]
             engine = models["engine"]
-        except Exception, err:
+        except Exception as err:
             print(err)
             number_of_models = 1
             engine = 1
@@ -602,7 +602,7 @@ class Interact_Planning_Engine(object):
             print("No insertion request")
             isInsertion = False
         if (len(json_insertion_re) <= 0):
-            print "No insertion request"
+            print("No insertion request")
             isInsertion = False
 
         json_original_workflows = request_parameters["original_workflow"]

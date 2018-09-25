@@ -29,7 +29,7 @@ class Abtract_Planning:
         print(self.goal_state.print_data_detail());
         print("--Sequence of abtract service class: ")
         for service in self.abtract_planning:
-            print service
+            print(service)
         print("--Size of sequence : ")
         print(self.size)
     def print_workflow(self,type):
@@ -42,15 +42,15 @@ class Abtract_Planning:
         step = 1
         if (type is "simple"):
             for service in self.abtract_planning:
-                print "%s : %s" %(str(step), service.print_simple())
+                print("%s : %s" %(str(step), service.print_simple()))
                 step = step + 1
         elif (type is "with_match_data"):
             for service in self.abtract_planning:
-                print "%s : %s" %(str(step), service.print_with_match())
+                print("%s : %s" %(str(step), service.print_with_match()))
                 step = step + 1
         else:
             for service in self.abtract_planning:
-                print "%s : %s" %(str(step), service.print_simple())
+                print("%s : %s" %(str(step), service.print_simple()))
                 step = step + 1
         print("--------------------------------------------------------")
         print("--Size of sequence : %s" %(str(self.size)))
