@@ -19,18 +19,18 @@ same_operation_id(X,Y) :- operation(X),
                           operation(Y),
                           X = Y.
 
-e_map(initial_state,0,initial_state,0).
+e_com(initial_state,0,initial_state,0).
 
-e_map(Y,T1,Y',T3) :- e_map(initial_state,0,initial_state,0), 
-               old_occ_exe(Y,T1),
-               old_map_exe(Y,_,_,T1,initial_state,_,_,0),  
-               occur(Y',T3),
-               map(Y',_,_,T3,initial_state,_,_,0),
-               T1 >= 0,
-               T3 >= 0,
-               same_operation_id(Y,Y').
-               
-e_map(Y,T1,Y',T3) :- e_map(X,T2,X',T4), 
+e_com(Y,T1,Y',T3) :- e_com(initial_state,0,initial_state,0), 
+                     old_occ_exe(Y,T1),
+                     old_map_exe(Y,_,_,T1,initial_state,_,_,0),  
+                     occur(Y',T3),
+                     map(Y',_,_,T3,initial_state,_,_,0),
+                     T1 >= 0,
+                     T3 >= 0,
+                     same_operation_id(Y,Y').
+
+e_com(Y,T1,Y',T3) :- e_com(X,T2,X',T4), 
                      old_occ_exe(Y,T1),
                      old_map_exe(Y,_,_,T1,X,_,_,T2+1),  
                      occur(Y',T3),
@@ -40,10 +40,31 @@ e_map(Y,T1,Y',T3) :- e_map(X,T2,X',T4),
                      X != initial_state, X' != initial_state,
                      same_operation_id(Y,Y').
 
+score_g(initial_state,0).
+score_g(Y',0) :- occur(Y',T3),
+                 not e_com(_,_,Y',T3).
+pre(X',Y') :- occur(Y',T3),
+              map(Y',_,_,T3,X',_,_,T4),
+              old_occ_exe(Y,T1),
+              old_map_exe(Y,_,_,T1,X,_,_,T2),
+              e_com(Y,_,Y',_),
+              e_com(X,_,X',_).
+
+%score_g(Y',V_Y') :- score_g(X',V_X'),
+%                    score_g(Y',O_V_Y'),
+%                    pre(X',Y'),
+%                    V_Y' = V_X' + O_V_Y' + 1.
+score_g(Y',V_Y') :- score_g(X',V_X'),
+%                    not score_g(Y',_),
+                    pre(X',Y'),
+                    V_Y' = V_X' + 1.
+        
 %-----------------------------------------------------
-#show occur/2.
+%#show occur/2.
 %#show map/8.
 %#show goal/1.
 
-#show e_map/4.
+%#show e_com/4.
+#show score_g/2.
+%#show pre/2.
 %#show old_map_exe/8.
