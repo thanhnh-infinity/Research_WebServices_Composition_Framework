@@ -41,25 +41,18 @@ e_com(Y,T1,Y',T3) :- e_com(X,T2,X',T4),
                      same_operation_id(Y,Y').
 
 score_g(initial_state,0).
+
 score_g(Y',0) :- occur(Y',T3),
                  not e_com(_,_,Y',T3).
-pre(X',Y') :- occur(Y',T3),
-              map(Y',_,_,T3,X',_,_,T4),
-              old_occ_exe(Y,T1),
-              old_map_exe(Y,_,_,T1,X,_,_,T2),
-              e_com(Y,_,Y',_),
-              e_com(X,_,X',_).
+                 
+predecessor(X',Y') :- occur(Y',T3),
+                      map(Y',_,_,T3,X',_,_,T4),
+                      old_occ_exe(Y,T1),
+                      old_map_exe(Y,_,_,T1,X,_,_,T2),
+                      e_com(Y,_,Y',_),
+                      e_com(X,_,X',_).
 
-%score_g(Y',V_Y') :- score_g(X',V_X'),
-%                    score_g(Y',O_V_Y'),
-%                    pre(X',Y'),
-%                    V_Y' = V_X' + O_V_Y' + 1.
-%score_g(Y',V_Y') :- score_g(X',V_X'),
-%                    not score_g(Y',_),
-%                    pre(X',Y'),
-%                    V_Y' = V_X' + 1.
-
-score_g(Y',V_Y') :-  S = #sum{V_X',X' : pre(X',Y'),score_g(X',V_X')},
+score_g(Y',V_Y') :-  S = #sum{V_X',X' : predecessor(X',Y'),score_g(X',V_X')},
                      V_Y' = S + 1,
                      occur(Y',T3),
                      e_com(_,_,Y',T3).
@@ -87,7 +80,7 @@ max_score_at(Y',T) :- recovery_score(F_V),
 %#show e_com/4.
 %#show score_g/2.
 %#show count/2.
-%#show pre/2.
+%#show predecessor/2.
 %#show recovery_score/1.
 %#show old_map_exe/8.
 #show max_score_at/2.
