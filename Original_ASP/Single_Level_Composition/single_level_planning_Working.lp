@@ -4,10 +4,11 @@
 %#const n = 1.
 %#const n = 3.
 %#const n = 6.
+#const n = 8.
 %#const n = 9.
 %#const n = 11.
 %#const n = 20.
-#const n = 12.
+%#const n = 12.
 step(0..n).
 %========================================================================
 % 1. PLANNING ENGINE - BASIC PART
@@ -200,8 +201,8 @@ goal(I) :- exists(resource_AreSameTree,boolean,I), step(I).
 
 
 %========================================================================
-#show occur/2.
-#show map/8.
+%#show occur/2.
+%#show map/8.
 %#show executable/2.
 %#show exists/3.
 %#show executable/2.
@@ -209,8 +210,8 @@ goal(I) :- exists(resource_AreSameTree,boolean,I), step(I).
 %#show match/7.
 %#show good_match/4.
 %#show possible_match/7.
-#show operation_has_output_has_data_format/3.
-#show operation_has_input_has_data_format/3.
+%#show operation_has_output_has_data_format/3.
+%#show operation_has_input_has_data_format/3.
 %#show score_qos_workflow/1.
-#show goal/1.
+%#show goal/1.
 %#show stop_index/1.
