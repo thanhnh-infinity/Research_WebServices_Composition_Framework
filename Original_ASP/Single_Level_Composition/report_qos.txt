@@ -1,26 +1,13 @@
 score_g(initial_state,0) 
-
-e_com(initial_state,0,initial_state,0) 
-
-occur(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,0) 
-occur(phylotastic_ResolvedScientificNames_OT_TNRS_GET,4) 
-occur(phylotastic_GetPhylogeneticTree_OT_GET,5) 
-occur(phylotastic_CompareTrees_Sym_Dendropy_POST,7) 
-occur(convert_df_sci_names_format_1_to_3,1) 
-occur(convert_df_sci_names_format_3_to_5,2) 
-occur(convert_df_sci_names_format_5_to_OT,3) 
-occur(convert_species_tree_format_NMSU_to_NewickTree,6) 
-
-e_com(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,0,phylotastic_FindScientificNamesFromFreeText_GNRD_GET,0) 
-e_com(convert_df_sci_names_format_1_to_3,1,convert_df_sci_names_format_1_to_3,1) 
-e_com(convert_df_sci_names_format_3_to_5,2,convert_df_sci_names_format_3_to_5,2) 
-e_com(convert_df_sci_names_format_5_to_OT,3,convert_df_sci_names_format_5_to_OT,3) 
-e_com(phylotastic_ResolvedScientificNames_OT_TNRS_GET,4,phylotastic_ResolvedScientificNames_OT_TNRS_GET,4) 
-
-
-score_g(phylotastic_GetPhylogeneticTree_OT_GET,0) 
+score_g(phylotastic_ResolvedScientificNames_GNR_TNRS_POST,0) 
+score_g(phylotastic_GetPhylogeneticTree_PhyloT_GET,0) 
 score_g(phylotastic_CompareTrees_Sym_Dendropy_POST,0) 
-score_g(convert_species_tree_format_NMSU_to_NewickTree,0) 
 
+score_g(convert_df_taxons_format_GNR_to_PhyloT,0) 
+score_g(convert_df_sci_names_format_5_to_GNR,0) 
 
-score_g(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,1)
+pre(initial_state,phylotastic_FindScientificNamesFromFreeText_GNRD_GET) 
+pre(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,convert_df_sci_names_format_1_to_3) 
+pre(convert_df_sci_names_format_1_to_3,convert_df_sci_names_format_3_to_5) 
+
+score_g(convert_df_sci_names_format_3_to_5,1) score_g(convert_df_sci_names_format_1_to_3,1) score_g(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,1) score_g(convert_df_sci_names_format_1_to_3,2) score_g(convert_df_sci_names_format_3_to_5,4)

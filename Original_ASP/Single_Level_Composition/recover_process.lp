@@ -13,7 +13,7 @@
 #include "./single_level_planning_Working.lp".
 #include "./ontology_TESTING_Working.lp".
 
-%%%%%%%%%% LOGIC FOR RECOVERY PROCESS %%%%%%%%%%%%%%%%
+%%%%%%%%%% LOGIC FOR RECOVERY PROCESS - FORMALIZATION %%%%%%%%%%%%%%%%
 
 same_operation_id(X,Y) :- operation(X),
                           operation(Y),
@@ -54,17 +54,40 @@ pre(X',Y') :- occur(Y',T3),
 %                    score_g(Y',O_V_Y'),
 %                    pre(X',Y'),
 %                    V_Y' = V_X' + O_V_Y' + 1.
-score_g(Y',V_Y') :- score_g(X',V_X'),
+%score_g(Y',V_Y') :- score_g(X',V_X'),
 %                    not score_g(Y',_),
-                    pre(X',Y'),
-                    V_Y' = V_X' + 1.
-        
-%-----------------------------------------------------
-%#show occur/2.
+%                    pre(X',Y'),
+%                    V_Y' = V_X' + 1.
+
+score_g(Y',V_Y') :-  S = #sum{V_X',X' : pre(X',Y'),score_g(X',V_X')},
+                     V_Y' = S + 1,
+                     occur(Y',T3),
+                     e_com(_,_,Y',T3).
+
+recovery_score(F_V) :- F_V = #max{V_Y': score_g(Y',V_Y')}.
+
+#maximize{F_V : recovery_score(F_V)}.
+
+%--- Detect time to start avoiding fail service in new workflow ------
+
+max_score_at(Y',T) :- recovery_score(F_V),
+                      score_g(Y',F_V),
+                      occur(Y',T).
+
+:- fail_service(Fail,Time_Fail), 
+   occur(Fail,T), 
+   T > Tmax, 
+   max_score_at(_,Tmax).
+
+%---------------------------------------------------------------------
+
+#show occur/2.
 %#show map/8.
 %#show goal/1.
-
 %#show e_com/4.
-#show score_g/2.
+%#show score_g/2.
+%#show count/2.
 %#show pre/2.
+%#show recovery_score/1.
 %#show old_map_exe/8.
+#show max_score_at/2.
