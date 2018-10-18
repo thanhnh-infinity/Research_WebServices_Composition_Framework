@@ -1,6 +1,7 @@
 import cherrypy
 from OWL_Ontology_App import OWLEngine
 import composite_response
+import composite_parser
 import planning_algorithms
 import json
 import os
@@ -1048,10 +1049,187 @@ class Interact_Planning_Engine(object):
         else:
             return return_response_error(300,"error","Unknown","JSON")
 
+
+    # Recovery Process
+    @cherrypy.tools.json_out()
+    @cherrypy.tools.json_in()
+    def recovery(self,**request_data):
+        CORS()
+        if cherrypy.request.method == "OPTIONS":
+             return ""
+        input_json = cherrypy.request.json        
+        
+        '''
+        input_json =  {
+            "request_parameters" : {
+                "input" : [
+                    {
+                        "name" : "A Raw Text mixes many types of encoding",
+                        "resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_FreeText",
+                        "resource_ontology_id" : "resource_FreeText",
+                        "resource_data_format_id":"raw_text",
+                        "resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#raw_text"
+                    }
+                ],
+                "output" : [
+                    {
+                        "name" : "Species Tree",
+                        "resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree",
+                        "resource_ontology_id" : "resource_speciesTree",
+                        "resource_data_format_id":"newickTree",
+                        "resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"
+                   }
+                ],
+                "failed_service" : [
+                    {
+                      "ID" : "phylotastic_GetPhylogeneticTree_Phylomatic_POST",
+                      "Index" : 3
+                    }
+                ],
+                "original_workflow" : []
+            },
+            "models":{
+                "number":1,
+                "engine":1
+            }
+        }
+        '''
+        try:
+            request_parameters = input_json['request_parameters'];
+        except:
+            return return_response_error(400,"error","Missing input","JSON")
+
+        if ((request_parameters is None) or (request_parameters == '')):
+            return return_response_error(400,"error","Missing params","JSON")
+       
+        try:
+            models = input_json['models']
+            number_of_models = models["number"]
+            engine = models["engine"]
+        except Exception as err:
+            print(err)
+            number_of_models = 1
+            engine = 1
+
+        
+        # Step 2 : parser input/output/avoidance,inclusion,insertion
+        isOriginalWorkflow = True
+        isFailedService = True
+        json_input_re = request_parameters["input"]
+        if ((json_input_re is None) or (json_input_re == '')):
+            return return_response_error(400,"error","Missing input","JSON")
+        if (len(json_input_re) <= 0):
+            return return_response_error(400,"error","Empty Input","JSON")
+
+        json_output_re = request_parameters["output"]
+        if ((json_output_re is None) or (json_output_re == '')):
+            return return_response_error(400,"error","Missing output","JSON")
+        if (len(json_output_re) <= 0):
+            return return_response_error(400,"error","Empty Output","JSON")
+
+        json_original_workflows = request_parameters["original_workflow"]
+        if ((json_original_workflows is None) or (json_original_workflows == '')):
+            print("No Original Workflow - Simialrity Index will be terminated")
+            isOriginalWorkflow = False
+        if (len(json_original_workflows) <= 0):
+            print("No Original Workflow - Simialrity Index will be terminated")
+            isOriginalWorkflow = False
+
+        json_fail_service = request_parameters["failed_service"]
+        if ((json_fail_service is None) or (json_fail_service == '')):
+            print("No Failed Service Detection")
+            isFailedService = False
+        if (len(json_fail_service) <= 0):
+            print("No Failded Service Detection")
+            isFailedService = False
+
+        if ((not isFailedService) and (not isOriginalWorkflow)):
+            return return_response_error(301,"error","Not recovery process","JSON")
+        elif ((isFailedService) and (not isOriginalWorkflow)):
+            return return_response_error(301,"error","Original Workflow is required","JSON")
+        elif ((not isFailedService) and (isOriginalWorkflow)): 
+            return "Good - Original Workflow"
+        else:
+            # Step 2.1 : Write input/output to ASP files
+            folder_name = self.prepareDistinguish_Input_Output_Folder_PerEachProcess()
+            fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),"wb")
+            print("---Recovery process : Create Initial State--")
+            fo.write("%------------------------------------------------------------------------\n")
+            fo.write("% Recovery process INPUT PART : Initial State\n")
+            fo.write("%------------------------------------------------------------------------\n")
+            input_resource_string = ""
+            for i in range(0,len(json_input_re)):
+                input_resource_string = input_resource_string + " | " + str(json_input_re[i]["resource_ontology_id"])
+                fo.write("initially(%s,%s).\n" %(str(json_input_re[i]["resource_ontology_id"]),str(json_input_re[i]["resource_data_format_id"])))
+            fo.write("%------------------------------------------------------------------------\n")
+            fo.close()
+
+            fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"), "wb")
+            print("---Recovery process : Create Goal State--")
+            fo.write("%------------------------------------------------------------------------\n")
+            fo.write("% Recovery process : GOAL State\n")
+            fo.write("%------------------------------------------------------------------------\n")
+            content = ""
+            max_content = ""
+            output_resource_string = ""
+
+            for i in range(0,len(json_output_re)):
+                output_resource_string = output_resource_string + " | " + str(json_output_re[i]["resource_ontology_id"])
+                fo.write("finally(%s, %s).\n" %(str(json_output_re[i]["resource_ontology_id"]),str(json_output_re[i]["resource_data_format_id"])))
+                if (len(json_output_re) > 1):
+                    content += "exists(%s,%s,I%s),step(I%s)," %(str(json_output_re[i]["resource_ontology_id"]),str(json_output_re[i]["resource_data_format_id"]),str(i),str(i))
+                    if (i == 0):
+                        max_content = "I%s" %(str(i))
+                    else:
+                        max_content += ";I%s" %(str(i))    
+                if (len(json_output_re) == 1):
+                    content += "exists(%s,%s,I), " %(str(json_output_re[i]["resource_ontology_id"]),str(json_output_re[i]["resource_data_format_id"]))
+
+            if (len(json_output_re) > 1):        
+                fo.write("goal(M) :- %s M = #max{%s}.\n" %(content,max_content))
+            else:
+                fo.write("goal(I) :- %s step(I).\n" %(content)) 
+
+            #fo.write("goal(I) :- %s step(I).\n" %(content))
+            fo.write("%------------------------------------------------------------------------\n")
+            fo.close()
+            #========================================================================================================= 
+            if (isOriginalWorkflow and isFailedService):
+                fail_service_ID = json_fail_service[0]["ID"]
+                fail_Index = json_fail_service[0]["Index"]
+
+                original_workflow_removed = [str(i) for i in json_original_workflows]
+                fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"failure_detection.lp"),"wb")
+                fo.write("%--------------------------------------------------------------------\n")
+                fo.write("fail_service(%s,%s).\n" %(str(fail_service_ID),str(fail_Index)))
+                fo.write("%--------------------------------------------------------------------\n")
+                for item in original_workflow_removed:
+                    if ('OCCUR(' in str(item).strip().upper()):
+                        service_name,step = composite_parser.parse_a_occur_service(str(item))
+                        if (int(step) < int(fail_Index)):
+                            str_content = "old_occ_exe(%s,%s).\n" %(str(service_name),str(step))
+                            fo.write(str_content)
+                    if ('MAP(' in str(item).strip().upper()):
+                        map_obj = composite_parser.parse_a_match_predicate(str(item))
+                        if (int(map_obj[3]) < int(fail_Index)):
+                            str_content = "old_map_exe(%s,%s,%s,%s,%s,%s,%s,%s).\n" %(str(map_obj[0]),str(map_obj[1]),str(map_obj[2]),str(map_obj[3]),str(map_obj[4]),str(map_obj[5]),str(map_obj[6]),str(map_obj[7]),)
+                            fo.write(str_content)
+                    #fo.write("\n")
+                fo.close()
+
+            NUMBER_STEP = ultility.expect_number_step(input_resource_string,output_resource_string)
+
+            return "THanh Nguyen"
+            
+    #curl -X POST "http://127.0.0.1:8000/planningEngine/recovery" -H "content-type:application/json" -d '{"request_parameters" : {"input" : [{"name" : "A Raw Text mixes many types of encoding","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_FreeText","resource_ontology_id" : "resource_FreeText","resource_data_format_id":"raw_text","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#raw_text"}],"output" : [{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree","resource_ontology_id" : "resource_speciesTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}],"failed_service":[{"ID" : "phylotastic_GetPhylogeneticTree_OT_POST","Index":6}],"original_workflow":["goal(8)", "map(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_FreeText,plain_text,1,convert_df_text_format_raw_to_plain,resource_FreeText,plain_text,1)", "map(convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_1,2,phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_SetOfSciName,raw_names_format_1,2)", "map(convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_3,3,convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_3,3)", "map(convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_5,4,convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_5,4)", "map(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfSciName,raw_names_format_OT,5,convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_OT,5)", "map(phylotastic_GetPhylogeneticTree_OT_POST,resource_SetOfTaxon,resolved_names_format_OT,6,phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfTaxon,resolved_names_format_OT,6)", "map(convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,nmsu_tree_format,7,phylotastic_GetPhylogeneticTree_OT_POST,resource_speciesTree,nmsu_tree_format,7)", "map(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,resource_speciesTree,newickTree,9,convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,newickTree,8)", "map(convert_df_text_format_raw_to_plain,resource_FreeText,raw_text,0,initial_state,resource_FreeText,raw_text,0)", "operation_has_input_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_FreeText,plain_text)", "operation_has_input_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfSciName,raw_names_format_OT)", "operation_has_input_has_data_format(phylotastic_GetPhylogeneticTree_OT_POST,resource_SetOfTaxon,resolved_names_format_OT)", "operation_has_input_has_data_format(convert_df_text_format_raw_to_plain,resource_FreeText,raw_text)", "operation_has_input_has_data_format(convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_1)", "operation_has_input_has_data_format(convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_3)", "operation_has_input_has_data_format(convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_5)", "operation_has_input_has_data_format(convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,nmsu_tree_format)", "operation_has_output_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_SetOfSciName,raw_names_format_1)", "operation_has_output_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_HTTPCode,integer)", "operation_has_output_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_ConnectionTime,integer)", "operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfTaxon,resolved_names_format_OT)", "operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfResolvedName,resolved_names_format_OT)", "operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_HTTPCode,integer)", "operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_OT_POST,resource_speciesTree,nmsu_tree_format)", "operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_OT_POST,resource_Tree,nmsu_tree_format)", "operation_has_output_has_data_format(convert_df_text_format_raw_to_plain,resource_FreeText,plain_text)", "operation_has_output_has_data_format(convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_3)", "operation_has_output_has_data_format(convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_5)", "operation_has_output_has_data_format(convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_OT)", "operation_has_output_has_data_format(convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,newickTree)", "occur(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,1)", "occur(phylotastic_ResolvedScientificNames_OT_TNRS_GET,5)", "occur(phylotastic_GetPhylogeneticTree_OT_POST,6)", "occur(convert_df_text_format_raw_to_plain,0)", "occur(convert_df_sci_names_format_1_to_3,2)", "occur(convert_df_sci_names_format_3_to_5,3)", "occur(convert_df_sci_names_format_5_to_OT,4)", "occur(convert_species_tree_format_NMSU_to_NewickTree,7)"]},"models":{"number":1,"engine":1}}'    
+
+
     #public generate workflow
     generateWorkflow.exposed = True
     #public recomposite similarity workflow
     recomposite.exposed = True
+    #public recovery process
+    recovery.exposed = True
     #public index
     index.exposed = True
 class OntologyAPI_Service(object):

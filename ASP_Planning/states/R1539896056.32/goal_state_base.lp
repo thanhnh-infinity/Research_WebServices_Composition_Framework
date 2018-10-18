@@ -1,5 +1,5 @@
 %------------------------------------------------------------------------
-% GOAL State
+% Recovery process : GOAL State
 %------------------------------------------------------------------------
 finally(resource_speciesTree, newickTree).
 goal(I) :- exists(resource_speciesTree,newickTree,I),  step(I).
