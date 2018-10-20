@@ -202,7 +202,17 @@ def process_a_plan_json_from_raw(big_list_answer_sets,json_in,json_planning_data
             d['resource_data_format_id'] = output_object['resource_data_format_id']
             d['resource_data_format_uri'] = output_object['resource_data_format_uri']
             array_output.append(d)
-
+           
+        if ("recovery" in solver):
+            json_failure = json_in['request_parameters']['failed_service']
+            array_failure = []
+            for i in range(0,len(json_failure)):
+                failure_object = json_failure[i]
+                d = MultipleLevelsOfDictionary()
+                d['service_name'] = failure_object['ID']
+                d['service_index_old_workflow'] = failure_object['Index']
+                array_failure.append(d)
+        
         # For only one plan
         data['workflow_plan'] = []
         all_workflow_plans = []
@@ -266,6 +276,7 @@ def process_a_plan_json_from_raw(big_list_answer_sets,json_in,json_planning_data
         #Full JSON data
         data['request_parameters']['input'] = array_input
         data['request_parameters']['output'] = array_output
+        data['request_parameters']['failed_service'] = array_failure
         if ("recomposite" in solver):
             if (json_in['request_parameters']['avoidance'] is not None) and (len(json_in['request_parameters']['avoidance']) > 0):
                 data['request_parameters']['avoidance'] = json_in['request_parameters']['avoidance'] 

@@ -9,7 +9,7 @@
 %          Edge start from v_{0} : map(A,I,DF_I,T,initial_state,O,DF_O,0)
 % Detect fail service at time T in Graph G
 
-#include "./failure_detection.lp".
+%#include "./failure_detection.lp".
 #include "./single_level_planning_Working.lp".
 #include "./ontology_TESTING_Working.lp".
 
@@ -73,10 +73,10 @@ max_score_at(Y',T) :- recovery_score(F_V),
    max_score_at(_,Tmax).
 
 %---------------------------------------------------------------------
-#show occur/2.
-#show map/8.
+%#show occur/2.
+%#show map/8.
 %#show goal/1.
-%#show e_com/4.
+#show e_com/4.
 %#show score_g/2.
 %#show count/2.
 %#show predecessor/2.

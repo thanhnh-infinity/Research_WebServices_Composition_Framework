@@ -1,46 +1,8 @@
- Node(initial_state,[
-                      Node(gene_based_extraction,[
-                                                   Node(gene_tree_scaling,[
-                                                                             Node(tree_reconciliation,[])
-                                                                          ]
-                                                       )
-                                                    ,
-                                                    Node(names_extraction_tree,[
-                                                                                 Node(names_resolution_operation,[
-                                                                                                                   Node(phylogeny_based_extraction,[
-                                                                                                                                                     [<zss.simple_tree.Node object at 0x107556b50 tree_reconciliation>]
-                                                                                                                                                    ]
-                                                                                                                       )
-                                                                                                                 ]
-                                                                                     )
-                                                                               ]
-                                                        )
-                                                 ]
-                          )
-                    ]
-     )
-
-
-
-
- Node(initial_state,[
-                      Node(gene_based_extraction,[
-                                                   Node(gene_tree_scaling,[
-                                                                             Node(tree_reconciliation,[])
-                                                                          ]
-                                                       )
-                                                   ,
-                                                   Node(names_extraction_tree,[
-                                                                                 Node(names_resolution_operation,[
-                                                                                                                    Node(taxonomy_based_extraction,[
-                                                                                                                                                      [<zss.simple_tree.Node object at 0x107556b50 tree_reconciliation>]
-                                                                                                                                                    ]
-                                                                                                                         )
-                                                                                                                  ]
-                                                                                     )
-                                                                              ]
-                                                      )
-                                                 ]
-                          )
-                    ]
-      )
+occur(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,1)
+occur(phylotastic_ResolvedScientificNames_OT_TNRS_GET,5)
+occur(phylotastic_GetPhylogeneticTree_OT_POST,6)
+occur(convert_df_text_format_raw_to_plain,0)
+occur(convert_df_sci_names_format_1_to_3,2)
+occur(convert_df_sci_names_format_3_to_5,3)
+occur(convert_df_sci_names_format_5_to_OT,4)
+occur(convert_species_tree_format_NMSU_to_NewickTree,7)
