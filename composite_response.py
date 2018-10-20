@@ -33,6 +33,9 @@ HAS_QOS_AVAILABILITY_INVOLVED_CONRETE = "HAS_QOS_AVAILABILITY_INVOLVED_CONCRETE"
 HAS_QOS_THROUGHPUT_INVOLVED_CONRETE = "HAS_QOS_THROUGHPUT_INVOLVED_CONCRETE"
 HAS_QOS_RELIABILITY_INVOLVED_CONRETE = "HAS_QOS_RELIABILITY_INVOLVED_CONCRETE"
 SIM_NODES_WORKFLOWS = "SIM_NODES_WORKFLOWS"
+RECOVERY_SCORE = "RECOVERY_SCORE"
+MAX_RECOVERY_SCORE_AT = "MAX_SCORE_AT"
+MAPPING_FUNCTION_E_COMP = "E_ECOM"
 
 
 class MultipleLevelsOfDictionary(collections.OrderedDict):
@@ -276,7 +279,8 @@ def process_a_plan_json_from_raw(big_list_answer_sets,json_in,json_planning_data
         #Full JSON data
         data['request_parameters']['input'] = array_input
         data['request_parameters']['output'] = array_output
-        data['request_parameters']['failed_service'] = array_failure
+        if ("recovery" in solver):
+            data['request_parameters']['failed_service'] = array_failure
         if ("recomposite" in solver):
             if (json_in['request_parameters']['avoidance'] is not None) and (len(json_in['request_parameters']['avoidance']) > 0):
                 data['request_parameters']['avoidance'] = json_in['request_parameters']['avoidance'] 
@@ -294,7 +298,8 @@ def process_a_plan_json_from_raw(big_list_answer_sets,json_in,json_planning_data
         #print "ABC"
         #print data
         return data
-    except:
+    except Exception as inst:
+        print(inst) 
         return None
 def read_a_full_workflow_detail(json_a_workflow_object):
     full_plan = []
@@ -318,8 +323,14 @@ def read_a_full_workflow_detail(json_a_workflow_object):
         if (SCORE_QOS_WORKFLOW in predicate.strip().upper()):
             raw_plan.append(predicate)
         if (SIM_NODES_WORKFLOWS in predicate.strip().upper()):
+            raw_plan.append(predicate)    
+        if (RECOVERY_SCORE in predicate.strip().upper()):
             raw_plan.append(predicate)
-    
+        if (MAX_RECOVERY_SCORE_AT in predicate.strip().upper()):
+            raw_plan.append(predicate)
+        if (MAPPING_FUNCTION_E_COMP in predicate.strip().upper()):
+            raw_plan.append(predicate)
+            
 
     for predicate in json_a_workflow_object:
         if (OCCUR_SERIVCE_IN_PLAN in predicate.strip().upper()):
