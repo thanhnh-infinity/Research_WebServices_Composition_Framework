@@ -24,16 +24,19 @@ def expect_number_step(input_resource_string,output_resource_string):
         elif ("resource_SetOfGeneStrings" in input_resource_string):
           DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_10.lp")
         else:
-          DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_11.lp")    
+          DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_11.lp")  
     elif ("resource_reconcileTree" in output_resource_string):
         DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")
     elif ("resource_AreSameTree" in output_resource_string):
-        DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_11.lp")
+        if ("resource_FreeText" in input_resource_string) and ("resource_speciesTree" in input_resource_string):
+            DEFAULT_STEP = os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_9.lp")
+        else:  
+            DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_11.lp")
     elif (("resource_speciesTree_with_BranchLengths" in output_resource_string) or ("resource_metadata_tree_scaling" in output_resource_string)):
         if ("resource_FreeText" in input_resource_string):
-          DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_11.lp")
+          DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_10.lp")
         elif ("resource_WebURL" in input_resource_string):  
-          DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_11.lp")
+          DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_10.lp")
         elif ("resource_SetOfGeneStrings" in input_resource_string):
           DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")
         else:
@@ -50,5 +53,5 @@ def expect_number_step(input_resource_string,output_resource_string):
               DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_13.lp")        
     else:
         DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_20.lp")
-
+    print(DEFAULT_STEP)    
     return DEFAULT_STEP    

@@ -293,11 +293,12 @@ class Interact_Planning_Engine(object):
         fo.close()
 
         #=========================================================================================================
+        '''
         if (("resource_speciesTree" in output_resource_string) and ("resource_speciesTree_with_BranchLengths" not in output_resource_string)):
             if ("resource_FreeText" in input_resource_string):
-              DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_9.lp")
+              DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_8.lp")
             elif ("resource_WebURL" in input_resource_string):  
-              DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_9.lp")
+              DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_8.lp")
             elif ("resource_SetOfGeneStrings" in input_resource_string):    
               DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_11.lp")
             else:
@@ -324,7 +325,8 @@ class Interact_Planning_Engine(object):
                   DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")       
         else:
             DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")       
-                
+        '''
+        DEFAULT_STEP = ultility.expect_number_step(input_resource_string,output_resource_string)         
         # Step 3 : Run planning
         # Solution 1 : Run Multi-shot LP program
         if (engine == 1): # Solution 1 : Run simple Multi-shot LP program pick only 1
@@ -706,6 +708,7 @@ class Interact_Planning_Engine(object):
         # Step 2.3 : Write Original Workflow Objet to python file
         #fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"original_workflow.py"),"wb")
         #==========================================================================================
+        '''
         if (("resource_speciesTree" in output_resource_string) and ("resource_speciesTree_with_BranchLengths" not in output_resource_string)):
             if ("resource_FreeText" in input_resource_string):
               DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_8.lp")
@@ -740,7 +743,8 @@ class Interact_Planning_Engine(object):
                   DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_13.lp")        
         else:
             DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_20.lp")
-                
+        '''
+        DEFAULT_STEP = ultility.expect_number_step(input_resource_string,output_resource_string)      
         # Step 3 : Run planning
         if ("NORMAL" in kindToRun):    
             if (isOriginalWorkflow):

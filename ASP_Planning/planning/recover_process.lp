@@ -90,7 +90,12 @@ max_score_at(Y',T) :- recovery_score(F_V),
                       score_g(Y',F_V),
                       occur(Y',T).
 
-:- fail_service(Fail,Time_Fail), 
+:- fail_service(Fail,0),
+   occur(Fail,T),
+   T>=0.
+
+:- fail_service(Fail,Time_Fail),
+   Time_Fail > 0,
    occur(Fail,T), 
    T > Tmax, 
    max_score_at(_,Tmax).
