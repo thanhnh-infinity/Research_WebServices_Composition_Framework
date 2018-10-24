@@ -10,7 +10,7 @@
 %          Edge start from v_{0} : map(A,I,DF_I,T,initial_state,O,DF_O,0)
 % Detect fail service at time T in Graph G
 
-#include "./usercase/1/failure_detection_7.lp".
+#include "./usercase/1/failure_detection_6.lp".
 #include "./usercase/1/domain.lp".
 #include "./single_level_planning_need_domain.lp".
 #include "./ontology_TESTING_Working.lp".
@@ -64,6 +64,7 @@ e_com(Y,T1,Y',T3) :- e_com(X,T2,X',T4),
                      O = O', DF_O = DF_O',
                      X != initial_state, X' != initial_state,
                      same_operation_id(Y,Y').
+
                  
 predecessor(X',Y') :- occur(Y',T3),
                       map(Y',_,_,T3,X',_,_,T4),
@@ -72,18 +73,11 @@ predecessor(X',Y') :- occur(Y',T3),
                       e_com(Y,_,Y',_),
                       e_com(X,_,X',_).
 
+&sum{calculate_score(initial_state)} = 0.
+&sum{calculate_score(X);1} = calculate_score(Y) :- occur(Y,T), predecessor(X,Y).
 
-
-&sum{calculate_score(0)} = 0 :- occur(X,0).
-&sum{calculate_score(V);1} = calculate_score(T) :- occur(X,T), predecessor(X,Y), V = T - 1, T > 0.
-
-
-
-
-
-
-%--- Detect time to start avoiding fail service in new workflow ------ Cho nay can xem lai -- Co ve chua dung
-
+%&maximize{calculate_score(X)}.
+%--- Detect time to start avoiding fail service in new workflow -
 
 fail_executed_done(Fail,T) :- fail_service(Fail,Time_Fail),
                               occur(Y,T),
@@ -97,6 +91,11 @@ fail_executed_done(Fail,T) :- fail_service(Fail,Time_Fail),
 
 %---------------------------------------------------------------------
 #show occur/2.
-%#show map/8.
+#show map/8.
+%#show goal/1.
+#show e_com/4.
+%#show score_g/2.
+%#show count/2.
+#show predecessor/2.
+%#show recovery_score/1.
 &show{calculate_score/1}.
-%&show{toal/0}.
