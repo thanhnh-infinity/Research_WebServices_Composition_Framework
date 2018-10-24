@@ -9,7 +9,7 @@
 %          Edge start from v_{0} : map(A,I,DF_I,T,initial_state,O,DF_O,0)
 % Detect fail service at time T in Graph G
 
-#include "./usercase/1/failure_detection_6.lp".
+#include "./usercase/1/failure_detection_7.lp".
 #include "./usercase/1/domain.lp".
 #include "./single_level_planning_need_domain.lp".
 #include "./ontology_TESTING_Working.lp".
@@ -85,21 +85,31 @@ recovery_score(F_V) :- F_V = #max{V_Y': score_g(Y',V_Y')}.
 
 #maximize{F_V : recovery_score(F_V)}.
 
-%--- Detect time to start avoiding fail service in new workflow ------
+%--- Detect time to start avoiding fail service in new workflow ------ Cho nay can xem lai -- Co ve chua dung
 
-max_score_at(Y',T) :- recovery_score(F_V),
-                      score_g(Y',F_V),
-                      occur(Y',T).
+%max_score_at(Y',T) :- recovery_score(F_V),
+%                      score_g(Y',F_V),
+%                      occur(Y',T).
 
-:- fail_service(Fail,0),
-   occur(Fail,T),
-   T>=0.
+%:- fail_service(Fail,0),
+%   occur(Fail,T),
+%   T>=0.
+
+%:- fail_service(Fail,Time_Fail),
+%   Time_Fail > 0,
+%   occur(Fail,T), 
+%   T > Tmax, 
+%   max_score_at(_,Tmax).
+
+fail_executed_done(Fail,T) :- fail_service(Fail,Time_Fail),
+                              occur(Y,T),
+                              Y = Fail,
+                              e_com(Fail,R,Y,T). 
 
 :- fail_service(Fail,Time_Fail),
-   Time_Fail > 0,
-   occur(Fail,T), 
-   T > Tmax, 
-   max_score_at(_,Tmax).
+   not fail_executed_done(Fail,T),
+   occur(Fail,T).
+
 
 %---------------------------------------------------------------------
 #show occur/2.
