@@ -23,15 +23,6 @@ same_operation_id(X,Y) :- operation(X),
 
 e_com(initial_state,0,initial_state,0).
 
-%e_com(Y,T1,Y',T3) :- e_com(initial_state,0,initial_state,0), 
-%                     old_occ_exe(Y,T1),
-%                     old_map_exe(Y,_,_,T1,initial_state,_,_,0),  
-%                     occur(Y',T3),
-%                     map(Y',_,_,T3,initial_state,_,_,0),
-%                     T1 >= 0,
-%                     T3 >= 0,
-%                     same_operation_id(Y,Y').
-
 e_com(Y,T1,Y',T3) :- e_com(initial_state,0,initial_state,0), 
                      old_occ_exe(Y,T1),
                      old_map_exe(Y,I,DF_I,T1,initial_state,O,DF_O,0),  
@@ -43,15 +34,6 @@ e_com(Y,T1,Y',T3) :- e_com(initial_state,0,initial_state,0),
                      O = O', DF_O = DF_O',
                      same_operation_id(Y,Y').                     
 
-%e_com(Y,T1,Y',T3) :- e_com(X,T2,X',T4), 
-%                     old_occ_exe(Y,T1),
-%                     old_map_exe(Y,_,_,T1,X,_,_,T2+1),  
-%                     occur(Y',T3),
-%                     map(Y',_,_,T3,X',_,_,T4+1),
-%                     T1 >= T2+1,
-%                     T3 >= T4+1,
-%                     X != initial_state, X' != initial_state,
-%                     same_operation_id(Y,Y').
 
 e_com(Y,T1,Y',T3) :- e_com(X,T2,X',T4), 
                      old_occ_exe(Y,T1),
@@ -91,11 +73,7 @@ fail_executed_done(Fail,T) :- fail_service(Fail,Time_Fail),
 
 %---------------------------------------------------------------------
 #show occur/2.
-#show map/8.
-%#show goal/1.
-#show e_com/4.
-%#show score_g/2.
-%#show count/2.
-#show predecessor/2.
-%#show recovery_score/1.
+%#show map/8.
+%#show e_com/4.
+%#show predecessor/2.
 &show{calculate_score/1}.
