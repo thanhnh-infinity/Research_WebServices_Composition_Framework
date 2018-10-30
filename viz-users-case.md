@@ -1,5 +1,4 @@
 1. Input : resource_FreeText (raw_text)   
-   Output : resource_AreSameTree (boolean)
    Output : resource_SpeciesTree (newick)
    Clingcon
 
@@ -10,10 +9,10 @@
    Fail (convert_df_sci_names_format_5_to_OT, 4) :  Recovery -- GOOD  (can be example)
    Fail (phylotastic_ResolvedScientificNames_OT_TNRS_GET, 5) : Recovery -- GOOD (Can be example)
    Fail (phylotastic_GetPhylogeneticTree_OT_POST, 6) : Recovery -- GOOD (can be example)
-   Fail (convert_species_tree_format_NMSU_to_NewickTree, 7) :  Timeout Err0r - Failed (Type 1) ???
+   
+   Fail (convert_species_tree_format_NMSU_to_NewickTree, 7) :  Timeout Error ==> Fix by High Performance ===> Recocvery Good (Strong Example)
 
 2. Input : resource_FreeText (plain)    =======> Example
-   Output : resource_AreSameTree (boolean)
    Ouput : resource_SpecieTRee (newick)
    Clingo
 
@@ -51,8 +50,9 @@
    Fail (convert_df_sci_names_format_5_to_GNR, 4) : Recovery -- GOOD (w example)
    Fail (phylotastic_ResolvedScientificNames_GNR_TNRS_POST, 5)  : Recovery -- GOOD (Strong EXAMPLE)
    Fail (convert_df_taxons_format_GNR_to_PhyloT, 6) : Recovery -- GOOD (Strong Example)
-   Fail (phylotastic_GetPhylogeneticTree_PhyloT_GET, 7) : Timeout Error - Failed ????
-   Fail (phylotastic_CompareTrees_BL_Dendropy_POST, 8) :  Timeout Error - Failed 
+   
+   Fail (phylotastic_GetPhylogeneticTree_PhyloT_GET, 7) : Timeout Error ==> Fix by High Performance ==> Recovery --- Very Good (Strong Example)
+   Fail (phylotastic_CompareTrees_BL_Dendropy_POST, 8) :  Timeout Error ==> Fix by High Performance ==> Recovery --- Very Good (Strong Example)
 
 
 5. Input : resource_FreeText (plain_text), speciesTree (compare_tree_format)     =======> Example
@@ -66,7 +66,7 @@
    Fail (phylotastic_GetPhylogeneticTree_OT_GET, 5) :  Recovery -- Good 
    Fail (phylotastic_GetPhylogeneticTree_OT_POST, 6) :  Recovery -- Good
    Fail (convert_species_tree_format_NMSU_to_NewickTree, 7) : Recovery -- Good (Strong Example)
-   Fail (phylotastic_CompareTrees_BL_Dendropy_POST, 8) :  Timeout Error --- Failed
+   Fail (phylotastic_CompareTrees_BL_Dendropy_POST, 8) :  Timeout Error ==> Fix by High Performance ==> Recovery --- Very Good (Strong Example)
 
 6. Input : setof GeneNames (list_of_strings)
    Output : ReconcilationTree (newick)
@@ -79,10 +79,10 @@
    Fail (convert_df_sci_names_format_4_to_6, 5)  : No fix -- Good
    Fail (convert_df_sci_names_format_6_to_OT, 6) : Recovery -- Good (Example)
 
-   Fail (phylotastic_ResolvedScientificNames_OT_TNRS_GET, 7) :  Timeout Error --- Failed ??
-   Fail (phylotastic_GetPhylogeneticTree_OT_GET, 8) :  Timeout Error --- Failed ??
-   Fail (convert_species_tree_format_NMSU_to_NewickTree, 9)  :  Timeout Error --- Failed ??
-   Fail (phylotastic_GetReconciliationTree_GET, 10) : Timeout Error --- Failed ??
+   Fail (phylotastic_ResolvedScientificNames_OT_TNRS_GET, 7) :  Timeout Error ==> Fix by High Performance ==> Recovery --- Very Good (Strong Example)
+   Fail (phylotastic_GetPhylogeneticTree_OT_GET, 8) :  TTimeout Error ==> Fix by High Performance ==> Recovery --- Very Good (Strong Example)
+   Fail (convert_species_tree_format_NMSU_to_NewickTree, 9)  :  Timeout Error ==> Fix by High Performance ==> Recovery --- Very Good (Strong Example)
+   Fail (phylotastic_GetReconciliationTree_GET, 10) : Timeout Error ==> Fix by High Performance ==> Recovery --- Very Good (Strong Example)
 
 7. Input : FreeText (raw_text) and phylomatic_method (string)
    Ouput : SpeciesTree + Chronogram (Newick) and meta data of tree
@@ -96,9 +96,9 @@
    Fail (phylotastic_ResolvedScientificNames_OT_TNRS_POST, 5) : Recovery -- Good (Strong Example)
    Fail (phylotastic_GetPhylogeneticTree_OT_GET, 6)  :  Recovery -- Good (Strong Example)
 
-   Fail (convert_species_tree_format_NMSU_to_NewickTree, 7)  : (Performance is quite slow) : TimeOut -- Failed 
-   Fail (phylotastic_GetMetadata_Chronogram_DateLife_POST, 8) :  TimeOut Error -- Failed
-   Fail (phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST, 9)  : TimeOut Error -- Failed
+   Fail (convert_species_tree_format_NMSU_to_NewickTree, 7)  : Timeout Error ==> Fix by High Performance ==> Recovery --- Very Good (Strong Example)
+   Fail (phylotastic_GetMetadata_Chronogram_DateLife_POST, 8) :  Timeout Error ==> Fix by High Performance ==> Recovery --- Good
+   Fail (phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST, 9)  : Timeout Error ==> Fix by High Performance ==> Recovery ---Good 
 
 8. Input : FreeText (raw_text) and phylomatic_method (string)
    Ouput : SpeciesTree + Chronogram (Newick) and meta data of tree
@@ -112,9 +112,9 @@
    Fail (phylotastic_ResolvedScientificNames_GNR_TNRS_POST, 5) : Recovery -- Good (Example)
    Fail (convert_df_taxons_format_GNR_to_PhyloT, 6)  : Recovery --- Good (Strong Example)
 
-   Fail (phylotastic_GetPhylogeneticTree_PhyloT_GET, 7) : TimeOut Error --- Failed
-   Fail (phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST, 8) : TimeOut Error -- Failed
-   Fail (phylotastic_GetMetadata_Chronogram_DateLife_POST, 9) : TimeOut Error -- Failed
+   Fail (phylotastic_GetPhylogeneticTree_PhyloT_GET, 7) : Timeout Error ==> Fix by High Performance ==> Recovery --- Very Good (Strong Example)
+   Fail (phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST, 8) : Timeout Error ==> Fix by High Performance ==> Recovery --- Good
+   Fail (phylotastic_GetMetadata_Chronogram_DateLife_POST, 9) : Timeout Error ==> Fix by High Performance ==> Recovery --- Good
 
 9. Input : FreeText (plain_text) and phylomatic_method (string)
    Ouput : SpeciesTree + Chronogram (Newick) and meta data of tree
@@ -128,8 +128,8 @@
    Fail (phylotastic_GetPhylogeneticTree_OT_POST, 5)    :  Recovery --- Good (Strong Ex)
    Fail (convert_species_tree_format_NMSU_to_NewickTree, 6)      :   Recovery --- Good (Strong Example)
 
-   Fail (phylotastic_GetMetadata_Chronogram_DateLife_POST, 7)    : TimeOut Error -- Failed
-   Fail (phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST, 8)   : TimeOut Error -- Failed
+   Fail (phylotastic_GetMetadata_Chronogram_DateLife_POST, 7)    : Timeout Error ==> Fix by High Performance ==> Recovery --- Good
+   Fail (phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST, 8)   : Timeout Error ==> Fix by High Performance ==> Recovery --- Good
    
 
 Summary : REcheck Max_Score and replace to clingcon
