@@ -1231,7 +1231,7 @@ class Interact_Planning_Engine(object):
                 planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "recover_process.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"failure_detection.lp"),NUMBER_STEP,str(1))
             elif (engine == 2): # Solution : Pure LP (Clingo) with high performance    
                 if (number_of_models > 1):
-                    return return_response_error(303,"error","Engine 1 has only one model","JSON")
+                    return return_response_error(303,"error","Engine 2 has only one model","JSON")
 
                 planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "recover_process_high_performance.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"failure_detection.lp"),NUMBER_STEP,str(1))
             else:
