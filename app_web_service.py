@@ -1230,15 +1230,15 @@ class Interact_Planning_Engine(object):
 
                 planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "recover_process.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"failure_detection.lp"),NUMBER_STEP,str(1))
                 
-                '''
-                print("--DELETE Temp Input Folder and Output Folder")
+                
+                print("--DELETE Temp Input Folder and Output Folder-- Recovery")
                 delete_path = os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name)
                 if (os.path.exists(delete_path)):
                     try:
                         shutil.rmtree(delete_path)
                     except OSError:
                         pass
-                '''
+                
                 json_planning_data = json.loads(planing_data)
                 model_result = str(json_planning_data["Result"])
                 model_number = json_planning_data["Models"]["Number"]

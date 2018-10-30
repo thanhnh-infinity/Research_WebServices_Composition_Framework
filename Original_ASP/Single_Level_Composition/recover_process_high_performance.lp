@@ -22,15 +22,6 @@ same_operation_id(X,Y) :- operation(X),
 
 e_com(initial_state,0,initial_state,0).
 
-%e_com(Y,T1,Y',T3) :- e_com(initial_state,0,initial_state,0), 
-%                     old_occ_exe(Y,T1),
-%                     old_map_exe(Y,_,_,T1,initial_state,_,_,0),  
-%                     occur(Y',T3),
-%                     map(Y',_,_,T3,initial_state,_,_,0),
-%                     T1 >= 0,
-%                     T3 >= 0,
-%                     same_operation_id(Y,Y').
-
 e_com(Y,T1,Y',T3) :- e_com(initial_state,0,initial_state,0), 
                      old_occ_exe(Y,T1),
                      old_map_exe(Y,I,DF_I,T1,initial_state,O,DF_O,0),  
@@ -40,17 +31,8 @@ e_com(Y,T1,Y',T3) :- e_com(initial_state,0,initial_state,0),
                      T3 >= 0,
                      I = I', DF_I = DF_I',
                      O = O', DF_O = DF_O',
-                     same_operation_id(Y,Y').                     
+                     same_operation_id(Y,Y').                   
 
-%e_com(Y,T1,Y',T3) :- e_com(X,T2,X',T4), 
-%                     old_occ_exe(Y,T1),
-%                     old_map_exe(Y,_,_,T1,X,_,_,T2+1),  
-%                     occur(Y',T3),
-%                     map(Y',_,_,T3,X',_,_,T4+1),
-%                     T1 >= T2+1,
-%                     T3 >= T4+1,
-%                     X != initial_state, X' != initial_state,
-%                     same_operation_id(Y,Y').
 
 e_com(Y,T1,Y',T3) :- e_com(X,T2,X',T4), 
                      old_occ_exe(Y,T1),
@@ -64,43 +46,11 @@ e_com(Y,T1,Y',T3) :- e_com(X,T2,X',T4),
                      X != initial_state, X' != initial_state,
                      same_operation_id(Y,Y').
 
-score_g(initial_state,0).
 
-score_g(Y',0) :- occur(Y',T3),
-                 not e_com(_,_,Y',T3).
-                 
-predecessor(X',Y') :- occur(Y',T3),
-                      map(Y',_,_,T3,X',_,_,T4),
-                      old_occ_exe(Y,T1),
-                      old_map_exe(Y,_,_,T1,X,_,_,T2),
-                      e_com(Y,_,Y',_),
-                      e_com(X,_,X',_).
+detect_ecom_quatity(X) :- X = #count{Y',T3 : e_com(_,_,Y',T3)}.
+#maximize{X : detect_ecom_quatity(X)}.
 
-score_g(Y',V_Y') :-  S = #sum{V_X',X' : predecessor(X',Y'),score_g(X',V_X')},
-                     V_Y' = S + 1,
-                     occur(Y',T3),
-                     e_com(_,_,Y',T3).
-
-recovery_score(F_V) :- F_V = #max{V_Y': score_g(Y',V_Y')}.
-
-#maximize{F_V : recovery_score(F_V)}.
-
-%--- Detect time to start avoiding fail service in new workflow 
-
-%max_score_at(Y',T) :- recovery_score(F_V),
-%                      score_g(Y',F_V),
-%                      occur(Y',T).
-
-%:- fail_service(Fail,0),
-%   occur(Fail,T),
-%   T>=0.
-
-%:- fail_service(Fail,Time_Fail),
-%   Time_Fail > 0,
-%   occur(Fail,T), 
-%   T > Tmax, 
-%   max_score_at(_,Tmax).
-
+%--- Detect time to start avoiding fail service in new workflow -
 fail_executed_done(Fail,T) :- fail_service(Fail,Time_Fail),
                               occur(Y,T),
                               Y = Fail,
@@ -109,16 +59,12 @@ fail_executed_done(Fail,T) :- fail_service(Fail,Time_Fail),
 :- fail_service(Fail,Time_Fail),
    not fail_executed_done(Fail,T),
    occur(Fail,T).
-
-
 %---------------------------------------------------------------------
+
+%--------------------------------------------------------------------- 
 #show occur/2.
 #show map/8.
-%#show goal/1.
-#show e_com/4.
-%#show score_g/2.
-%#show count/2.
+%#show e_com/4.
 %#show predecessor/2.
-#show recovery_score/1.
-%#show old_map_exe/8.
-%#show max_score_at/2.
+
+
