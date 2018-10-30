@@ -1,7 +1,7 @@
 1. Input : resource_FreeText (raw_text)   
    Output : resource_AreSameTree (boolean)
    Output : resource_SpeciesTree (newick)
-   Clingo
+   Clingcon
 
    Fail (convert_df_text_format_raw_to_plain, 0) :  No fix -- GOOD
    Fail (phylotastic_FindScientificNamesFromFreeText_GNRD_GET, 1) : No fix -- GOOD
