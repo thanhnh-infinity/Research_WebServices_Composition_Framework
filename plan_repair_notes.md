@@ -46,5 +46,11 @@
         - After Step 3, If heuristoc reqports that one or more of plans can be expended to a valid plan, use refinement strategy to complete plan
         - If a valid refinement cannot be found, iterativelu increment the depth of the removal trees and try again
 
+5. Repair Plans On-the-fly : Optimum-AIV Planner; O-PLan
+    
+    - Account for execution failures and changes in the execution situation
+    - => This method is reverse our method : The techniques allowed a failure to be indentified and repaired with MINIMUM impact on the REST of the plan
+    - 
+
 
     
