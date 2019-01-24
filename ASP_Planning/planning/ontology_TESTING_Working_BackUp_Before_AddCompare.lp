@@ -138,7 +138,6 @@ subClass(gammaDistribution,substitutionModel).
 
 equalClasses(clade,holophyleticGroup).
 equalClasses(bifurcatingTree,fullyResolvedTree).
-
 %=======================================================================
 %PART 2 : Define classes + instances are defined Operation
 %=======================================================================
@@ -381,7 +380,6 @@ instance(phylotastic_ResolvedScientificNames_GNR_TNRS_POST).
 instance(phylotastic_ResolvedScientificNames_OT_TNRS_GET).
 instance(phylotastic_ResolvedScientificNames_OT_TNRS_POST).
 instance(phylotastic_GetAllSpeciesFromTaxon_OT_GET).
-
 % Tree Extraction
 instance(phylotastic_GetPhylogeneticTree_OT_GET).
 instance(phylotastic_GetPhylogeneticTree_OT_POST).
@@ -389,7 +387,6 @@ instance(phylotastic_GetPhylogeneticTree_Phylomatic_GET).
 instance(phylotastic_GetPhylogeneticTree_Phylomatic_POST).
 instance(phylotastic_GetPhylogeneticTree_PhyloT_GET).
 instance(phylotastic_GetPhylogeneticTree_PhyloT_POST).
-
 
 instance(phylotastic_GetInformationURLsOfSpecies_EOL_POST).
 instance(phylotastic_GetInformationURLsOfSpecies_EOL_GET).
@@ -422,17 +419,7 @@ instance(phylotastic_GeneTree_Scaling).
 instance(google_ConvertCountryCodeToName_GET).
 instance(openTree_GetTaxonomyNameFromSciName_GET).
 
-% For compare
-instance(phylotastic_ResolvedScientificNames_FC).
-instance(phylotastic_FindScientificNamesFromWeb_FC).
-instance(phylotastic_GetPhylogeneticTree_FC).
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% For compare
-isInstanceOf_immediate(phylotastic_FindScientificNamesFromWeb_FC,names_extraction_web).
-isInstanceOf_immediate(phylotastic_ResolvedScientificNames_FC,names_resolution_operation).
-isInstanceOf_immediate(phylotastic_GetPhylogeneticTree_FC,taxonomy_based_extraction).
 
 % Detect instances of classes -- immediate class
 isInstanceOf_immediate(phylotastic_ResolvedScientificNames_GNR_TNRS_GET,names_resolution_operation).
@@ -514,21 +501,6 @@ subClass(integer,number).
 subClass(double,number).
 subClass(http_url,uri).
 subClass(list_of_strings,list_of_things).
-
-% For compare
-instance_operation_has_input_has_data_format(phylotastic_FindScientificNamesFromWeb_FC, resource_WebURL, http_url).
-instance_operation_has_output_has_data_format(phylotastic_FindScientificNamesFromWeb_FC, resource_SetOfSciName, raw_names_format_FC).
-instance_operation_has_output_has_data_format(phylotastic_FindScientificNamesFromWeb_FC, resource_HTTPCode, integer).
-instance_operation_has_output_has_data_format(phylotastic_FindScientificNamesFromWeb_FC, resource_ConnectionTime, integer).
-
-instance_operation_has_input_has_data_format(phylotastic_ResolvedScientificNames_FC, resource_SetOfSciName, raw_names_format_FC).
-instance_operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_FC, resource_SetOfTaxon, resolved_names_format_FC).
-instance_operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_FC, resource_SetOfResolvedName, resolved_names_format_FC).
-instance_operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_FC, resource_HTTPCode, integer).
-
-instance_operation_has_input_has_data_format(phylotastic_GetPhylogeneticTree_FC, resource_SetOfTaxon, resolved_names_format_FC).
-instance_operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_FC, resource_speciesTree, compare_tree_format).
-
 
 % concrete operation has data format == CHUA CO TRONG OWL - Co kha nang ko the co trong OWL
 instance_operation_has_input_has_data_format(phylotastic_FindScientificNamesFromWeb_GNRD_GET, resource_WebURL, http_url).
@@ -631,14 +603,12 @@ instance_operation_has_output_has_data_format(phylotastic_GetSpeciesScientificNa
 
 instance_operation_has_input_has_data_format(phylotastic_CompareTrees_Sym_Dendropy_POST, resource_speciesTree, newickTree).
 instance_operation_has_input_has_data_format(phylotastic_CompareTrees_Sym_Dendropy_POST, resource_speciesTree, compare_tree_format).
-%instance_operation_has_input_has_data_format(phylotastic_CompareTrees_Sym_Dendropy_POST, resource_speciesTree, nmsu_tree_format).
 instance_operation_has_output_has_data_format(phylotastic_CompareTrees_Sym_Dendropy_POST, resource_AreSameTree, boolean).
 instance_operation_has_output_has_data_format(phylotastic_CompareTrees_Sym_Dendropy_POST, resource_HTTPCode, integer).
 instance_operation_has_output_has_data_format(phylotastic_CompareTrees_Sym_Dendropy_POST, ws_response_message, string).
 
 instance_operation_has_input_has_data_format(phylotastic_CompareTrees_BL_Dendropy_POST, resource_speciesTree, newickTree).
 instance_operation_has_input_has_data_format(phylotastic_CompareTrees_BL_Dendropy_POST, resource_speciesTree, compare_tree_format).
-%instance_operation_has_input_has_data_format(phylotastic_CompareTrees_BL_Dendropy_POST, resource_speciesTree, nmsu_tree_format).
 instance_operation_has_output_has_data_format(phylotastic_CompareTrees_BL_Dendropy_POST, resource_AreSameTree, boolean).
 instance_operation_has_output_has_data_format(phylotastic_CompareTrees_BL_Dendropy_POST, resource_HTTPCode, integer).
 instance_operation_has_output_has_data_format(phylotastic_CompareTrees_BL_Dendropy_POST, ws_response_message, string).
@@ -654,8 +624,8 @@ instance_operation_has_output_has_data_format(phylotastic_GetMetadata_Chronogram
 % Add more for testing == CHUA CO TRONG OWL
 %%%
 
-instance_operation_has_input_has_data_format(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET, resource_WebURL, data_format_E).
-instance_operation_has_output_has_data_format(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET, resource_SetOfSciName, raw_names_format_2).
+instance_operation_has_input_has_data_format(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET, resource_WebURL, http_url).
+instance_operation_has_output_has_data_format(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET, resource_SetOfSciName, raw_names_format_6).
 instance_operation_has_output_has_data_format(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET, resource_HTTPCode, integer).
 instance_operation_has_output_has_data_format(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET, resource_ConnectionTime, integer).
 %instance_operation_has_output_has_data_format(phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET, resource_SetOfNames, list_of_strings).
@@ -686,13 +656,6 @@ instance_operation_has_output_has_data_format(phylotastic_GeneTree_Scaling, reso
 %=======================================================================
 
 %-------------For Response Time-----------------------------------------
-
-%% For compare
-has_qos_response_time(phylotastic_ResolvedScientificNames_FC,710).
-has_qos_response_time(phylotastic_FindScientificNamesFromWeb_FC,5000).
-has_qos_response_time(phylotastic_GetPhylogeneticTree_FC,4000).
-
-
 
 %has_qos_response_time(phylotastic_ResolvedScientificNames_GNR_TNRS_GET,"0.68").
 %has_qos_response_time(phylotastic_ResolvedScientificNames_GNR_TNRS_POST,"0.68").
@@ -830,12 +793,6 @@ has_qos_response_time(convert_gene_tree_format_2_to_pHYLIPTree,212).
 has_qos_response_time(convert_gene_tree_format_pHYLIPTree_to_PhyloTree,303).
 
 %-------------For Throughput--------------------------------------------
-%% For compare
-has_qos_throughput(phylotastic_ResolvedScientificNames_FC,19000).
-has_qos_throughput(phylotastic_FindScientificNamesFromWeb_FC,20000).
-has_qos_throughput(phylotastic_GetPhylogeneticTree_FC,4000).
-
-
 %has_qos_throughput(phylotastic_ResolvedScientificNames_GNR_TNRS_GET,"19.41").
 %has_qos_throughput(phylotastic_ResolvedScientificNames_GNR_TNRS_POST,"19.41").
 %has_qos_throughput(phylotastic_ResolvedScientificNames_OT_TNRS_GET,"27.49").
@@ -974,12 +931,6 @@ has_qos_throughput(convert_gene_tree_format_pHYLIPTree_to_PhyloTree,20000).
 
 %-------------For Reliability-------------------------------------------
 
-%% For compare
-has_qos_reliability(phylotastic_ResolvedScientificNames_FC,577000).
-has_qos_reliability(phylotastic_FindScientificNamesFromWeb_FC,600000).
-has_qos_reliability(phylotastic_GetPhylogeneticTree_FC,120000).
-
-
 %has_qos_reliability(phylotastic_ResolvedScientificNames_GNR_TNRS_GET,"576.44").
 %has_qos_reliability(phylotastic_ResolvedScientificNames_GNR_TNRS_POST,"576.44").
 %has_qos_reliability(phylotastic_ResolvedScientificNames_OT_TNRS_GET,"576.48").
@@ -1117,11 +1068,6 @@ has_qos_reliability(convert_gene_tree_format_2_to_pHYLIPTree,570000).
 has_qos_reliability(convert_gene_tree_format_pHYLIPTree_to_PhyloTree,570000).
 
 %-------------For Availability------------------------------------------
-
-%% For compare
-has_qos_availability(phylotastic_ResolvedScientificNames_FC,1000).
-has_qos_availability(phylotastic_FindScientificNamesFromWeb_FC,1000).
-has_qos_availability(phylotastic_GetPhylogeneticTree_FC,1000).
 
 %has_qos_availability(phylotastic_ResolvedScientificNames_GNR_TNRS_GET,"1.0").
 %has_qos_availability(phylotastic_ResolvedScientificNames_GNR_TNRS_POST,"1.0").
@@ -1270,7 +1216,6 @@ class(raw_names_format_5).
 class(raw_names_format_6).
 class(raw_names_format_GNR).
 class(raw_names_format_OT).
-class(raw_names_format_FC).
 
 class(resolved_names_format_1).
 class(resolved_names_format_2).
@@ -1282,7 +1227,6 @@ class(resolved_names_format_GNR).
 class(resolved_names_format_OT).
 class(resolved_names_format_Phylomatic).
 class(resolved_names_format_PhyloT).
-class(resolved_names_format_FC).
 
 subClass(raw_names_format_1, names_format).
 subClass(raw_names_format_2, names_format).
@@ -1292,7 +1236,6 @@ subClass(raw_names_format_5, names_format).
 subClass(raw_names_format_6, names_format).
 subClass(raw_names_format_GNR,names_format).
 subClass(raw_names_format_OT,names_format).
-subClass(raw_names_format_FC,names_format).
 subClass(resolved_names_format_1,names_format).
 subClass(resolved_names_format_2,names_format).
 subClass(resolved_names_format_3,names_format).
@@ -1303,7 +1246,6 @@ subClass(resolved_names_format_GNR,names_format).
 subClass(resolved_names_format_OT,names_format).
 subClass(resolved_names_format_Phylomatic,names_format).
 subClass(resolved_names_format_PhyloT,names_format).
-subClass(resolved_names_format_FC,names_format).
 
 % for URL data format
 class(url_format).
@@ -2243,3 +2185,4 @@ mean_op(A) :- instance_has_input(A,N1,I),
 %#show instance_operation_has_output_has_data_format/3.
 %#show mean_op/1.
 %#show executable/2.
+
