@@ -1450,7 +1450,6 @@ class OntologyAPI_Service(object):
                 parser_engine = str(request_data['parser_engine']).strip()
             except:
                 parser_engine = "1"
-
             if ((parser_engine == 2) or (parser_engine == "2")):
                     try:
                         owl_component_name = str(request_data['owl_component_name']).strip()
@@ -1610,3 +1609,7 @@ if __name__ == '__main__':
     # cherrypy.engine.start()
     cherrypy.engine.start()
     cherrypy.engine.block()
+
+'''
+Ending Source code for App Engine - Web Service Composition
+'''    
