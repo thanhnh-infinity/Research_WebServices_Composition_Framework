@@ -14,8 +14,6 @@ import configuration
 import test
 
 CDAO_URL_ONTOLOGY = "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#"
-
-
 OCCUR_SERIVCE_IN_PLAN = "OCCUR("
 GOAL_IN = "GOAL("
 SCORE_QOS_WORKFLOW = "SCORE_QOS_WORKFLOW"
@@ -57,6 +55,7 @@ def calculateNormalization(aVector):
         normalizeVector.append(float(a)/length_vector)
 
     return normalizeVector
+    
 def read_QoS_values_for_workflow(json_a_workflow_object):
     # Read all qos attribute of each concrete service that occur in Concrete Plan Level
     qos_response_time_total = 0.0
