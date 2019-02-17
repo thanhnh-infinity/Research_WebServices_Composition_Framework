@@ -16,6 +16,7 @@
 
 %%%%%%%%%% LOGIC FOR RECOVERY PROCESS - FORMALIZATION %%%%%%%%%%%%%%%%
 
+%%% Define reused resources and count them
 resource_reuseable(R,DF_R,Data) :- resource_generated(R,DF_R,Data),
                                    occur(Y',T),
                                    map(Y',I,DF_I,T,initial_state,R,DF_R,0).
@@ -24,6 +25,8 @@ reused(X) :- X = #count{R,DF_R,Data : resource_reuseable(R,DF_R,Data)}.
 
 #maximize{X : reused(X)}.
 
+%%% Avoid failed services
+:- fail_service(A,T), is_used_operation(A).
 
 %---------------------------------------------------------------------
 
