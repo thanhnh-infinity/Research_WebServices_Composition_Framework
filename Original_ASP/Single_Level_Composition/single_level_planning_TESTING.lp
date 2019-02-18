@@ -2,9 +2,10 @@
 % PLANNING PART : Build WorkFlow for SINGLE LEVEL OF PLANNING
 %========================================================================
 %#const n = 1.
-%#const n = 2.
+#const n = 2.
 %#const n = 3.
 %#const n = 6.
+%#const n = 8.
 %#const n = 9.
 %#const n = 11.
 %#const n = 20.
@@ -146,6 +147,8 @@ is_ordered_services(C,D) :- operation(C),
 % Generate INPUT
 %initially(resource_FreeText,plain_text).
 %initially(resource_WebURL,http_url).
+initially(resource_SetOfTaxon,resolved_names_format_OT).
+%initially(resource_SetOfTaxon,list_of_strings).
 
 %initially(resource_SetOfGeneStrings,list_of_strings).
 %initially(resource_geneTree,newickTree).
@@ -160,7 +163,7 @@ is_ordered_services(C,D) :- operation(C),
 %initially(resource_FreeText,raw_text).
 %initially(resource_speciesTree,compare_tree_format).
 
-%initially(resource_SetOfTaxon,resolved_names_format_OT).
+
 
 
 
@@ -168,8 +171,8 @@ is_ordered_services(C,D) :- operation(C),
 %finally(resource_speciesTree,phylo4Tree).
 %goal(I) :- exists(resource_speciesTree,phylo4Tree,I), step(I).
 
-%finally(resource_speciesTree,newickTree).
-%goal(I) :- exists(resource_speciesTree,newickTree,I), step(I).
+finally(resource_speciesTree,newickTree).
+goal(I) :- exists(resource_speciesTree,newickTree,I), step(I).
 
 %finally(resource_SetOfTaxon,resolved_names_format_GNR).
 %goal(I) :- exists(resource_SetOfTaxon,resolved_names_format_GNR,I), step(I).
@@ -201,7 +204,7 @@ is_ordered_services(C,D) :- operation(C),
 
 
 %========================================================================
-%#show occur/2.
+#show occur/2.
 %#show map/8.
 %#show executable/2.
 %#show exists/3.
