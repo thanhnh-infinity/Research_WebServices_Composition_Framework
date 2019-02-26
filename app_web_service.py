@@ -1090,7 +1090,15 @@ class Interact_Planning_Engine(object):
                       "Index" : 3
                     }
                 ],
-                "original_workflow" : []
+                "original_workflow" : [],
+                "generated_resources" : [
+                    {
+                        "resource_ontology_id" : "a",
+                        "resource_data_format_id" : "b",
+                        "resource_name_in_output_of_service" : "c",
+                        "resource_data" : "data"
+                    }
+                ]
             },
             "models":{
                 "number":1,
@@ -1224,19 +1232,40 @@ class Interact_Planning_Engine(object):
                 elif (engine == 4):
                     print("Doing resource_generated(.)")
                     # Generate added_intial_state_base.lp
-                    fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"sup_initial_state.lp"),"wb")
-                    print("---Recovery process : Create Supplimental Initial State -- Engine : %s" %(str(engine)))
+                    fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"sup_init_generated_resource_failure_detection.lp"),"wb")
+                    print("---Recovery process : Supplimental Initial State & Failure Detection -- Engine : %s" %(str(engine)))
                     fo.write("%------------------------------------------------------------------------\n")
-                    fo.write("% Recovery process Added Resource : Supplimental Initial State\n")
+                    fo.write("% Recovery process Added Resource : Supplimental Initial State & Failure Detection \n")
                     fo.write("%------------------------------------------------------------------------\n")
-                    input_resource_string = ""
-                    for i in range(0,len(json_input_re)):
-                        original_workflow_removed = [str(i) for i in json_original_workflows]
-                        atom_list = []
-                        for item in original_workflow_removed:
-                            if ('OPERATION_HAS_OUTPUT_HAS_DATA_FORMAT' in str(item).strip().upper()):
-                                op,re,df = composite_parser.parse_a_output_data_format(str(item))
-                                
+                    
+                    fail_service_ID = json_fail_service[0]["ID"]
+                    fail_Index = json_fail_service[0]["Index"]
+
+                    fo.write("fail_service(%s,%s).\n" %(str(fail_service_ID),str(fail_Index)))
+                    fo.write("%--------------------------------------------------------------------\n")
+                    json_generated_resource = request_parameters["generated_resources"]
+                    if ((json_generated_resource is None) or (json_generated_resource == '')):
+                        json_generated_resource = []
+                    if (len(json_fail_service) <= 0):
+                        json_generated_resource = []
+
+                    fo.write("%--------------------------------------------------------------------\n")
+                    fo.write("%--------------------------------------------------------------------\n")
+                    sub_init_list = [] 
+                    for gen_resource in json_generated_resource:
+                        if (gen_resource['resource_ontology_id'] and gen_resource['resource_data_format_id']):
+                            gen_resource_string = gen_resource['resource_ontology_id'] + "," + gen_resource['resource_data_format_id']
+                            if (gen_resource_string not in sub_init_list):
+                                sub_init_list.append(gen_resource_string)
+
+                    fo.write("%------------------------------------------------------------------------\n")
+                    fo.write("% Recovery process Added Resource : Supplimental Initial State \n")
+                    fo.write("%------------------------------------------------------------------------\n")          
+                    for content in sub_init_list:
+                        fo.write("intitally(%s).\n" %(str(content)))            
+                    fo.write("%------------------------------------------------------------------------\n")             
+                    
+
                     fo.write("%------------------------------------------------------------------------\n")
                     fo.close()
 
@@ -1263,9 +1292,11 @@ class Interact_Planning_Engine(object):
                 if (number_of_models > 1):
                     return return_response_error(303,"error","Engine 4 has only one model","JSON")
                 print("---Recovery process : RUNNING ENGINE 4 :  Planning from Failed State")
-                planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "recover_process_from_failed_state.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"added_initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"failure_detection.lp"),NUMBER_STEP,str(1))
+                planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "recover_process_from_failed_state.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"sup_init_generated_resource_failure_detection.lp"),NUMBER_STEP,str(1))
             else:
                 return return_response_error(400,"error","no eligible engine","JSON")  
+            
+              
             print("--DELETE Temp Input Folder and Output Folder-- Recovery")
             delete_path = os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name)
             if (os.path.exists(delete_path)):
@@ -1273,6 +1304,7 @@ class Interact_Planning_Engine(object):
                     shutil.rmtree(delete_path)
                 except OSError:
                     pass
+            
             
             json_planning_data = json.loads(planing_data)
             model_result = str(json_planning_data["Result"])
@@ -1311,7 +1343,7 @@ class Interact_Planning_Engine(object):
                 else:
                     return return_response_error(400,"error","unsatisfy data","JSON")
             
-    #curl -X POST "http://127.0.0.1:8000/planningEngine/recovery" -H "content-type:application/json" -d '{"request_parameters" : {"input" : [{"name" : "A Raw Text mixes many types of encoding","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_FreeText","resource_ontology_id" : "resource_FreeText","resource_data_format_id":"raw_text","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#raw_text"}],"output" : [{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree","resource_ontology_id" : "resource_speciesTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}],"failed_service":[{"ID" : "phylotastic_GetPhylogeneticTree_OT_POST","Index":6}],"original_workflow":["goal(8)", "map(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_FreeText,plain_text,1,convert_df_text_format_raw_to_plain,resource_FreeText,plain_text,1)", "map(convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_1,2,phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_SetOfSciName,raw_names_format_1,2)", "map(convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_3,3,convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_3,3)", "map(convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_5,4,convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_5,4)", "map(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfSciName,raw_names_format_OT,5,convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_OT,5)", "map(phylotastic_GetPhylogeneticTree_OT_POST,resource_SetOfTaxon,resolved_names_format_OT,6,phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfTaxon,resolved_names_format_OT,6)", "map(convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,nmsu_tree_format,7,phylotastic_GetPhylogeneticTree_OT_POST,resource_speciesTree,nmsu_tree_format,7)", "map(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,resource_speciesTree,newickTree,9,convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,newickTree,8)", "map(convert_df_text_format_raw_to_plain,resource_FreeText,raw_text,0,initial_state,resource_FreeText,raw_text,0)", "operation_has_input_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_FreeText,plain_text)", "operation_has_input_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfSciName,raw_names_format_OT)", "operation_has_input_has_data_format(phylotastic_GetPhylogeneticTree_OT_POST,resource_SetOfTaxon,resolved_names_format_OT)", "operation_has_input_has_data_format(convert_df_text_format_raw_to_plain,resource_FreeText,raw_text)", "operation_has_input_has_data_format(convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_1)", "operation_has_input_has_data_format(convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_3)", "operation_has_input_has_data_format(convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_5)", "operation_has_input_has_data_format(convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,nmsu_tree_format)", "operation_has_output_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_SetOfSciName,raw_names_format_1)", "operation_has_output_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_HTTPCode,integer)", "operation_has_output_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_ConnectionTime,integer)", "operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfTaxon,resolved_names_format_OT)", "operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfResolvedName,resolved_names_format_OT)", "operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_HTTPCode,integer)", "operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_OT_POST,resource_speciesTree,nmsu_tree_format)", "operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_OT_POST,resource_Tree,nmsu_tree_format)", "operation_has_output_has_data_format(convert_df_text_format_raw_to_plain,resource_FreeText,plain_text)", "operation_has_output_has_data_format(convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_3)", "operation_has_output_has_data_format(convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_5)", "operation_has_output_has_data_format(convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_OT)", "operation_has_output_has_data_format(convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,newickTree)", "occur(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,1)", "occur(phylotastic_ResolvedScientificNames_OT_TNRS_GET,5)", "occur(phylotastic_GetPhylogeneticTree_OT_POST,6)", "occur(convert_df_text_format_raw_to_plain,0)", "occur(convert_df_sci_names_format_1_to_3,2)", "occur(convert_df_sci_names_format_3_to_5,3)", "occur(convert_df_sci_names_format_5_to_OT,4)", "occur(convert_species_tree_format_NMSU_to_NewickTree,7)"]},"models":{"number":1,"engine":1}}'    
+    #curl -X POST "http://127.0.0.1:8000/planningEngine/recovery" -H "content-type:application/json" -d '{"request_parameters" : {"input" : [{"name" : "A Raw Text mixes many types of encoding","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_FreeText","resource_ontology_id" : "resource_FreeText","resource_data_format_id":"raw_text","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#raw_text"}],"output" : [{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree","resource_ontology_id" : "resource_speciesTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}],"failed_service":[{"ID" : "phylotastic_GetPhylogeneticTree_OT_POST","Index":6}],"generated_resources":[{"resource_ontology_id" : "a1","resource_data_format_id" : "b1","resource_name_in_output_of_service" : "c1","resource_data" : "data1"},{"resource_ontology_id" : "a2","resource_data_format_id" : "b2","resource_name_in_output_of_service" : "c2","resource_data" : "data2"},{"resource_ontology_id" : "a1","resource_data_format_id" : "b1","resource_name_in_output_of_service" : "c1","resource_data" : "data1"}],"original_workflow":["goal(8)", "map(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_FreeText,plain_text,1,convert_df_text_format_raw_to_plain,resource_FreeText,plain_text,1)", "map(convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_1,2,phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_SetOfSciName,raw_names_format_1,2)", "map(convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_3,3,convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_3,3)", "map(convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_5,4,convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_5,4)", "map(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfSciName,raw_names_format_OT,5,convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_OT,5)", "map(phylotastic_GetPhylogeneticTree_OT_POST,resource_SetOfTaxon,resolved_names_format_OT,6,phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfTaxon,resolved_names_format_OT,6)", "map(convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,nmsu_tree_format,7,phylotastic_GetPhylogeneticTree_OT_POST,resource_speciesTree,nmsu_tree_format,7)", "map(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,resource_speciesTree,newickTree,9,convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,newickTree,8)", "map(convert_df_text_format_raw_to_plain,resource_FreeText,raw_text,0,initial_state,resource_FreeText,raw_text,0)", "operation_has_input_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_FreeText,plain_text)", "operation_has_input_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfSciName,raw_names_format_OT)", "operation_has_input_has_data_format(phylotastic_GetPhylogeneticTree_OT_POST,resource_SetOfTaxon,resolved_names_format_OT)", "operation_has_input_has_data_format(convert_df_text_format_raw_to_plain,resource_FreeText,raw_text)", "operation_has_input_has_data_format(convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_1)", "operation_has_input_has_data_format(convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_3)", "operation_has_input_has_data_format(convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_5)", "operation_has_input_has_data_format(convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,nmsu_tree_format)", "operation_has_output_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_SetOfSciName,raw_names_format_1)", "operation_has_output_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_HTTPCode,integer)", "operation_has_output_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_ConnectionTime,integer)", "operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfTaxon,resolved_names_format_OT)", "operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfResolvedName,resolved_names_format_OT)", "operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_HTTPCode,integer)", "operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_OT_POST,resource_speciesTree,nmsu_tree_format)", "operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_OT_POST,resource_Tree,nmsu_tree_format)", "operation_has_output_has_data_format(convert_df_text_format_raw_to_plain,resource_FreeText,plain_text)", "operation_has_output_has_data_format(convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_3)", "operation_has_output_has_data_format(convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_5)", "operation_has_output_has_data_format(convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_OT)", "operation_has_output_has_data_format(convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,newickTree)", "occur(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,1)", "occur(phylotastic_ResolvedScientificNames_OT_TNRS_GET,5)", "occur(phylotastic_GetPhylogeneticTree_OT_POST,6)", "occur(convert_df_text_format_raw_to_plain,0)", "occur(convert_df_sci_names_format_1_to_3,2)", "occur(convert_df_sci_names_format_3_to_5,3)", "occur(convert_df_sci_names_format_5_to_OT,4)", "occur(convert_species_tree_format_NMSU_to_NewickTree,7)"]},"models":{"number":1,"engine":1}}'    
 
 
     #public generate workflow
