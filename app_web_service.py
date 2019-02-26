@@ -1157,7 +1157,7 @@ class Interact_Planning_Engine(object):
             # Step 2.1 : Write input/output to ASP files
             folder_name = self.prepareDistinguish_Input_Output_Folder_PerEachProcess()
             fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),"wb")
-            print("---Recovery process : Create Initial State--")
+            print("---Recovery process : Create Initial State-- Engine : %s" %(str(engine)))
             fo.write("%------------------------------------------------------------------------\n")
             fo.write("% Recovery process INPUT PART : Initial State\n")
             fo.write("%------------------------------------------------------------------------\n")
@@ -1169,7 +1169,7 @@ class Interact_Planning_Engine(object):
             fo.close()
 
             fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"), "wb")
-            print("---Recovery process : Create Goal State--")
+            print("---Recovery process : Create Goal State---- Engine : %s" %(str(engine)))
             fo.write("%------------------------------------------------------------------------\n")
             fo.write("% Recovery process : GOAL State\n")
             fo.write("%------------------------------------------------------------------------\n")
@@ -1224,16 +1224,26 @@ class Interact_Planning_Engine(object):
             NUMBER_STEP = ultility.expect_number_step(input_resource_string,output_resource_string)
 
             # Step 3 : Run planning
-            if (engine == 1): # Solution 1 : Pure LP (Clingo) to get 1 Workflow 
+            if (engine == 1): # Solution 1 : Pure LP (Clingo) to get 1 Workflow  => Calculate Score workflow by update from prev(u)
                 if (number_of_models > 1):
                     return return_response_error(303,"error","Engine 1 has only one model","JSON")
-
+                print("---Recovery process : RUNNING ENGINE 1 : Pure Approach : Score of worklfow based on maximum score of all nodes in G' => Calulate score of node based on Score of prev(u)")    
                 planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "recover_process.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"failure_detection.lp"),NUMBER_STEP,str(1))
-            elif (engine == 2): # Solution : Pure LP (Clingo) with high performance    
+            elif (engine == 2): # Solution : Pure LP (Clingo) with high performance => Count number    
                 if (number_of_models > 1):
                     return return_response_error(303,"error","Engine 2 has only one model","JSON")
-
+                print("---Recovery process : RUNNING ENGINE 2 :  High performance")    
                 planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "recover_process_high_performance.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"failure_detection.lp"),NUMBER_STEP,str(1))
+            elif (engine == 3): # Solution : REplanning with successfull services => Count number of mapping ONLY
+                if (number_of_models > 1):
+                    return return_response_error(303,"error","Engine 3 has only one model","JSON")
+                print("---Recovery process : RUNNING ENGINE 3 :  Replanning with Successfull Services") 
+                planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "recover_process_successful_services.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"failure_detection.lp"),NUMBER_STEP,str(1))
+            elif (engine == 4): # Solution : Planning from Failed States => Count number of resource reused
+                if (number_of_models > 1):
+                    return return_response_error(303,"error","Engine 4 has only one model","JSON")
+                print("---Recovery process : RUNNING ENGINE 4 :  Planning from Failed State")
+                planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "recover_process_from_failed_state.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"failure_detection.lp"),NUMBER_STEP,str(1))
             else:
                 return return_response_error(400,"error","no eligible engine","JSON")  
             print("--DELETE Temp Input Folder and Output Folder-- Recovery")
@@ -1264,7 +1274,14 @@ class Interact_Planning_Engine(object):
                             BIG_LIST_ANSWER_SETS.append(small_list)
                     if (len(BIG_LIST_ANSWER_SETS) > 0):
                         json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data,qos=False,multi_plans=False,quantity=1,solver="recovery")
-                        json_output['info']['Approach'] = "Failure Detection - Max Matching by ASP Optimization"
+                        if (engine == 1):
+                            json_output['info']['Approach'] = "Failure Detection - Max Matching by ASP Optimization - Pure Approach : Score of worklfow based on maximum score of all nodes in G' => Calulate score of node based on Score of prev(u)"
+                        elif (engine == 2):
+                            json_output['info']['Approach'] = "Failure Detection - Max Matching by ASP Optimization - High performance: Count the number of mapping only => Get max by workflow has highest number of mapping"
+                        elif (engine == 3):
+                            json_output['info']['Approach'] = "Failure Detection - Max Matching by ASP Optimization - Replanning with Successfull Services: = 0 if no mapp, = 1 if mapped =?> Sum all to get maximum"
+                        elif (engine == 4):
+                            json_output['info']['Approach'] = "Failure Detection - Max Matching by ASP Optimization - Planning from Failed State : Count number of resued resources"
                         if (json_output is not None):
                             return return_success_get_json(json_output)
                         else:

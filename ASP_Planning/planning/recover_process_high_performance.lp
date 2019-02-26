@@ -9,8 +9,7 @@
 %          Edge start from v_{0} : map(A,I,DF_I,T,initial_state,O,DF_O,0)
 % Detect fail service at time T in Graph G
 
-%#include "./usercase/1/failure_detection_7.lp".
-%#include "./usercase/1/domain.lp".
+
 #include "./single_level_planning_Working.lp".
 #include "./ontology_TESTING_Working.lp".
 
