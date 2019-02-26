@@ -31,6 +31,7 @@ reused(X) :- X = #count{R,DF_R,Data : resource_reuseable(R,DF_R,Data)}.
 
 #maximize{X : reused(X)}.
 
+
 %%% Avoid failed services
 :- fail_service(A,T), is_used_operation(A).
 
