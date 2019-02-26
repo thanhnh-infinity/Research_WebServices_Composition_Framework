@@ -1224,7 +1224,22 @@ class Interact_Planning_Engine(object):
                 elif (engine == 4):
                     print("Doing resource_generated(.)")
                     # Generate added_intial_state_base.lp
-                    
+                    fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"sup_initial_state.lp"),"wb")
+                    print("---Recovery process : Create Supplimental Initial State -- Engine : %s" %(str(engine)))
+                    fo.write("%------------------------------------------------------------------------\n")
+                    fo.write("% Recovery process Added Resource : Supplimental Initial State\n")
+                    fo.write("%------------------------------------------------------------------------\n")
+                    input_resource_string = ""
+                    for i in range(0,len(json_input_re)):
+                        original_workflow_removed = [str(i) for i in json_original_workflows]
+                        atom_list = []
+                        for item in original_workflow_removed:
+                            if ('OPERATION_HAS_OUTPUT_HAS_DATA_FORMAT' in str(item).strip().upper()):
+                                op,re,df = composite_parser.parse_a_output_data_format(str(item))
+                                
+                    fo.write("%------------------------------------------------------------------------\n")
+                    fo.close()
+
 
             NUMBER_STEP = ultility.expect_number_step(input_resource_string,output_resource_string)
 
