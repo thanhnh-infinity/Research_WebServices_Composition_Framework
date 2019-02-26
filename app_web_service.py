@@ -1202,24 +1202,29 @@ class Interact_Planning_Engine(object):
                 fail_service_ID = json_fail_service[0]["ID"]
                 fail_Index = json_fail_service[0]["Index"]
 
-                original_workflow_removed = [str(i) for i in json_original_workflows]
-                fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"failure_detection.lp"),"wb")
-                fo.write("%--------------------------------------------------------------------\n")
-                fo.write("fail_service(%s,%s).\n" %(str(fail_service_ID),str(fail_Index)))
-                fo.write("%--------------------------------------------------------------------\n")
-                for item in original_workflow_removed:
-                    if ('OCCUR(' in str(item).strip().upper()):
-                        service_name,step = composite_parser.parse_a_occur_service(str(item))
-                        if (int(step) < int(fail_Index)):
-                            str_content = "old_occ_exe(%s,%s).\n" %(str(service_name),str(step))
-                            fo.write(str_content)
-                    if ('MAP(' in str(item).strip().upper()):
-                        map_obj = composite_parser.parse_a_match_predicate(str(item))
-                        if (int(map_obj[3]) < int(fail_Index)):
-                            str_content = "old_map_exe(%s,%s,%s,%s,%s,%s,%s,%s).\n" %(str(map_obj[0]),str(map_obj[1]),str(map_obj[2]),str(map_obj[3]),str(map_obj[4]),str(map_obj[5]),str(map_obj[6]),str(map_obj[7]),)
-                            fo.write(str_content)
-                    #fo.write("\n")
-                fo.close()
+                if (engine == 1 or engine == 2 or engine == 3):
+                    original_workflow_removed = [str(i) for i in json_original_workflows]
+                    fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"failure_detection.lp"),"wb")
+                    fo.write("%--------------------------------------------------------------------\n")
+                    fo.write("fail_service(%s,%s).\n" %(str(fail_service_ID),str(fail_Index)))
+                    fo.write("%--------------------------------------------------------------------\n")
+                    for item in original_workflow_removed:
+                        if ('OCCUR(' in str(item).strip().upper()):
+                            service_name,step = composite_parser.parse_a_occur_service(str(item))
+                            if (int(step) < int(fail_Index)):
+                                str_content = "old_occ_exe(%s,%s).\n" %(str(service_name),str(step))
+                                fo.write(str_content)
+                        if ('MAP(' in str(item).strip().upper()):
+                            map_obj = composite_parser.parse_a_match_predicate(str(item))
+                            if (int(map_obj[3]) < int(fail_Index)):
+                                str_content = "old_map_exe(%s,%s,%s,%s,%s,%s,%s,%s).\n" %(str(map_obj[0]),str(map_obj[1]),str(map_obj[2]),str(map_obj[3]),str(map_obj[4]),str(map_obj[5]),str(map_obj[6]),str(map_obj[7]),)
+                                fo.write(str_content)
+                        #fo.write("\n")
+                    fo.close()
+                elif (engine == 4):
+                    print("Doing resource_generated(.)")
+                    # Generate added_intial_state_base.lp
+                    
 
             NUMBER_STEP = ultility.expect_number_step(input_resource_string,output_resource_string)
 
@@ -1243,7 +1248,7 @@ class Interact_Planning_Engine(object):
                 if (number_of_models > 1):
                     return return_response_error(303,"error","Engine 4 has only one model","JSON")
                 print("---Recovery process : RUNNING ENGINE 4 :  Planning from Failed State")
-                planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "recover_process_from_failed_state.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"failure_detection.lp"),NUMBER_STEP,str(1))
+                planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "recover_process_from_failed_state.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"added_initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"failure_detection.lp"),NUMBER_STEP,str(1))
             else:
                 return return_response_error(400,"error","no eligible engine","JSON")  
             print("--DELETE Temp Input Folder and Output Folder-- Recovery")
@@ -1279,7 +1284,7 @@ class Interact_Planning_Engine(object):
                         elif (engine == 2):
                             json_output['info']['Approach'] = "Failure Detection - Max Matching by ASP Optimization - High performance: Count the number of mapping only => Get max by workflow has highest number of mapping"
                         elif (engine == 3):
-                            json_output['info']['Approach'] = "Failure Detection - Max Matching by ASP Optimization - Replanning with Successfull Services: = 0 if no mapp, = 1 if mapped =?> Sum all to get maximum"
+                            json_output['info']['Approach'] = "Failure Detection - Max Matching by ASP Optimization - Replanning with Successfull Services: = 0 if no mapp, = 1 if mapped => Sum all to get maximum"
                         elif (engine == 4):
                             json_output['info']['Approach'] = "Failure Detection - Max Matching by ASP Optimization - Planning from Failed State : Count number of resued resources"
                         if (json_output is not None):
