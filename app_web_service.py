@@ -1248,23 +1248,34 @@ class Interact_Planning_Engine(object):
                         json_generated_resource = []
                     if (len(json_fail_service) <= 0):
                         json_generated_resource = []
-
-                    fo.write("%--------------------------------------------------------------------\n")
-                    fo.write("%--------------------------------------------------------------------\n")
                     sub_init_list = [] 
+                    generated_resource_list = []
                     for gen_resource in json_generated_resource:
                         if (gen_resource['resource_ontology_id'] and gen_resource['resource_data_format_id']):
                             gen_resource_string = gen_resource['resource_ontology_id'] + "," + gen_resource['resource_data_format_id']
                             if (gen_resource_string not in sub_init_list):
                                 sub_init_list.append(gen_resource_string)
+                        if (gen_resource['resource_ontology_id'] and gen_resource['resource_data_format_id'] and gen_resource['resource_name_in_output_of_service']):
+                            if (gen_resource['resource_data']):
+                                gen_resource_string_2 = gen_resource['resource_ontology_id'] + "," + gen_resource['resource_name_in_output_of_service'] + "," + gen_resource['resource_data_format_id'] + "," + gen_resource['resource_data']
+                            else:
+                                gen_resource_string_2 = gen_resource['resource_ontology_id'] + "," + gen_resource['resource_name_in_output_of_service'] + "," + gen_resource['resource_data_format_id'] + ',' + '"test"' 
+                            if (gen_resource_string_2 not in generated_resource_list):
+                                generated_resource_list.append(gen_resource_string_2)
 
                     fo.write("%------------------------------------------------------------------------\n")
                     fo.write("% Recovery process Added Resource : Supplimental Initial State \n")
                     fo.write("%------------------------------------------------------------------------\n")          
                     for content in sub_init_list:
                         fo.write("intitally(%s).\n" %(str(content)))            
-                    fo.write("%------------------------------------------------------------------------\n")             
-                    
+                    fo.write("%------------------------------------------------------------------------\n")
+
+                    fo.write("%------------------------------------------------------------------------\n")
+                    fo.write("% Recovery process Added Resource : Generated Resource \n")
+                    fo.write("%------------------------------------------------------------------------\n")          
+                    for content in generated_resource_list:
+                        fo.write("resource_generated(%s).\n" %(str(content)))            
+                    fo.write("%------------------------------------------------------------------------\n")
 
                     fo.write("%------------------------------------------------------------------------\n")
                     fo.close()
@@ -1296,7 +1307,7 @@ class Interact_Planning_Engine(object):
             else:
                 return return_response_error(400,"error","no eligible engine","JSON")  
             
-              
+            
             print("--DELETE Temp Input Folder and Output Folder-- Recovery")
             delete_path = os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name)
             if (os.path.exists(delete_path)):
