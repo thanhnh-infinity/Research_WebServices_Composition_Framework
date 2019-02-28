@@ -37,10 +37,10 @@ fail_service(phylotastic_ResolvedScientificNames_OT_TNRS_GET,4).
 % Generate V_0(st)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-resource_generated(resource_SetOfSciName,raw_names_format_1,"abc").
-resource_generated(resource_SetOfSciName,raw_names_format_3,"abc").
-resource_generated(resource_SetOfSciName,raw_names_format_5,"abc").
-resource_generated(resource_SetOfSciName,raw_names_format_OT,"abc").
+resource_generated(resource_SetOfSciName,set_of_names_1,raw_names_format_1,"abc").
+resource_generated(resource_SetOfSciName,cv_names_1,raw_names_format_3,"abc").
+resource_generated(resource_SetOfSciName,cv_names_1,raw_names_format_5,"abc").
+resource_generated(resource_SetOfSciName,cv_names_1,raw_names_format_OT,"abc").
 
 
 

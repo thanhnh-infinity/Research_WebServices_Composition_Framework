@@ -9,8 +9,8 @@
 %          Edge start from v_{0} : map(A,I,DF_I,T,initial_state,O,DF_O,0)
 % Detect fail service at time T in Graph G
 
-#include "./usercase/failed_state/0/failure_detection_7.lp".
-#include "./usercase/failed_state/0/domain.lp".
+#include "./usercase/failed_state_N/0/failure_detection_6.lp".
+#include "./usercase/failed_state_N/0/domain.lp".
 #include "./single_level_planning_need_domain.lp".
 #include "./ontology_TESTING_Working.lp".
 
@@ -42,7 +42,8 @@ reused(X) :- X = #count{R,N,DF_R,Data : resource_reuseable(R,N,DF_R,Data)}.
 #show occur/2.
 %#show map/8.
 #show goal/1.
-#show resource_reuseable/3.
-%#show produced_resource/2.
+#show resource_reuseable/4.
+
+
 
 

@@ -37,12 +37,12 @@ fail_service(convert_species_tree_format_NMSU_to_NewickTree,6).
 % Generate V_0(st)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-resource_generated(resource_SetOfSciName,raw_names_format_1,"abc").
-resource_generated(resource_SetOfSciName,raw_names_format_3,"abc").
-resource_generated(resource_SetOfSciName,raw_names_format_5,"abc").
-resource_generated(resource_SetOfSciName,raw_names_format_OT,"abc").
-resource_generated(resource_SetOfTaxon,resolved_names_format_OT,"abc").
-resource_generated(resource_speciesTree,nmsu_tree_format,"abc").
+resource_generated(resource_SetOfSciName,set_of_names_1,raw_names_format_1,"abc").
+resource_generated(resource_SetOfSciName,cv_names_1,raw_names_format_3,"abc").
+resource_generated(resource_SetOfSciName,cv_names_1,raw_names_format_5,"abc").
+resource_generated(resource_SetOfSciName,cv_names_1,raw_names_format_OT,"abc").
+resource_generated(resource_SetOfTaxon,set_of_names_1,resolved_names_format_OT,"abc").
+resource_generated(resource_speciesTree,phylo_tree_1,nmsu_tree_format,"abc").
 
 
 

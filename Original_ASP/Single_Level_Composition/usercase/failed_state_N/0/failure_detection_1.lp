@@ -37,7 +37,7 @@ fail_service(convert_df_sci_names_format_1_to_3,1).
 % Generate V_0(st)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-resource_generated(resource_SetOfSciName,_,raw_names_format_1,"abc").
+resource_generated(resource_SetOfSciName,set_of_names_1,raw_names_format_1,"abc").
 
 
 initially(resource_SetOfSciName,raw_names_format_1).

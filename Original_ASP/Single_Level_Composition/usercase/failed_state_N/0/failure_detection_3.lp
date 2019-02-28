@@ -37,9 +37,9 @@ fail_service(convert_df_sci_names_format_5_to_OT,3).
 % Generate V_0(st)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-resource_generated(resource_SetOfSciName,raw_names_format_1,"abc").
-resource_generated(resource_SetOfSciName,raw_names_format_3,"abc").
-resource_generated(resource_SetOfSciName,raw_names_format_5,"abc").
+resource_generated(resource_SetOfSciName,set_of_names_1,raw_names_format_1,"abc").
+resource_generated(resource_SetOfSciName,cv_names_1,raw_names_format_3,"abc").
+resource_generated(resource_SetOfSciName,cv_names_1,raw_names_format_5,"abc").
 
 initially(resource_SetOfSciName,raw_names_format_1).
 initially(resource_SetOfSciName,raw_names_format_3).
