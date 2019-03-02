@@ -1098,7 +1098,8 @@ class Interact_Planning_Engine(object):
                         "resource_name_in_output_of_service" : "c",
                         "resource_data" : "data"
                     }
-                ]
+                ],
+                "current_N_services" : 7,
             },
             "models":{
                 "number":1,
@@ -1121,8 +1122,12 @@ class Interact_Planning_Engine(object):
         except Exception as err:
             print(err)
             number_of_models = 1
-            engine = 1
+            engine = 3
 
+        try:
+            current_N_services = request_parameters['current_N_services']
+        except:
+            pass
         
         # Step 2 : parser input/output/avoidance,inclusion,insertion
         isOriginalWorkflow = True
@@ -1241,6 +1246,11 @@ class Interact_Planning_Engine(object):
                     fail_service_ID = json_fail_service[0]["ID"]
                     fail_Index = json_fail_service[0]["Index"]
 
+                    try:
+                        expect_step = current_N_services - fail_Index
+                    except:
+                        expect_step = 4
+
                     fo.write("fail_service(%s,%s).\n" %(str(fail_service_ID),str(fail_Index)))
                     fo.write("%--------------------------------------------------------------------\n")
                     json_generated_resource = request_parameters["generated_resources"]
@@ -1267,7 +1277,7 @@ class Interact_Planning_Engine(object):
                     fo.write("% Recovery process Added Resource : Supplimental Initial State \n")
                     fo.write("%------------------------------------------------------------------------\n")          
                     for content in sub_init_list:
-                        fo.write("intitally(%s).\n" %(str(content)))            
+                        fo.write("initially(%s).\n" %(str(content)))            
                     fo.write("%------------------------------------------------------------------------\n")
 
                     fo.write("%------------------------------------------------------------------------\n")
@@ -1303,7 +1313,8 @@ class Interact_Planning_Engine(object):
                 if (number_of_models > 1):
                     return return_response_error(303,"error","Engine 4 has only one model","JSON")
                 print("---Recovery process : RUNNING ENGINE 4 :  Planning from Failed State")
-                planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "recover_process_from_failed_state.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"sup_init_generated_resource_failure_detection.lp"),NUMBER_STEP,str(1))
+                #planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "recover_process_from_failed_state_N.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"sup_init_generated_resource_failure_detection.lp"),NUMBER_STEP,str(1))
+                planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "recover_process_from_failed_state_N.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"sup_init_generated_resource_failure_detection.lp"),"-c n=%s" %(str(expect_step)),str(1))
             else:
                 return return_response_error(400,"error","no eligible engine","JSON")  
             
