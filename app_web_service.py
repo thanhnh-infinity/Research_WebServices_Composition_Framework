@@ -1126,6 +1126,7 @@ class Interact_Planning_Engine(object):
 
         try:
             original_N_services = request_parameters['original_N_services']
+            manual_expect_step = request_parameters['manual_expect_step']
         except:
             pass
         
@@ -1247,7 +1248,10 @@ class Interact_Planning_Engine(object):
                     fail_Index = json_fail_service[0]["Index"]
 
                     try:
-                        expect_step = int(original_N_services) - int(fail_Index)
+                        if (not manual_expect_step):
+                          expect_step = int(original_N_services) - int(fail_Index)
+                        else:
+                          expect_step = int(manual_expect_step) 
                     except:
                         expect_step = 4
 
