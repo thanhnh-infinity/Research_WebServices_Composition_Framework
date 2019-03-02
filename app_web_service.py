@@ -1345,6 +1345,13 @@ class Interact_Planning_Engine(object):
                             json_output['info']['Approach'] = "Failure Detection - Max Matching by ASP Optimization - Replanning with Successfull Services: = 0 if no mapp, = 1 if mapped => Sum all to get maximum"
                         elif (engine == 4):
                             json_output['info']['Approach'] = "Failure Detection - Max Matching by ASP Optimization - Planning from Failed State : Count number of resued resources"
+                            # Update initial State for Initial State
+                            json_output['request_parameters']['generated_resources'] = request_parameters["generated_resources"]
+                            for item in json_generated_resource:
+                                if (item['resource_ontology_id'] and item['resource_data_format_id']):
+                                    obj = {"name":item['resource_name_in_output_of_service'],"resource_ontology_id":item['resource_ontology_id'],"resource_ontology_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#" + item['resource_ontology_id'],"resource_data_format_id": item['resource_data_format_id'],"resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#" + item['resource_data_format_id']}
+                                json_output['request_parameters']['input'].append(obj)
+
                         if (json_output is not None):
                             return return_success_get_json(json_output)
                         else:
