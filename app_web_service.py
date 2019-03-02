@@ -1125,7 +1125,7 @@ class Interact_Planning_Engine(object):
             engine = 3
 
         try:
-            current_N_services = request_parameters['current_N_services']
+            original_N_services = request_parameters['original_N_services']
         except:
             pass
         
@@ -1247,7 +1247,7 @@ class Interact_Planning_Engine(object):
                     fail_Index = json_fail_service[0]["Index"]
 
                     try:
-                        expect_step = current_N_services - fail_Index
+                        expect_step = int(original_N_services) - int(fail_Index)
                     except:
                         expect_step = 4
 
@@ -1358,6 +1358,7 @@ class Interact_Planning_Engine(object):
                             json_output['info']['Approach'] = "Failure Detection - Max Matching by ASP Optimization - Planning from Failed State : Count number of resued resources"
                             # Update initial State for Initial State
                             json_output['request_parameters']['generated_resources'] = request_parameters["generated_resources"]
+                            json_output['request_parameters']['original_N_services'] = request_parameters["original_N_services"]
                             for item in json_generated_resource:
                                 if (item['resource_ontology_id'] and item['resource_data_format_id']):
                                     obj = {"name":item['resource_name_in_output_of_service'],"resource_ontology_id":item['resource_ontology_id'],"resource_ontology_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#" + item['resource_ontology_id'],"resource_data_format_id": item['resource_data_format_id'],"resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#" + item['resource_data_format_id']}
