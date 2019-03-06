@@ -14,8 +14,6 @@ import configuration
 import test
 
 CDAO_URL_ONTOLOGY = "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#"
-
-
 OCCUR_SERIVCE_IN_PLAN = "OCCUR("
 GOAL_IN = "GOAL("
 SCORE_QOS_WORKFLOW = "SCORE_QOS_WORKFLOW"
@@ -33,6 +31,9 @@ HAS_QOS_AVAILABILITY_INVOLVED_CONRETE = "HAS_QOS_AVAILABILITY_INVOLVED_CONCRETE"
 HAS_QOS_THROUGHPUT_INVOLVED_CONRETE = "HAS_QOS_THROUGHPUT_INVOLVED_CONCRETE"
 HAS_QOS_RELIABILITY_INVOLVED_CONRETE = "HAS_QOS_RELIABILITY_INVOLVED_CONCRETE"
 SIM_NODES_WORKFLOWS = "SIM_NODES_WORKFLOWS"
+RECOVERY_SCORE = "RECOVERY_SCORE"
+MAX_RECOVERY_SCORE_AT = "MAX_SCORE_AT"
+MAPPING_FUNCTION_E_COMP = "E_ECOM"
 
 
 class MultipleLevelsOfDictionary(collections.OrderedDict):
@@ -54,6 +55,7 @@ def calculateNormalization(aVector):
         normalizeVector.append(float(a)/length_vector)
 
     return normalizeVector
+    
 def read_QoS_values_for_workflow(json_a_workflow_object):
     # Read all qos attribute of each concrete service that occur in Concrete Plan Level
     qos_response_time_total = 0.0
@@ -202,7 +204,17 @@ def process_a_plan_json_from_raw(big_list_answer_sets,json_in,json_planning_data
             d['resource_data_format_id'] = output_object['resource_data_format_id']
             d['resource_data_format_uri'] = output_object['resource_data_format_uri']
             array_output.append(d)
-
+           
+        if ("recovery" in solver):
+            json_failure = json_in['request_parameters']['failed_service']
+            array_failure = []
+            for i in range(0,len(json_failure)):
+                failure_object = json_failure[i]
+                d = MultipleLevelsOfDictionary()
+                d['service_name'] = failure_object['ID']
+                d['service_index_old_workflow'] = failure_object['Index']
+                array_failure.append(d)
+        
         # For only one plan
         data['workflow_plan'] = []
         all_workflow_plans = []
@@ -266,6 +278,8 @@ def process_a_plan_json_from_raw(big_list_answer_sets,json_in,json_planning_data
         #Full JSON data
         data['request_parameters']['input'] = array_input
         data['request_parameters']['output'] = array_output
+        if ("recovery" in solver):
+            data['request_parameters']['failed_service'] = array_failure
         if ("recomposite" in solver):
             if (json_in['request_parameters']['avoidance'] is not None) and (len(json_in['request_parameters']['avoidance']) > 0):
                 data['request_parameters']['avoidance'] = json_in['request_parameters']['avoidance'] 
@@ -283,7 +297,8 @@ def process_a_plan_json_from_raw(big_list_answer_sets,json_in,json_planning_data
         #print "ABC"
         #print data
         return data
-    except:
+    except Exception as inst:
+        print(inst) 
         return None
 def read_a_full_workflow_detail(json_a_workflow_object):
     full_plan = []
@@ -307,8 +322,14 @@ def read_a_full_workflow_detail(json_a_workflow_object):
         if (SCORE_QOS_WORKFLOW in predicate.strip().upper()):
             raw_plan.append(predicate)
         if (SIM_NODES_WORKFLOWS in predicate.strip().upper()):
+            raw_plan.append(predicate)    
+        if (RECOVERY_SCORE in predicate.strip().upper()):
             raw_plan.append(predicate)
-    
+        if (MAX_RECOVERY_SCORE_AT in predicate.strip().upper()):
+            raw_plan.append(predicate)
+        if (MAPPING_FUNCTION_E_COMP in predicate.strip().upper()):
+            raw_plan.append(predicate)
+            
 
     for predicate in json_a_workflow_object:
         if (OCCUR_SERIVCE_IN_PLAN in predicate.strip().upper()):

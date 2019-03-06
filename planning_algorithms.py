@@ -5,7 +5,7 @@ import subprocess
 import sys
 import json
 import random
-import utility
+#import utility
 import pprint
 import time
 import planning_algorithms
@@ -529,11 +529,11 @@ def back_tracking_algorithm(GLOBAL_ABTRACT_PLANNING,
                     trash[current_step].append(service_operation)
 
         if (not is_able_to_find_a_potential_service): # Doan nay la de thoat
-            print "L Cannot find a picked serve in step %s" %(str(current_step))
+            print("L Cannot find a picked serve in step %s" %(str(current_step)))
             return None,False
         if (not co_the_qua_cau): # Doan nay KO can back-tracking = Vi la step 0 nen ko the back-tracking
 
-            print "KHONG THE TIM DUOC DUOC DE MOVE forward -> step %s" %(str(current_step))
+            print("KHONG THE TIM DUOC DUOC DE MOVE forward -> step %s" %(str(current_step)))
             return None,False          
     elif (current_step == goal_in_abstract):
         # Build list of input data format
@@ -554,7 +554,7 @@ def back_tracking_algorithm(GLOBAL_ABTRACT_PLANNING,
             # Back-Tracking FROm service
             back_tracking_concrete_service = remember_picked_services.pop()
             remember_concrete_plan.pop()
-            print "--Back-Track at Step %s" %(str(current_step))
+            print("--Back-Track at Step %s" %(str(current_step)))
             return back_tracking_algorithm(GLOBAL_ABTRACT_PLANNING,
                                             initial_state_obj,    
                                             back_tracking_concrete_service,
@@ -602,7 +602,7 @@ def back_tracking_algorithm(GLOBAL_ABTRACT_PLANNING,
             back_tracking_concrete_service = remember_picked_services.pop()
             #if (not remember_picked_services or "INITIAL_STATE" not in back_tracking_concrete_service.service_instance_name):
             remember_concrete_plan.pop()
-            print "Da Back-Track vi KHONG TIM THAY SERVICE TOT at Step %s" %(str(current_step))
+            print("Da Back-Track vi KHONG TIM THAY SERVICE TOT at Step %s" %(str(current_step)))
             return back_tracking_algorithm(GLOBAL_ABTRACT_PLANNING,
                                             initial_state_obj,    
                                             back_tracking_concrete_service,
@@ -630,7 +630,7 @@ def back_tracking_algorithm(GLOBAL_ABTRACT_PLANNING,
             trash[previous_step].append(consider_serivce_current_step)
             back_tracking_concrete_service = remember_picked_services.pop()
             remember_concrete_plan.pop()
-            print "Da Back-Track vi KO TIM THAY PATH at Step %s" %(str(current_step))
+            print("Da Back-Track vi KO TIM THAY PATH at Step %s" %(str(current_step)))
             return back_tracking_algorithm(GLOBAL_ABTRACT_PLANNING,
                                             initial_state_obj,    
                                             back_tracking_concrete_service,
@@ -784,7 +784,7 @@ def get_head_map_concrete_op(services_sequence,index):
     return None
 def get_tail_map_concrete_op(services_sequence,index):
     lst_real = []
-    print services_sequence
+    print(services_sequence)
     for service_text in services_sequence:
         if (PREDICATE_REAL_CONCRETE_OPERATION_INSTANCE in service_text.strip().upper()
             and str(index+1) in service_text.strip().upper()):
@@ -801,7 +801,7 @@ def procecure_abtract_planning():
     os.path.join(FULL_PATH_PLANNING_PREFERENCE_FOLDER,configuration.CONFIGURATION_DATA['planning_qos_asp_file']))
 
     if (planning_data is None or len(planning_data) <= 0):
-        print utility.return_response_error(404,"error","NO_PLAN")
+        print(utility.return_response_error(404,"error","NO_PLAN"))
         sys.exit()
 
     # Select only one workflow to follow === Cai nay can xem xet lai
@@ -839,7 +839,7 @@ def procedure_concrete_planning(mt):
                     DOMAIN_CONCRETE_PLANS.append(NEXT_CONCRETE_PLANS)
                 else:
                     is_continue_services_worked = False
-                    print "CANNOT MOVE FORWARD - BREAK AT %s" %(str(index))
+                    print("CANNOT MOVE FORWARD - BREAK AT %s" %(str(index)))
                     return None
 
             is_continue_services_worked = True
@@ -852,10 +852,10 @@ def procedure_concrete_planning(mt):
                 if (is_completed):
                     DOMAIN_CONCRETE_PLANS.append(LAST_PART_CONCRETE_PLANS)
                 else:
-                    print "CANNOT COMPLETE"
+                    print("CANNOT COMPLETE")
                     return None
         else:
-            print "CANNOT MOVE FROM INITIAL to FIRST SERVICE"
+            print("CANNOT MOVE FROM INITIAL to FIRST SERVICE")
             return None
 
         #print DOMAIN_CONCRETE_PLANS
@@ -878,7 +878,7 @@ def procedure_concrete_planning(mt):
                 righ_concrete_op_need_map_text = get_head_map_concrete_op(picked_services_sequence,abtract_index-1)
                 
                 if (righ_concrete_op_need_map_text is None):
-                    print "Unexpected error"
+                    print("Unexpected error")
                     return None
                 
             else:
@@ -929,4 +929,4 @@ def procedure_concrete_planning(mt):
             
             return FINAL_CONCRETE_PLAN
     else:
-        print "unspport"
+        print("unspport")

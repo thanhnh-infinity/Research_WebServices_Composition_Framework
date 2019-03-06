@@ -4,6 +4,8 @@
 %#const n = 1.
 %#const n = 6.
 %#const n = 9.
+%#const n = 8.
+%#const n = 10.
 %#const n = 11.
 %#const n = 20.
 %#const n = 12.
@@ -117,6 +119,7 @@ is_used_operation(A) :- operation(A),
 
 % Extend Part : Require involved operation C executed before operation D
 %%%% Super poor performance
+
 %is_ordered_services(C,D) :- operation(C),
 %                            operation(D),
 %                            occur(C,T1),
@@ -124,6 +127,7 @@ is_used_operation(A) :- operation(A),
 %                            goal(G),
 %                            T1 < T2,
 %                            T2 < G.
+
 %:- ordered_services(C,D), not is_ordered_services(C,D).
 %used_operation(C) :- ordered_services(C,D), 
 %                     operation(C).

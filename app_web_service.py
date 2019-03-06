@@ -1,6 +1,7 @@
 import cherrypy
 from OWL_Ontology_App import OWLEngine
 import composite_response
+import composite_parser
 import planning_algorithms
 import json
 import os
@@ -55,7 +56,7 @@ class Interact_Planning_Engine(object):
     #FULL_PATH_CLINGO_EXECUTATBLE = "clingo-python"
     FULL_PATH_CLINGCON_EXECUTATBLE = "/opt/app/Planning_Project/sys/Ubuntu/clingcon/clingcon-3.3.0"
     FULL_PATH_CLINGO_EXECUTATBLE = "clingo"
-    #FULL_PATH_CLINGO_EXECUTATBLE = os.path.join(os.getcwd(),"Clingo","clingo-python")
+   
 
     # Function
     def prepareDistinguish_Input_Output_Folder_PerEachProcess(self):
@@ -176,7 +177,7 @@ class Interact_Planning_Engine(object):
             number_of_models = models["number"]
             engine = models["engine"]
             
-        except Exception, err:
+        except Exception as err:
             print(err)
             number_of_models = 1
             engine = 1
@@ -219,7 +220,7 @@ class Interact_Planning_Engine(object):
             print("Planning -- No insertion request")
             isInsertion = False
         if (len(json_insertion_re) <= 0):
-            print "Planning -- No insertion request"
+            print("Planning -- No insertion request")
             isInsertion = False    
 
         # Step 2.1 : Write input/output to ASP files
@@ -292,11 +293,12 @@ class Interact_Planning_Engine(object):
         fo.close()
 
         #=========================================================================================================
+        '''
         if (("resource_speciesTree" in output_resource_string) and ("resource_speciesTree_with_BranchLengths" not in output_resource_string)):
             if ("resource_FreeText" in input_resource_string):
-              DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_9.lp")
+              DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_8.lp")
             elif ("resource_WebURL" in input_resource_string):  
-              DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_9.lp")
+              DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_8.lp")
             elif ("resource_SetOfGeneStrings" in input_resource_string):    
               DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_11.lp")
             else:
@@ -323,7 +325,8 @@ class Interact_Planning_Engine(object):
                   DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")       
         else:
             DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_12.lp")       
-                
+        '''
+        DEFAULT_STEP = ultility.expect_number_step(input_resource_string,output_resource_string)         
         # Step 3 : Run planning
         # Solution 1 : Run Multi-shot LP program
         if (engine == 1): # Solution 1 : Run simple Multi-shot LP program pick only 1
@@ -557,7 +560,7 @@ class Interact_Planning_Engine(object):
             models = input_json['models']
             number_of_models = models["number"]
             engine = models["engine"]
-        except Exception, err:
+        except Exception as err:
             print(err)
             number_of_models = 1
             engine = 1
@@ -602,7 +605,7 @@ class Interact_Planning_Engine(object):
             print("No insertion request")
             isInsertion = False
         if (len(json_insertion_re) <= 0):
-            print "No insertion request"
+            print("No insertion request")
             isInsertion = False
 
         json_original_workflows = request_parameters["original_workflow"]
@@ -705,6 +708,7 @@ class Interact_Planning_Engine(object):
         # Step 2.3 : Write Original Workflow Objet to python file
         #fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"original_workflow.py"),"wb")
         #==========================================================================================
+        '''
         if (("resource_speciesTree" in output_resource_string) and ("resource_speciesTree_with_BranchLengths" not in output_resource_string)):
             if ("resource_FreeText" in input_resource_string):
               DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_8.lp")
@@ -739,7 +743,8 @@ class Interact_Planning_Engine(object):
                   DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_13.lp")        
         else:
             DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_20.lp")
-                
+        '''
+        DEFAULT_STEP = ultility.expect_number_step(input_resource_string,output_resource_string)      
         # Step 3 : Run planning
         if ("NORMAL" in kindToRun):    
             if (isOriginalWorkflow):
@@ -1048,10 +1053,339 @@ class Interact_Planning_Engine(object):
         else:
             return return_response_error(300,"error","Unknown","JSON")
 
+
+    # Recovery Process
+    @cherrypy.tools.json_out()
+    @cherrypy.tools.json_in()
+    def recovery(self,**request_data):
+        CORS()
+        if cherrypy.request.method == "OPTIONS":
+             return ""
+        input_json = cherrypy.request.json        
+        
+        '''
+        input_json =  {
+            "request_parameters" : {
+                "input" : [
+                    {
+                        "name" : "A Raw Text mixes many types of encoding",
+                        "resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_FreeText",
+                        "resource_ontology_id" : "resource_FreeText",
+                        "resource_data_format_id":"raw_text",
+                        "resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#raw_text"
+                    }
+                ],
+                "output" : [
+                    {
+                        "name" : "Species Tree",
+                        "resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree",
+                        "resource_ontology_id" : "resource_speciesTree",
+                        "resource_data_format_id":"newickTree",
+                        "resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"
+                   }
+                ],
+                "failed_service" : [
+                    {
+                      "ID" : "phylotastic_GetPhylogeneticTree_Phylomatic_POST",
+                      "Index" : 3
+                    }
+                ],
+                "original_workflow" : [],
+                "generated_resources" : [
+                    {
+                        "resource_ontology_id" : "a",
+                        "resource_data_format_id" : "b",
+                        "resource_name_in_output_of_service" : "c",
+                        "resource_data" : "data"
+                    }
+                ],
+                "current_N_services" : 7,
+            },
+            "models":{
+                "number":1,
+                "engine":1
+            }
+        }
+        '''
+        try:
+            request_parameters = input_json['request_parameters'];
+        except:
+            return return_response_error(400,"error","Missing input","JSON")
+
+        if ((request_parameters is None) or (request_parameters == '')):
+            return return_response_error(400,"error","Missing params","JSON")
+       
+        try:
+            models = input_json['models']
+            number_of_models = models["number"]
+            engine = models["engine"]
+        except Exception as err:
+            print(err)
+            number_of_models = 1
+            engine = 3
+
+        try:
+            original_N_services = request_parameters['original_N_services']
+            manual_expect_step = request_parameters['manual_expect_step']
+        except:
+            pass
+        
+        # Step 2 : parser input/output/avoidance,inclusion,insertion
+        isOriginalWorkflow = True
+        isFailedService = True
+        json_input_re = request_parameters["input"]
+        if ((json_input_re is None) or (json_input_re == '')):
+            return return_response_error(400,"error","Missing input","JSON")
+        if (len(json_input_re) <= 0):
+            return return_response_error(400,"error","Empty Input","JSON")
+
+        json_output_re = request_parameters["output"]
+        if ((json_output_re is None) or (json_output_re == '')):
+            return return_response_error(400,"error","Missing output","JSON")
+        if (len(json_output_re) <= 0):
+            return return_response_error(400,"error","Empty Output","JSON")
+
+        json_original_workflows = request_parameters["original_workflow"]
+        if ((json_original_workflows is None) or (json_original_workflows == '')):
+            print("No Original Workflow - Simialrity Index will be terminated")
+            isOriginalWorkflow = False
+        if (len(json_original_workflows) <= 0):
+            print("No Original Workflow - Simialrity Index will be terminated")
+            isOriginalWorkflow = False
+
+        json_fail_service = request_parameters["failed_service"]
+        if ((json_fail_service is None) or (json_fail_service == '')):
+            print("No Failed Service Detection")
+            isFailedService = False
+        if (len(json_fail_service) <= 0):
+            print("No Failded Service Detection")
+            isFailedService = False
+
+        if ((not isFailedService) and (not isOriginalWorkflow)):
+            return return_response_error(301,"error","Not recovery process","JSON")
+        elif ((isFailedService) and (not isOriginalWorkflow)):
+            return return_response_error(301,"error","Original Workflow is required","JSON")
+        elif ((not isFailedService) and (isOriginalWorkflow)): 
+            return "Good - Original Workflow"
+        else:
+            # Step 2.1 : Write input/output to ASP files
+            folder_name = self.prepareDistinguish_Input_Output_Folder_PerEachProcess()
+            fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),"wb")
+            print("---Recovery process : Create Initial State-- Engine : %s" %(str(engine)))
+            fo.write("%------------------------------------------------------------------------\n")
+            fo.write("% Recovery process INPUT PART : Initial State\n")
+            fo.write("%------------------------------------------------------------------------\n")
+            input_resource_string = ""
+            for i in range(0,len(json_input_re)):
+                input_resource_string = input_resource_string + " | " + str(json_input_re[i]["resource_ontology_id"])
+                fo.write("initially(%s,%s).\n" %(str(json_input_re[i]["resource_ontology_id"]),str(json_input_re[i]["resource_data_format_id"])))
+            fo.write("%------------------------------------------------------------------------\n")
+            fo.close()
+
+            fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"), "wb")
+            print("---Recovery process : Create Goal State---- Engine : %s" %(str(engine)))
+            fo.write("%------------------------------------------------------------------------\n")
+            fo.write("% Recovery process : GOAL State\n")
+            fo.write("%------------------------------------------------------------------------\n")
+            content = ""
+            max_content = ""
+            output_resource_string = ""
+
+            for i in range(0,len(json_output_re)):
+                output_resource_string = output_resource_string + " | " + str(json_output_re[i]["resource_ontology_id"])
+                fo.write("finally(%s, %s).\n" %(str(json_output_re[i]["resource_ontology_id"]),str(json_output_re[i]["resource_data_format_id"])))
+                if (len(json_output_re) > 1):
+                    content += "exists(%s,%s,I%s),step(I%s)," %(str(json_output_re[i]["resource_ontology_id"]),str(json_output_re[i]["resource_data_format_id"]),str(i),str(i))
+                    if (i == 0):
+                        max_content = "I%s" %(str(i))
+                    else:
+                        max_content += ";I%s" %(str(i))    
+                if (len(json_output_re) == 1):
+                    content += "exists(%s,%s,I), " %(str(json_output_re[i]["resource_ontology_id"]),str(json_output_re[i]["resource_data_format_id"]))
+
+            if (len(json_output_re) > 1):        
+                fo.write("goal(M) :- %s M = #max{%s}.\n" %(content,max_content))
+            else:
+                fo.write("goal(I) :- %s step(I).\n" %(content)) 
+
+            #fo.write("goal(I) :- %s step(I).\n" %(content))
+            fo.write("%------------------------------------------------------------------------\n")
+            fo.close()
+            #========================================================================================================= 
+            if (isOriginalWorkflow and isFailedService):
+                fail_service_ID = json_fail_service[0]["ID"]
+                fail_Index = json_fail_service[0]["Index"]
+
+                if (engine == 1 or engine == 2 or engine == 3):
+                    original_workflow_removed = [str(i) for i in json_original_workflows]
+                    fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"failure_detection.lp"),"wb")
+                    fo.write("%--------------------------------------------------------------------\n")
+                    fo.write("fail_service(%s,%s).\n" %(str(fail_service_ID),str(fail_Index)))
+                    fo.write("%--------------------------------------------------------------------\n")
+                    for item in original_workflow_removed:
+                        if ('OCCUR(' in str(item).strip().upper()):
+                            service_name,step = composite_parser.parse_a_occur_service(str(item))
+                            if (int(step) < int(fail_Index)):
+                                str_content = "old_occ_exe(%s,%s).\n" %(str(service_name),str(step))
+                                fo.write(str_content)
+                        if ('MAP(' in str(item).strip().upper()):
+                            map_obj = composite_parser.parse_a_match_predicate(str(item))
+                            if (int(map_obj[3]) < int(fail_Index)):
+                                str_content = "old_map_exe(%s,%s,%s,%s,%s,%s,%s,%s).\n" %(str(map_obj[0]),str(map_obj[1]),str(map_obj[2]),str(map_obj[3]),str(map_obj[4]),str(map_obj[5]),str(map_obj[6]),str(map_obj[7]),)
+                                fo.write(str_content)
+                        #fo.write("\n")
+                    fo.close()
+                elif (engine == 4):
+                    print("Doing resource_generated(.)")
+                    # Generate added_intial_state_base.lp
+                    fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"sup_init_generated_resource_failure_detection.lp"),"wb")
+                    print("---Recovery process : Supplimental Initial State & Failure Detection -- Engine : %s" %(str(engine)))
+                    fo.write("%------------------------------------------------------------------------\n")
+                    fo.write("% Recovery process Added Resource : Supplimental Initial State & Failure Detection \n")
+                    fo.write("%------------------------------------------------------------------------\n")
+                    
+                    fail_service_ID = json_fail_service[0]["ID"]
+                    fail_Index = json_fail_service[0]["Index"]
+
+                    try:
+                        if (not manual_expect_step):
+                          expect_step = int(original_N_services) - int(fail_Index)
+                        else:
+                          expect_step = int(manual_expect_step) 
+                    except:
+                        expect_step = 4
+
+                    fo.write("fail_service(%s,%s).\n" %(str(fail_service_ID),str(fail_Index)))
+                    fo.write("%--------------------------------------------------------------------\n")
+                    json_generated_resource = request_parameters["generated_resources"]
+                    if ((json_generated_resource is None) or (json_generated_resource == '')):
+                        json_generated_resource = []
+                    if (len(json_fail_service) <= 0):
+                        json_generated_resource = []
+                    sub_init_list = [] 
+                    generated_resource_list = []
+                    for gen_resource in json_generated_resource:
+                        if (gen_resource['resource_ontology_id'] and gen_resource['resource_data_format_id']):
+                            gen_resource_string = gen_resource['resource_ontology_id'] + "," + gen_resource['resource_data_format_id']
+                            if (gen_resource_string not in sub_init_list):
+                                sub_init_list.append(gen_resource_string)
+                        if (gen_resource['resource_ontology_id'] and gen_resource['resource_data_format_id'] and gen_resource['resource_name_in_output_of_service']):
+                            if (gen_resource['resource_data']):
+                                gen_resource_string_2 = gen_resource['resource_ontology_id'] + "," + gen_resource['resource_name_in_output_of_service'] + "," + gen_resource['resource_data_format_id'] + "," + gen_resource['resource_data']
+                            else:
+                                gen_resource_string_2 = gen_resource['resource_ontology_id'] + "," + gen_resource['resource_name_in_output_of_service'] + "," + gen_resource['resource_data_format_id'] + ',' + '"test"' 
+                            if (gen_resource_string_2 not in generated_resource_list):
+                                generated_resource_list.append(gen_resource_string_2)
+
+                    fo.write("%------------------------------------------------------------------------\n")
+                    fo.write("% Recovery process Added Resource : Supplimental Initial State \n")
+                    fo.write("%------------------------------------------------------------------------\n")          
+                    for content in sub_init_list:
+                        fo.write("initially(%s).\n" %(str(content)))            
+                    fo.write("%------------------------------------------------------------------------\n")
+
+                    fo.write("%------------------------------------------------------------------------\n")
+                    fo.write("% Recovery process Added Resource : Generated Resource \n")
+                    fo.write("%------------------------------------------------------------------------\n")          
+                    for content in generated_resource_list:
+                        fo.write("resource_generated(%s).\n" %(str(content)))            
+                    fo.write("%------------------------------------------------------------------------\n")
+
+                    fo.write("%------------------------------------------------------------------------\n")
+                    fo.close()
+
+
+            NUMBER_STEP = ultility.expect_number_step(input_resource_string,output_resource_string)
+
+            # Step 3 : Run planning
+            if (engine == 1): # Solution 1 : Pure LP (Clingo) to get 1 Workflow  => Calculate Score workflow by update from prev(u)
+                if (number_of_models > 1):
+                    return return_response_error(303,"error","Engine 1 has only one model","JSON")
+                print("---Recovery process : RUNNING ENGINE 1 : Pure Approach : Score of worklfow based on maximum score of all nodes in G' => Calulate score of node based on Score of prev(u)")    
+                planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "recover_process.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"failure_detection.lp"),NUMBER_STEP,str(1))
+            elif (engine == 2): # Solution : Pure LP (Clingo) with high performance => Count number    
+                if (number_of_models > 1):
+                    return return_response_error(303,"error","Engine 2 has only one model","JSON")
+                print("---Recovery process : RUNNING ENGINE 2 :  High performance")    
+                planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "recover_process_high_performance.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"failure_detection.lp"),NUMBER_STEP,str(1))
+            elif (engine == 3): # Solution : REplanning with successfull services => Count number of mapping ONLY
+                if (number_of_models > 1):
+                    return return_response_error(303,"error","Engine 3 has only one model","JSON")
+                print("---Recovery process : RUNNING ENGINE 3 :  Replanning with Successfull Services") 
+                planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "recover_process_successful_services.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"failure_detection.lp"),NUMBER_STEP,str(1))
+            elif (engine == 4): # Solution : Planning from Failed States => Count number of resource reused
+                if (number_of_models > 1):
+                    return return_response_error(303,"error","Engine 4 has only one model","JSON")
+                print("---Recovery process : RUNNING ENGINE 4 :  Planning from Failed State")
+                #planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "recover_process_from_failed_state_N.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"sup_init_generated_resource_failure_detection.lp"),NUMBER_STEP,str(1))
+                planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "recover_process_from_failed_state_N.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"sup_init_generated_resource_failure_detection.lp"),"-c n=%s" %(str(expect_step)),str(1))
+            else:
+                return return_response_error(400,"error","no eligible engine","JSON")  
+            
+            
+            print("--DELETE Temp Input Folder and Output Folder-- Recovery")
+            delete_path = os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name)
+            if (os.path.exists(delete_path)):
+                try:
+                    shutil.rmtree(delete_path)
+                except OSError:
+                    pass
+            
+            
+            json_planning_data = json.loads(planing_data)
+            model_result = str(json_planning_data["Result"])
+            model_number = json_planning_data["Models"]["Number"]
+
+            if (model_result.strip().upper() == "OPTIMUM FOUND"):  #Run with Optimization &maximize and &minimize
+                an_optimum =  json_planning_data["Models"]["Optimum"]
+                an_optimal =  int(json_planning_data["Models"]["Optimal"])
+                # Check to see optimization
+                BIG_LIST_ANSWER_SETS = []
+                if (an_optimum == "yes" and an_optimal == 1):
+                    # Get optimization value
+                    optimal_value = int(json_planning_data["Models"]["Costs"][0])
+                    list_witnesses = json_planning_data["Call"][0]["Witnesses"]
+                    for witness in list_witnesses:
+                        if (int(witness["Costs"][0]) == optimal_value):
+                            small_list = []
+                            small_list.append(witness)
+                            BIG_LIST_ANSWER_SETS.append(small_list)
+                    if (len(BIG_LIST_ANSWER_SETS) > 0):
+                        json_output = composite_response.process_a_plan_json_from_raw(BIG_LIST_ANSWER_SETS,input_json,json_planning_data,qos=False,multi_plans=False,quantity=1,solver="recovery")
+                        if (engine == 1):
+                            json_output['info']['Approach'] = "Failure Detection - Max Matching by ASP Optimization - Pure Approach : Score of worklfow based on maximum score of all nodes in G' => Calulate score of node based on Score of prev(u)"
+                        elif (engine == 2):
+                            json_output['info']['Approach'] = "Failure Detection - Max Matching by ASP Optimization - High performance: Count the number of mapping only => Get max by workflow has highest number of mapping"
+                        elif (engine == 3):
+                            json_output['info']['Approach'] = "Failure Detection - Max Matching by ASP Optimization - Replanning with Successfull Services: = 0 if no mapp, = 1 if mapped => Sum all to get maximum"
+                        elif (engine == 4):
+                            json_output['info']['Approach'] = "Failure Detection - Max Matching by ASP Optimization - Planning from Failed State : Count number of resued resources"
+                            # Update initial State for Initial State
+                            json_output['request_parameters']['generated_resources'] = request_parameters["generated_resources"]
+                            json_output['request_parameters']['original_N_services'] = request_parameters["original_N_services"]
+                            for item in json_generated_resource:
+                                if (item['resource_ontology_id'] and item['resource_data_format_id']):
+                                    obj = {"name":item['resource_name_in_output_of_service'],"resource_ontology_id":item['resource_ontology_id'],"resource_ontology_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#" + item['resource_ontology_id'],"resource_data_format_id": item['resource_data_format_id'],"resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#" + item['resource_data_format_id']}
+                                json_output['request_parameters']['input'].append(obj)
+
+                        if (json_output is not None):
+                            return return_success_get_json(json_output)
+                        else:
+                            return return_response_error(403,"error","Data error","JSON")
+                    else:
+                        return return_response_error(400,"error","engine error","JSON")  
+                else:
+                    return return_response_error(400,"error","unsatisfy data","JSON")
+            
+    #curl -X POST "http://127.0.0.1:8000/planningEngine/recovery" -H "content-type:application/json" -d '{"request_parameters" : {"input" : [{"name" : "A Raw Text mixes many types of encoding","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_FreeText","resource_ontology_id" : "resource_FreeText","resource_data_format_id":"raw_text","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#raw_text"}],"output" : [{"name" : "Species Tree","resource_ontology_uri" : "http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#resource_speciesTree","resource_ontology_id" : "resource_speciesTree","resource_data_format_id":"newickTree","resource_data_format_uri":"http://www.cs.nmsu.edu/~epontell/CDAO/cdao.owl#newickTree"}],"failed_service":[{"ID" : "phylotastic_GetPhylogeneticTree_OT_POST","Index":6}],"generated_resources":[{"resource_ontology_id" : "a1","resource_data_format_id" : "b1","resource_name_in_output_of_service" : "c1","resource_data" : "data1"},{"resource_ontology_id" : "a2","resource_data_format_id" : "b2","resource_name_in_output_of_service" : "c2","resource_data" : "data2"},{"resource_ontology_id" : "a1","resource_data_format_id" : "b1","resource_name_in_output_of_service" : "c1","resource_data" : "data1"}],"original_workflow":["goal(8)", "map(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_FreeText,plain_text,1,convert_df_text_format_raw_to_plain,resource_FreeText,plain_text,1)", "map(convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_1,2,phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_SetOfSciName,raw_names_format_1,2)", "map(convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_3,3,convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_3,3)", "map(convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_5,4,convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_5,4)", "map(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfSciName,raw_names_format_OT,5,convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_OT,5)", "map(phylotastic_GetPhylogeneticTree_OT_POST,resource_SetOfTaxon,resolved_names_format_OT,6,phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfTaxon,resolved_names_format_OT,6)", "map(convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,nmsu_tree_format,7,phylotastic_GetPhylogeneticTree_OT_POST,resource_speciesTree,nmsu_tree_format,7)", "map(phylotastic_ComparePhylogeneticTrees_Symmetric_POST,resource_speciesTree,newickTree,9,convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,newickTree,8)", "map(convert_df_text_format_raw_to_plain,resource_FreeText,raw_text,0,initial_state,resource_FreeText,raw_text,0)", "operation_has_input_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_FreeText,plain_text)", "operation_has_input_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfSciName,raw_names_format_OT)", "operation_has_input_has_data_format(phylotastic_GetPhylogeneticTree_OT_POST,resource_SetOfTaxon,resolved_names_format_OT)", "operation_has_input_has_data_format(convert_df_text_format_raw_to_plain,resource_FreeText,raw_text)", "operation_has_input_has_data_format(convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_1)", "operation_has_input_has_data_format(convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_3)", "operation_has_input_has_data_format(convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_5)", "operation_has_input_has_data_format(convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,nmsu_tree_format)", "operation_has_output_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_SetOfSciName,raw_names_format_1)", "operation_has_output_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_HTTPCode,integer)", "operation_has_output_has_data_format(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_ConnectionTime,integer)", "operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfTaxon,resolved_names_format_OT)", "operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfResolvedName,resolved_names_format_OT)", "operation_has_output_has_data_format(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_HTTPCode,integer)", "operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_OT_POST,resource_speciesTree,nmsu_tree_format)", "operation_has_output_has_data_format(phylotastic_GetPhylogeneticTree_OT_POST,resource_Tree,nmsu_tree_format)", "operation_has_output_has_data_format(convert_df_text_format_raw_to_plain,resource_FreeText,plain_text)", "operation_has_output_has_data_format(convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_3)", "operation_has_output_has_data_format(convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_5)", "operation_has_output_has_data_format(convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_OT)", "operation_has_output_has_data_format(convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,newickTree)", "occur(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,1)", "occur(phylotastic_ResolvedScientificNames_OT_TNRS_GET,5)", "occur(phylotastic_GetPhylogeneticTree_OT_POST,6)", "occur(convert_df_text_format_raw_to_plain,0)", "occur(convert_df_sci_names_format_1_to_3,2)", "occur(convert_df_sci_names_format_3_to_5,3)", "occur(convert_df_sci_names_format_5_to_OT,4)", "occur(convert_species_tree_format_NMSU_to_NewickTree,7)"]},"models":{"number":1,"engine":1}}'    
+
+
     #public generate workflow
     generateWorkflow.exposed = True
     #public recomposite similarity workflow
     recomposite.exposed = True
+    #public recovery process
+    recovery.exposed = True
     #public index
     index.exposed = True
 class OntologyAPI_Service(object):
@@ -1219,7 +1553,6 @@ class OntologyAPI_Service(object):
                 parser_engine = str(request_data['parser_engine']).strip()
             except:
                 parser_engine = "1"
-
             if ((parser_engine == 2) or (parser_engine == "2")):
                     try:
                         owl_component_name = str(request_data['owl_component_name']).strip()
@@ -1379,3 +1712,7 @@ if __name__ == '__main__':
     # cherrypy.engine.start()
     cherrypy.engine.start()
     cherrypy.engine.block()
+
+'''
+Ending Source code for App Engine - Web Service Composition
+'''    
