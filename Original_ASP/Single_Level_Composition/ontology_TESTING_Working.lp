@@ -1,3 +1,5 @@
+#include "./shipping_domain_ontology.lp".
+
 %=======================================================================
 %PART 1 : Define classes that are used from CDAO ontology
 %=======================================================================
