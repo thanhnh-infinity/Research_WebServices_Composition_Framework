@@ -5,4 +5,4 @@
 
 #show occur/2.
 #show goal/1.
-%#show exists/2.
+%#show exists/3.
