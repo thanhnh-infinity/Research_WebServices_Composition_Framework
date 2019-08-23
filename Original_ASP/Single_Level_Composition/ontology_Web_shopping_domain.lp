@@ -157,6 +157,7 @@ class(checkout_operation).
 class(buy_item_operation).
 class(get_price_operation).
 class(get_item_list_operation).
+class(item_status_operation).
 
 % Define subclass of operation
 class(shopping_operation).
@@ -169,6 +170,7 @@ subClass(checkout_operation,shopping_operation).
 subClass(buy_item_operation,shopping_operation).
 subClass(get_price_operation,shopping_operation).
 subClass(get_item_list_operation,shopping_operation).
+subClass(item_status_operation,shopping_operation).
 
 %========================================================================
 % PART 3 :  Instance of operations classes
@@ -232,6 +234,22 @@ instance(getPrice(bread)).
 instance(getPrice(butter)).
 instance(getPrice(meat)).
 
+instance(getPrice_Cart(cart_web_shop_A)).
+instance(getPrice_Cart(cart_web_shop_B)).
+
+instance(checkAvailability(laptop)).
+instance(checkAvailability(camera)).
+instance(checkAvailability(smart_phone)).
+instance(checkAvailability(desk)).
+instance(checkAvailability(chair)).
+
+instance(checkAvailability(coke)).
+instance(checkAvailability(beer)).
+instance(checkAvailability(water)).
+instance(checkAvailability(bread)).
+instance(checkAvailability(butter)).
+instance(checkAvailability(meat)).
+
 isInstanceOf_immediate(getItemsList(webShopTypeB),get_item_list_operation).
 isInstanceOf_immediate(getItemsList(webShopTypeA),get_item_list_operation).
 
@@ -289,6 +307,22 @@ isInstanceOf_immediate(getPrice(water),get_price_operation).
 isInstanceOf_immediate(getPrice(bread),get_price_operation).
 isInstanceOf_immediate(getPrice(butter),get_price_operation).
 isInstanceOf_immediate(getPrice(meat),get_price_operation).
+
+isInstanceOf_immediate(getPrice_Cart(cart_web_shop_A),get_price_operation).
+isInstanceOf_immediate(getPrice_Cart(cart_web_shop_B),get_price_operation).
+
+isInstanceOf_immediate(checkAvailability(laptop),item_status_operation).
+isInstanceOf_immediate(checkAvailability(camera),item_status_operation).
+isInstanceOf_immediate(checkAvailability(smart_phone),item_status_operation).
+isInstanceOf_immediate(checkAvailability(desk),item_status_operation).
+isInstanceOf_immediate(checkAvailability(chair),item_status_operation).
+
+isInstanceOf_immediate(checkAvailability(coke),item_status_operation).
+isInstanceOf_immediate(checkAvailability(beer),item_status_operation).
+isInstanceOf_immediate(checkAvailability(water),item_status_operation).
+isInstanceOf_immediate(checkAvailability(bread),item_status_operation).
+isInstanceOf_immediate(checkAvailability(butter),item_status_operation).
+isInstanceOf_immediate(checkAvailability(meat),item_status_operation).
 
 %========================================================================
 % PART 4.1 :  Define hierarchy classes of DATA FORMAT
@@ -421,6 +455,27 @@ instance_operation_has_input_has_data_format(buyItem(smart_phone),smart_phone,in
 instance_operation_has_input_has_data_format(buyItem(smart_phone),credit_card,enough_account_balance).
 instance_has_output(buyItem(smart_phone),smart_phone_1,smart_phone).
 instance_operation_has_output_has_data_format(buyItem(smart_phone),smart_phone,possess(client)).
+
+instance_has_input(buyItem(camera),camera_1,camera).
+instance_has_input(buyItem(camera),card_1,credit_card).
+instance_operation_has_input_has_data_format(buyItem(camera),camera,in_items_list(list_electrical_device_items)).
+instance_operation_has_input_has_data_format(buyItem(camera),credit_card,enough_account_balance).
+instance_has_output(buyItem(camera),camera_1,camera).
+instance_operation_has_output_has_data_format(buyItem(camera),camera,possess(client)).
+
+instance_has_input(buyItem(desk),desk_1,desk).
+instance_has_input(buyItem(desk),card_1,credit_card).
+instance_operation_has_input_has_data_format(buyItem(desk),desk,in_items_list(list_furniture_items)).
+instance_operation_has_input_has_data_format(buyItem(desk),credit_card,enough_account_balance).
+instance_has_output(buyItem(desk),desk_1,desk).
+instance_operation_has_output_has_data_format(buyItem(desk),desk,possess(client)).
+
+instance_has_input(buyItem(chair),chair_1,chair).
+instance_has_input(buyItem(chair),card_1,credit_card).
+instance_operation_has_input_has_data_format(buyItem(chair),chair,in_items_list(list_furniture_items)).
+instance_operation_has_input_has_data_format(buyItem(chair),credit_card,enough_account_balance).
+instance_has_output(buyItem(chair),chair_1,chair).
+instance_operation_has_output_has_data_format(buyItem(chair),chair,possess(client)).
 
 %----------------------
 
