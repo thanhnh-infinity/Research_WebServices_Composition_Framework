@@ -11,6 +11,7 @@ fail_service(checkout(webShopTypeA),6).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Generate V_0(st)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 resource_generated(list_electrical_device_items,list_of_items,"abc").
 resource_generated(list_furniture_items,list_of_items,"abc").
 resource_generated(list_beverage_items,list_of_items,"abc").
