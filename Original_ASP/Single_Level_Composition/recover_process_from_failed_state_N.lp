@@ -9,8 +9,15 @@
 %          Edge start from v_{0} : map(A,I,DF_I,T,initial_state,O,DF_O,0)
 % Detect fail service at time T in Graph G
 
-#include "./usercase/failed_state_N/0/failure_detection_6.lp".
-#include "./usercase/failed_state_N/0/domain.lp".
+% For Phylotastic domain
+%#include "./usercase/failed_state_N/0/failure_detection_6.lp".
+%#include "./usercase/failed_state_N/0/domain.lp".
+%#include "./single_level_planning_need_domain.lp".
+%#include "./ontology_TESTING_Working.lp".
+
+% For shopping domain
+#include "./usercase/shopping/0/failure_fail_state.lp".
+#include "./usercase/shopping/0/domain.lp".
 #include "./single_level_planning_need_domain.lp".
 #include "./ontology_TESTING_Working.lp".
 
