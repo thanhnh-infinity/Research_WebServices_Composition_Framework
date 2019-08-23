@@ -528,7 +528,6 @@ exists(X,in_items_list(list_furniture_items),I):- exists(list_furniture_items,li
 exists(X,in_items_list(list_food_items),I):- exists(list_food_items,list_of_items,I), itemInList(X,list_food_items).%exists(X,in_items_list(list_beverage_items),I):- exists(list_beverage_items,list_of_items,I), itemInList(X,list_beverage_items).
 
 
-
 %=======================================================================
 % PART 4.2 :  Defined QoS values for each concrete service operation which include tuple(Response Time,Throughput, Reliability, Availability)
 %             Structure : has_qos_response_time(<concrete service operation>,<QoS Value>).
@@ -760,3 +759,5 @@ has_qos_availability(getPrice(water),1000).
 has_qos_availability(getPrice(bread),1000).
 has_qos_availability(getPrice(butter),1000).
 has_qos_availability(getPrice(meat),1000).
+
+%=======================================================================
