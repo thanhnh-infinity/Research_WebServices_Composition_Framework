@@ -1,8 +1,5 @@
 %%%%%%%%% FAILURE DETECTION %%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Remember OLD Workflow => Including DGA Graph : 
-%          Node : occur(X,T) 
-%          Normal Edge (from service to service) : map(A,I,DF_I,T,B,O,DF_O,T1)
-%          Edge start from v_{0} : map(A,I,DF_I,T,initial_state,O,DF_O,0)
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -14,7 +11,6 @@ fail_service(convert_species_tree_format_NMSU_to_NewickTree,6).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Generate V_0(st)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
 resource_generated(resource_SetOfSciName,raw_names_format_1,"abc").
 resource_generated(resource_SetOfSciName,raw_names_format_3,"abc").
 resource_generated(resource_SetOfSciName,raw_names_format_5,"abc").
@@ -29,8 +25,6 @@ initially(resource_SetOfSciName,raw_names_format_5).
 initially(resource_SetOfSciName,raw_names_format_OT).
 initially(resource_SetOfTaxon,resolved_names_format_OT).
 initially(resource_speciesTree,nmsu_tree_format).
-
-
 
 % Simulate an action plays initial state role
 
