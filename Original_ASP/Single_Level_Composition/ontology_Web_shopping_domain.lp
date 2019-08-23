@@ -132,7 +132,6 @@ class(not_enough_account_balance).
 subClass(enough_account_balance,account_balance).
 subClass(not_enough_account_balance, account_balance).
 
-
 itemInList(laptop,list_electrical_device_items).
 itemInList(smart_phone,list_electrical_device_items).
 itemInList(camera,list_electrical_device_items).
