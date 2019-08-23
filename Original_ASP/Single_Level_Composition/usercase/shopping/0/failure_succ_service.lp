@@ -3,32 +3,25 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 old_goal(8).
-old_occur(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,0).
-old_occur(convert_df_sci_names_format_1_to_3,1).
-old_occur(convert_df_sci_names_format_3_to_5,2).
-old_occur(convert_df_sci_names_format_5_to_OT,3).
-old_occur(phylotastic_ResolvedScientificNames_OT_TNRS_GET,4).
-old_occur(phylotastic_GetPhylogeneticTree_OT_GET,5).
-old_occur(convert_species_tree_format_NMSU_to_NewickTree,6).
-old_occur(phylotastic_CompareTrees_Sym_Dendropy_POST,7).
+old_occ_exe(getItemsList(webShopTypeB),0).
+old_occ_exe(getItemsList(webShopTypeA),1). 
+old_occ_exe(addToCart(beer),2).
+old_occ_exe(addToCart(smart_phone),3).
+old_occ_exe(addToCart(laptop),4). 
+old_occ_exe(addToCart(butter),5). 
 
-
-old_map(convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_1,1,phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_SetOfSciName,raw_names_format_1,1). old_map(convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_3,2,convert_df_sci_names_format_1_to_3,resource_SetOfSciName,raw_names_format_3,2).
-old_map(convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_5,3,convert_df_sci_names_format_3_to_5,resource_SetOfSciName,raw_names_format_5,3). 
-old_map(phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfSciName,raw_names_format_OT,4,convert_df_sci_names_format_5_to_OT,resource_SetOfSciName,raw_names_format_OT,4).
-old_map(phylotastic_GetPhylogeneticTree_OT_GET,resource_SetOfTaxon,resolved_names_format_OT,5,phylotastic_ResolvedScientificNames_OT_TNRS_GET,resource_SetOfTaxon,resolved_names_format_OT,5).
-old_map(convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,nmsu_tree_format,6,phylotastic_GetPhylogeneticTree_OT_GET,resource_speciesTree,nmsu_tree_format,6).
-old_map(phylotastic_CompareTrees_Sym_Dendropy_POST,resource_speciesTree,newickTree,7,convert_species_tree_format_NMSU_to_NewickTree,resource_speciesTree,newickTree,7).
-
-old_map(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,resource_FreeText,plain_text,0,initial_state,resource_FreeText,plain_text,0).
-old_map(phylotastic_CompareTrees_Sym_Dendropy_POST,resource_speciesTree,compare_tree_format,7,initial_state,resource_speciesTree,compare_tree_format,0). 
+old_map_exe(getItemsList(webShopTypeB),webShopTypeB,open,0,initial_state,webShopTypeB,open,0).
+old_map_exe(getItemsList(webShopTypeA),webShopTypeA,open,1,initial_state,webShopTypeA,open,0).
+old_map_exe(addToCart(beer),list_beverage_items,list_of_items,2,getItemsList(webShopTypeB),list_beverage_items,list_of_items,1). 
+old_map_exe(addToCart(butter),list_food_items,list_of_items,5,getItemsList(webShop_exeTypeB),list_food_items,list_of_items,1).
+old_map_exe(addToCart(smart_phone),list_electrical_device_items,list_of_items,3,getItemsList(webShopTypeA),list_electrical_device_items,list_of_items,2).
+old_map_exe(addToCart(laptop),list_electrical_device_items,list_of_items,4,getItemsList(webShopTypeA),list_electrical_device_items,list_of_items,2).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Detect fail service at time T in Graph G
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-fail_service(phylotastic_FindScientificNamesFromFreeText_GNRD_GET,0).
+fail_service(checkout(webShopTypeA),6).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Generate G_{exe}
