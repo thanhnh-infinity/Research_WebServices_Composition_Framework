@@ -206,47 +206,81 @@ instance_operation_has_output_has_data_format(getItemsList(webShopTypeB),list_be
 instance_operation_has_output_has_data_format(getItemsList(webShopTypeB),list_food_items,list_of_items).
 
 % Add to Cart Operation
+instance_has_input(addToCart(laptop),list_1,list_electrical_device_items).
 instance_operation_has_input_has_data_format(addToCart(laptop),list_electrical_device_items,list_of_items).
+instance_has_output(addToCart(laptop),laptop_1,laptop).
+instance_has_output(addToCart(laptop),cart_1,cart_web_shop_A).
 instance_operation_has_output_has_data_format(addToCart(laptop),laptop,on_cart).
 instance_operation_has_output_has_data_format(addToCart(laptop),cart_web_shop_A,not_empty).
 
+instance_has_input(addToCart(camera),list_1,list_electrical_device_items).
 instance_operation_has_input_has_data_format(addToCart(camera),list_electrical_device_items,list_of_items).
+instance_has_output(addToCart(camera),camera_1,camera).
+instance_has_output(addToCart(camera),cart_1,cart_web_shop_A).
 instance_operation_has_output_has_data_format(addToCart(camera),camera,on_cart).
 instance_operation_has_output_has_data_format(addToCart(camera),cart_web_shop_A,not_empty).
 
+instance_has_input(addToCart(smart_phone),list_1,list_electrical_device_items).
 instance_operation_has_input_has_data_format(addToCart(smart_phone),list_electrical_device_items,list_of_items).
+instance_has_output(addToCart(smart_phone),phone_1,smart_phone).
+instance_has_output(addToCart(smart_phone),cart_1,cart_web_shop_A).
 instance_operation_has_output_has_data_format(addToCart(smart_phone),smart_phone,on_cart).
 instance_operation_has_output_has_data_format(addToCart(smart_phone),cart_web_shop_A,not_empty).
 
+instance_has_input(addToCart(desk),list_1,list_furniture_items).
 instance_operation_has_input_has_data_format(addToCart(desk),list_furniture_items,list_of_items).
+instance_has_output(addToCart(desk),desk_1,desk).
+instance_has_output(addToCart(desk),cart_1,cart_web_shop_A).
 instance_operation_has_output_has_data_format(addToCart(desk),desk,on_cart).
 instance_operation_has_output_has_data_format(addToCart(desk),cart_web_shop_A,not_empty).
 
+instance_has_input(addToCart(chair),list_1,list_furniture_items).
 instance_operation_has_input_has_data_format(addToCart(chair),list_furniture_items,list_of_items).
+instance_has_output(addToCart(chair),chair_1,chair).
+instance_has_output(addToCart(chair),cart_1,cart_web_shop_A).
 instance_operation_has_output_has_data_format(addToCart(chair),chair,on_cart).
 instance_operation_has_output_has_data_format(addToCart(chair),cart_web_shop_A,not_empty).
 
+
+instance_has_input(addToCart(bread),list_1,list_food_items).
 instance_operation_has_input_has_data_format(addToCart(bread),list_food_items,list_of_items).
+instance_has_output(addToCart(bread),bread_1,bread).
+instance_has_output(addToCart(bread),cart_1,cart_web_shop_B).
 instance_operation_has_output_has_data_format(addToCart(bread),bread,on_cart).
 instance_operation_has_output_has_data_format(addToCart(bread),cart_web_shop_B,not_empty).
 
+instance_has_input(addToCart(butter),list_1,list_food_items).
 instance_operation_has_input_has_data_format(addToCart(butter),list_food_items,list_of_items).
+instance_has_output(addToCart(butter),butter_1,butter).
+instance_has_output(addToCart(butter),cart_1,cart_web_shop_B).
 instance_operation_has_output_has_data_format(addToCart(butter),butter,on_cart).
 instance_operation_has_output_has_data_format(addToCart(butter),cart_web_shop_B,not_empty).
 
+instance_has_input(addToCart(meat),list_1,list_food_items).
 instance_operation_has_input_has_data_format(addToCart(meat),list_food_items,list_of_items).
+instance_has_output(addToCart(meat),meat_1,meat).
+instance_has_output(addToCart(meat),cart_1,cart_web_shop_B).
 instance_operation_has_output_has_data_format(addToCart(meat),meat,on_cart).
 instance_operation_has_output_has_data_format(addToCart(meat),cart_web_shop_B,not_empty).
 
+instance_has_input(addToCart(coke),list_1,list_beverage_items).
 instance_operation_has_input_has_data_format(addToCart(coke),list_beverage_items,list_of_items).
+instance_has_output(addToCart(coke),coke_1,coke).
+instance_has_output(addToCart(coke),cart_1,cart_web_shop_B).
 instance_operation_has_output_has_data_format(addToCart(coke),coke,on_cart).
 instance_operation_has_output_has_data_format(addToCart(coke),cart_web_shop_B,not_empty).
 
+instance_has_input(addToCart(beer),list_1,list_beverage_items).
 instance_operation_has_input_has_data_format(addToCart(beer),list_beverage_items,list_of_items).
+instance_has_output(addToCart(beer),beer_1,beer).
+instance_has_output(addToCart(beer),cart_1,cart_web_shop_B).
 instance_operation_has_output_has_data_format(addToCart(beer),beer,on_cart).
 instance_operation_has_output_has_data_format(addToCart(beer),cart_web_shop_B,not_empty).
 
+instance_has_input(addToCart(water),list_1,list_beverage_items).
 instance_operation_has_input_has_data_format(addToCart(water),list_beverage_items,list_of_items).
+instance_has_output(addToCart(water),water_1,water).
+instance_has_output(addToCart(water),cart_1,cart_web_shop_B).
 instance_operation_has_output_has_data_format(addToCart(water),water,on_cart).
 instance_operation_has_output_has_data_format(addToCart(water),cart_web_shop_B,not_empty).
 

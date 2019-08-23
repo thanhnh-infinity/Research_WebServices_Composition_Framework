@@ -4,4 +4,5 @@
 #include "./usercase/shopping/0/domain.lp".
 
 #show occur/2.
+#show goal/1.
 %#show exists/2.
