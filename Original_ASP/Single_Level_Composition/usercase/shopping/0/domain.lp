@@ -1,7 +1,7 @@
-#const n = 8.
+#const n = 5.
 
 %------------------------
-:- occur(buyItem(X),I).
+%:- occur(buyItem(X),I).
 %:- occur(checkout(webShopTypeA),I).
 
 %========================================================================

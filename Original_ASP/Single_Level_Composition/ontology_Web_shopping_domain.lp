@@ -441,17 +441,24 @@ instance_operation_has_output_has_data_format(checkout(webShopTypeB),cart_web_sh
 
 % Buy Item Operation
 
+%instance_has_input(buyItem(laptop),list_1,list_electrical_device_items).
 instance_has_input(buyItem(laptop),laptop_1,laptop).
 instance_has_input(buyItem(laptop),card_1,credit_card).
+%instance_operation_has_input_has_data_format(buyItem(laptop),list_electrical_device_items,list_of_items).
 instance_operation_has_input_has_data_format(buyItem(laptop),laptop,in_items_list(list_electrical_device_items)).
 instance_operation_has_input_has_data_format(buyItem(laptop),credit_card,enough_account_balance).
+
 instance_has_output(buyItem(laptop),laptop_1,laptop).
 instance_operation_has_output_has_data_format(buyItem(laptop),laptop,possess(client)).
 
+%instance_has_input(buyItem(smart_phone),list_1,list_electrical_device_items).
 instance_has_input(buyItem(smart_phone),phone_1,smart_phone).
 instance_has_input(buyItem(smart_phone),card_1,credit_card).
+
+%instance_operation_has_input_has_data_format(buyItem(smart_phone),list_electrical_device_items,list_of_items).
 instance_operation_has_input_has_data_format(buyItem(smart_phone),smart_phone,in_items_list(list_electrical_device_items)).
 instance_operation_has_input_has_data_format(buyItem(smart_phone),credit_card,enough_account_balance).
+
 instance_has_output(buyItem(smart_phone),smart_phone_1,smart_phone).
 instance_operation_has_output_has_data_format(buyItem(smart_phone),smart_phone,possess(client)).
 
@@ -524,8 +531,12 @@ exists(Item,possess(client),I) :- exists(cart_web_shop_A,paid,I), exists(Item,on
 exists(Item,possess(client),I) :- exists(cart_web_shop_B,paid,I), exists(Item,on_cart(webShop_B),J), J <= I.
 
 exists(X,in_items_list(list_electrical_device_items),I):- exists(list_electrical_device_items,list_of_items,I), itemInList(X,list_electrical_device_items).
+
 exists(X,in_items_list(list_furniture_items),I):- exists(list_furniture_items,list_of_items,I), itemInList(X,list_furniture_items).
-exists(X,in_items_list(list_food_items),I):- exists(list_food_items,list_of_items,I), itemInList(X,list_food_items).%exists(X,in_items_list(list_beverage_items),I):- exists(list_beverage_items,list_of_items,I), itemInList(X,list_beverage_items).
+
+exists(X,in_items_list(list_food_items),I):- exists(list_food_items,list_of_items,I), itemInList(X,list_food_items).
+
+exists(X,in_items_list(list_beverage_items),I):- exists(list_beverage_items,list_of_items,I), itemInList(X,list_beverage_items).
 
 
 %=======================================================================
