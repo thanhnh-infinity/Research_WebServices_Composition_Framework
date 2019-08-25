@@ -394,5 +394,3 @@ print_ZSSNode(buildUp_ZSSGraph(test.WORKFLOW_4))
 
 #for item in items:
 #    print item.label + ";"
-
-
