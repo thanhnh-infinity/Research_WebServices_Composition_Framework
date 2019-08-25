@@ -243,18 +243,18 @@ instance(removeFromCart(vogue_magazine)).
 instance(checkout(webShopTypeA)).
 instance(checkout(webShopTypeB)).
 
-instance(buyItem(laptop)).
-instance(buyItem(camera)).
-instance(buyItem(smart_phone)).
-instance(buyItem(desk)).
-instance(buyItem(chair)).
+instance(buyItem(laptop,webShop_A)).
+instance(buyItem(camera,webShop_A)).
+instance(buyItem(smart_phone,webShop_A)).
+instance(buyItem(desk,webShop_A)).
+instance(buyItem(chair,webShop_A)).
 
-instance(buyItem(coke)).
-instance(buyItem(beer)).
-instance(buyItem(water)).
-instance(buyItem(bread)).
-instance(buyItem(butter)).
-instance(buyItem(meat)).
+instance(buyItem(coke,webShop_C)).
+instance(buyItem(beer,webShop_C)).
+instance(buyItem(water,webShop_C)).
+instance(buyItem(bread,webShop_C)).
+instance(buyItem(butter,webShop_C)).
+instance(buyItem(meat,webShop_C)).
 
 
 instance(getPrice(laptop)).
@@ -326,18 +326,18 @@ isInstanceOf_immediate(removeFromCart(natural_maganize),remove_from_cart_operati
 isInstanceOf_immediate(checkout(webShopTypeA),checkout_operation).
 isInstanceOf_immediate(checkout(webShopTypeB),checkout_operation).
 
-isInstanceOf_immediate(buyItem(laptop),buy_item_operation).
-isInstanceOf_immediate(buyItem(camera),buy_item_operation).
-isInstanceOf_immediate(buyItem(smart_phone),buy_item_operation).
-isInstanceOf_immediate(buyItem(desk),buy_item_operation).
-isInstanceOf_immediate(buyItem(chair),buy_item_operation).
+isInstanceOf_immediate(buyItem(laptop,webShop_A),buy_item_operation).
+isInstanceOf_immediate(buyItem(camera,webShop_A),buy_item_operation).
+isInstanceOf_immediate(buyItem(smart_phone,webShop_A),buy_item_operation).
+isInstanceOf_immediate(buyItem(desk,webShop_A),buy_item_operation).
+isInstanceOf_immediate(buyItem(chair,webShop_A),buy_item_operation).
 
-isInstanceOf_immediate(buyItem(coke),buy_item_operation).
-isInstanceOf_immediate(buyItem(beer),buy_item_operation).
-isInstanceOf_immediate(buyItem(water),buy_item_operation).
-isInstanceOf_immediate(buyItem(bread),buy_item_operation).
-isInstanceOf_immediate(buyItem(meat),buy_item_operation).
-isInstanceOf_immediate(buyItem(butter),buy_item_operation).
+isInstanceOf_immediate(buyItem(coke,webShop_C),buy_item_operation).
+isInstanceOf_immediate(buyItem(beer,webShop_C),buy_item_operation).
+isInstanceOf_immediate(buyItem(water,webShop_C),buy_item_operation).
+isInstanceOf_immediate(buyItem(bread,webShop_C),buy_item_operation).
+isInstanceOf_immediate(buyItem(meat,webShop_C),buy_item_operation).
+isInstanceOf_immediate(buyItem(butter,webShop_C),buy_item_operation).
 
 isInstanceOf_immediate(getPrice(laptop),get_price_operation).
 isInstanceOf_immediate(getPrice(camera),get_price_operation).
@@ -499,89 +499,89 @@ instance_operation_has_output_has_data_format(checkout(webShopTypeB),cart_web_sh
 
 % Buy Item Operation
 
-%instance_has_input(buyItem(laptop),list_1,list_electrical_device_items).
-instance_has_input(buyItem(laptop),laptop_1,laptop).
-instance_has_input(buyItem(laptop),card_1,credit_card).
-%instance_operation_has_input_has_data_format(buyItem(laptop),list_electrical_device_items,list_of_items).
-instance_operation_has_input_has_data_format(buyItem(laptop),laptop,in_items_list(list_electrical_device_items)).
-instance_operation_has_input_has_data_format(buyItem(laptop),credit_card,enough_account_balance).
+%instance_has_input(buyItem(laptop,webShop_A),list_1,list_electrical_device_items).
+instance_has_input(buyItem(laptop,webShop_A),laptop_1,laptop).
+instance_has_input(buyItem(laptop,webShop_A),card_1,credit_card).
+%instance_operation_has_input_has_data_format(buyItem(laptop,webShop_A),list_electrical_device_items,list_of_items).
+instance_operation_has_input_has_data_format(buyItem(laptop,webShop_A),laptop,in_items_list(list_electrical_device_items)).
+instance_operation_has_input_has_data_format(buyItem(laptop,webShop_A),credit_card,enough_account_balance).
 
-instance_has_output(buyItem(laptop),laptop_1,laptop).
-instance_operation_has_output_has_data_format(buyItem(laptop),laptop,possess(client)).
+instance_has_output(buyItem(laptop,webShop_A),laptop_1,laptop).
+instance_operation_has_output_has_data_format(buyItem(laptop,webShop_A),laptop,possess(client)).
 
-%instance_has_input(buyItem(smart_phone),list_1,list_electrical_device_items).
-instance_has_input(buyItem(smart_phone),phone_1,smart_phone).
-instance_has_input(buyItem(smart_phone),card_1,credit_card).
+%instance_has_input(buyItem(smart_phone,webShop_A),list_1,list_electrical_device_items).
+instance_has_input(buyItem(smart_phone,webShop_A),phone_1,smart_phone).
+instance_has_input(buyItem(smart_phone,webShop_A),card_1,credit_card).
 
-%instance_operation_has_input_has_data_format(buyItem(smart_phone),list_electrical_device_items,list_of_items).
-instance_operation_has_input_has_data_format(buyItem(smart_phone),smart_phone,in_items_list(list_electrical_device_items)).
-instance_operation_has_input_has_data_format(buyItem(smart_phone),credit_card,enough_account_balance).
+%instance_operation_has_input_has_data_format(buyItem(smart_phone,webShop_A),list_electrical_device_items,list_of_items).
+instance_operation_has_input_has_data_format(buyItem(smart_phone,webShop_A),smart_phone,in_items_list(list_electrical_device_items)).
+instance_operation_has_input_has_data_format(buyItem(smart_phone,webShop_A),credit_card,enough_account_balance).
 
-instance_has_output(buyItem(smart_phone),smart_phone_1,smart_phone).
-instance_operation_has_output_has_data_format(buyItem(smart_phone),smart_phone,possess(client)).
+instance_has_output(buyItem(smart_phone,webShop_A),smart_phone_1,smart_phone).
+instance_operation_has_output_has_data_format(buyItem(smart_phone,webShop_A),smart_phone,possess(client)).
 
-instance_has_input(buyItem(camera),camera_1,camera).
-instance_has_input(buyItem(camera),card_1,credit_card).
-instance_operation_has_input_has_data_format(buyItem(camera),camera,in_items_list(list_electrical_device_items)).
-instance_operation_has_input_has_data_format(buyItem(camera),credit_card,enough_account_balance).
-instance_has_output(buyItem(camera),camera_1,camera).
-instance_operation_has_output_has_data_format(buyItem(camera),camera,possess(client)).
+instance_has_input(buyItem(camera,webShop_A),camera_1,camera).
+instance_has_input(buyItem(camera,webShop_A),card_1,credit_card).
+instance_operation_has_input_has_data_format(buyItem(camera,webShop_A),camera,in_items_list(list_electrical_device_items)).
+instance_operation_has_input_has_data_format(buyItem(camera,webShop_A),credit_card,enough_account_balance).
+instance_has_output(buyItem(camera,webShop_A),camera_1,camera).
+instance_operation_has_output_has_data_format(buyItem(camera,webShop_A),camera,possess(client)).
 
-instance_has_input(buyItem(desk),desk_1,desk).
-instance_has_input(buyItem(desk),card_1,credit_card).
-instance_operation_has_input_has_data_format(buyItem(desk),desk,in_items_list(list_furniture_items)).
-instance_operation_has_input_has_data_format(buyItem(desk),credit_card,enough_account_balance).
-instance_has_output(buyItem(desk),desk_1,desk).
-instance_operation_has_output_has_data_format(buyItem(desk),desk,possess(client)).
+instance_has_input(buyItem(desk,webShop_A),desk_1,desk).
+instance_has_input(buyItem(desk,webShop_A),card_1,credit_card).
+instance_operation_has_input_has_data_format(buyItem(desk,webShop_A),desk,in_items_list(list_furniture_items)).
+instance_operation_has_input_has_data_format(buyItem(desk,webShop_A),credit_card,enough_account_balance).
+instance_has_output(buyItem(desk,webShop_A),desk_1,desk).
+instance_operation_has_output_has_data_format(buyItem(desk,webShop_A),desk,possess(client)).
 
-instance_has_input(buyItem(chair),chair_1,chair).
-instance_has_input(buyItem(chair),card_1,credit_card).
-instance_operation_has_input_has_data_format(buyItem(chair),chair,in_items_list(list_furniture_items)).
-instance_operation_has_input_has_data_format(buyItem(chair),credit_card,enough_account_balance).
-instance_has_output(buyItem(chair),chair_1,chair).
-instance_operation_has_output_has_data_format(buyItem(chair),chair,possess(client)).
+instance_has_input(buyItem(chair,webShop_A),chair_1,chair).
+instance_has_input(buyItem(chair,webShop_A),card_1,credit_card).
+instance_operation_has_input_has_data_format(buyItem(chair,webShop_A),chair,in_items_list(list_furniture_items)).
+instance_operation_has_input_has_data_format(buyItem(chair,webShop_A),credit_card,enough_account_balance).
+instance_has_output(buyItem(chair,webShop_A),chair_1,chair).
+instance_operation_has_output_has_data_format(buyItem(chair,webShop_A),chair,possess(client)).
 
-instance_has_input(buyItem(beer),beer_1,beer).
-instance_has_input(buyItem(beer),card_1,credit_card).
-instance_operation_has_input_has_data_format(buyItem(beer),beer,in_items_list(list_items_in_shop)).
-instance_operation_has_input_has_data_format(buyItem(beer),credit_card,enough_account_balance).
-instance_has_output(buyItem(beer),beer_1,beer).
-instance_operation_has_output_has_data_format(buyItem(beer),beer,possess(client)).
+instance_has_input(buyItem(beer,webShop_C),beer_1,beer).
+instance_has_input(buyItem(beer,webShop_C),card_1,credit_card).
+instance_operation_has_input_has_data_format(buyItem(beer,webShop_C),beer,in_items_list(list_items_in_shop)).
+instance_operation_has_input_has_data_format(buyItem(beer,webShop_C),credit_card,enough_account_balance).
+instance_has_output(buyItem(beer,webShop_C),beer_1,beer).
+instance_operation_has_output_has_data_format(buyItem(beer,webShop_C),beer,possess(client)).
 
-instance_has_input(buyItem(coke),coke_1,coke).
-instance_has_input(buyItem(coke),card_1,credit_card).
-instance_operation_has_input_has_data_format(buyItem(coke),coke,in_items_list(list_items_in_shop)).
-instance_operation_has_input_has_data_format(buyItem(coke),credit_card,enough_account_balance).
-instance_has_output(buyItem(coke),coke_1,coke).
-instance_operation_has_output_has_data_format(buyItem(coke),coke,possess(client)).
+instance_has_input(buyItem(coke,webShop_C),coke_1,coke).
+instance_has_input(buyItem(coke,webShop_C),card_1,credit_card).
+instance_operation_has_input_has_data_format(buyItem(coke,webShop_C),coke,in_items_list(list_items_in_shop)).
+instance_operation_has_input_has_data_format(buyItem(coke,webShop_C),credit_card,enough_account_balance).
+instance_has_output(buyItem(coke,webShop_C),coke_1,coke).
+instance_operation_has_output_has_data_format(buyItem(coke,webShop_C),coke,possess(client)).
 
-instance_has_input(buyItem(water),water_1,water).
-instance_has_input(buyItem(water),card_1,credit_card).
-instance_operation_has_input_has_data_format(buyItem(water),water,in_items_list(list_items_in_shop)).
-instance_operation_has_input_has_data_format(buyItem(water),credit_card,enough_account_balance).
-instance_has_output(buyItem(water),water_1,water).
-instance_operation_has_output_has_data_format(buyItem(water),water,possess(client)).
+instance_has_input(buyItem(water,webShop_C),water_1,water).
+instance_has_input(buyItem(water,webShop_C),card_1,credit_card).
+instance_operation_has_input_has_data_format(buyItem(water,webShop_C),water,in_items_list(list_items_in_shop)).
+instance_operation_has_input_has_data_format(buyItem(water,webShop_C),credit_card,enough_account_balance).
+instance_has_output(buyItem(water,webShop_C),water_1,water).
+instance_operation_has_output_has_data_format(buyItem(water,webShop_C),water,possess(client)).
 
-instance_has_input(buyItem(bread),bread_1,bread).
-instance_has_input(buyItem(bread),card_1,credit_card).
-instance_operation_has_input_has_data_format(buyItem(bread),bread,in_items_list(list_items_in_shop)).
-instance_operation_has_input_has_data_format(buyItem(bread),credit_card,enough_account_balance).
-instance_has_output(buyItem(bread),bread_1,bread).
-instance_operation_has_output_has_data_format(buyItem(bread),bread,possess(client)).
+instance_has_input(buyItem(bread,webShop_C),bread_1,bread).
+instance_has_input(buyItem(bread,webShop_C),card_1,credit_card).
+instance_operation_has_input_has_data_format(buyItem(bread,webShop_C),bread,in_items_list(list_items_in_shop)).
+instance_operation_has_input_has_data_format(buyItem(bread,webShop_C),credit_card,enough_account_balance).
+instance_has_output(buyItem(bread,webShop_C),bread_1,bread).
+instance_operation_has_output_has_data_format(buyItem(bread,webShop_C),bread,possess(client)).
 
-instance_has_input(buyItem(meat),meat_1,meat).
-instance_has_input(buyItem(meat),card_1,credit_card).
-instance_operation_has_input_has_data_format(buyItem(meat),meat,in_items_list(list_items_in_shop)).
-instance_operation_has_input_has_data_format(buyItem(meat),credit_card,enough_account_balance).
-instance_has_output(buyItem(meat),meat_1,meat).
-instance_operation_has_output_has_data_format(buyItem(meat),meat,possess(client)).
+instance_has_input(buyItem(meat,webShop_C),meat_1,meat).
+instance_has_input(buyItem(meat,webShop_C),card_1,credit_card).
+instance_operation_has_input_has_data_format(buyItem(meat,webShop_C),meat,in_items_list(list_items_in_shop)).
+instance_operation_has_input_has_data_format(buyItem(meat,webShop_C),credit_card,enough_account_balance).
+instance_has_output(buyItem(meat,webShop_C),meat_1,meat).
+instance_operation_has_output_has_data_format(buyItem(meat,webShop_C),meat,possess(client)).
 
-instance_has_input(buyItem(butter),butter_1,butter).
-instance_has_input(buyItem(butter),card_1,credit_card).
-instance_operation_has_input_has_data_format(buyItem(butter),butter,in_items_list(list_items_in_shop)).
-instance_operation_has_input_has_data_format(buyItem(butter),credit_card,enough_account_balance).
-instance_has_output(buyItem(butter),butter_1,butter).
-instance_operation_has_output_has_data_format(buyItem(butter),butter,possess(client)).
+instance_has_input(buyItem(butter,webShop_C),butter_1,butter).
+instance_has_input(buyItem(butter,webShop_C),card_1,credit_card).
+instance_operation_has_input_has_data_format(buyItem(butter,webShop_C),butter,in_items_list(list_items_in_shop)).
+instance_operation_has_input_has_data_format(buyItem(butter,webShop_C),credit_card,enough_account_balance).
+instance_has_output(buyItem(butter,webShop_C),butter_1,butter).
+instance_operation_has_output_has_data_format(buyItem(butter,webShop_C),butter,possess(client)).
 
 %----------------------
 
@@ -644,17 +644,17 @@ has_qos_response_time(removeFromCart(meat),100).
 has_qos_response_time(checkout(webShopTypeA),100).
 has_qos_response_time(checkout(webShopTypeB),100).
 
-has_qos_response_time(buyItem(laptop),100).
-has_qos_response_time(buyItem(camera),100).
-has_qos_response_time(buyItem(smart_phone),100).
-has_qos_response_time(buyItem(desk),100).
-has_qos_response_time(buyItem(chair),100).
-has_qos_response_time(buyItem(coke),100).
-has_qos_response_time(buyItem(beer),100).
-has_qos_response_time(buyItem(water),100).
-has_qos_response_time(buyItem(bread),100).
-has_qos_response_time(buyItem(butter),100).
-has_qos_response_time(buyItem(meat),100).
+has_qos_response_time(buyItem(laptop,webShop_A),100).
+has_qos_response_time(buyItem(camera,webShop_A),100).
+has_qos_response_time(buyItem(smart_phone,webShop_A),100).
+has_qos_response_time(buyItem(desk,webShop_A),100).
+has_qos_response_time(buyItem(chair,webShop_A),100).
+has_qos_response_time(buyItem(coke,webShop_C),100).
+has_qos_response_time(buyItem(beer,webShop_C),100).
+has_qos_response_time(buyItem(water,webShop_C),100).
+has_qos_response_time(buyItem(bread,webShop_C),100).
+has_qos_response_time(buyItem(butter,webShop_C),100).
+has_qos_response_time(buyItem(meat,webShop_C),100).
 
 has_qos_response_time(getPrice(laptop),100).
 has_qos_response_time(getPrice(camera),100).
@@ -700,17 +700,17 @@ has_qos_throughput(removeFromCart(meat),4000).
 has_qos_throughput(checkout(webShopTypeA),4000).
 has_qos_throughput(checkout(webShopTypeB),4000).
 
-has_qos_throughput(buyItem(laptop),4000).
-has_qos_throughput(buyItem(camera),4000).
-has_qos_throughput(buyItem(smart_phone),4000).
-has_qos_throughput(buyItem(desk),4000).
-has_qos_throughput(buyItem(chair),4000).
-has_qos_throughput(buyItem(coke),4000).
-has_qos_throughput(buyItem(beer),4000).
-has_qos_throughput(buyItem(water),4000).
-has_qos_throughput(buyItem(bread),4000).
-has_qos_throughput(buyItem(butter),4000).
-has_qos_throughput(buyItem(meat),4000).
+has_qos_throughput(buyItem(laptop,webShop_A),4000).
+has_qos_throughput(buyItem(camera,webShop_A),4000).
+has_qos_throughput(buyItem(smart_phone,webShop_A),4000).
+has_qos_throughput(buyItem(desk,webShop_A),4000).
+has_qos_throughput(buyItem(chair,webShop_A),4000).
+has_qos_throughput(buyItem(coke,webShop_C),4000).
+has_qos_throughput(buyItem(beer,webShop_C),4000).
+has_qos_throughput(buyItem(water,webShop_C),4000).
+has_qos_throughput(buyItem(bread,webShop_C),4000).
+has_qos_throughput(buyItem(butter,webShop_C),4000).
+has_qos_throughput(buyItem(meat,webShop_C),4000).
 
 has_qos_throughput(getPrice(laptop),4000).
 has_qos_throughput(getPrice(camera),4000).
@@ -756,17 +756,17 @@ has_qos_reliability(removeFromCart(meat),5000).
 has_qos_reliability(checkout(webShopTypeA),5000).
 has_qos_reliability(checkout(webShopTypeB),5000).
 
-has_qos_reliability(buyItem(laptop),5000).
-has_qos_reliability(buyItem(camera),5000).
-has_qos_reliability(buyItem(smart_phone),5000).
-has_qos_reliability(buyItem(desk),5000).
-has_qos_reliability(buyItem(chair),5000).
-has_qos_reliability(buyItem(coke),5000).
-has_qos_reliability(buyItem(beer),5000).
-has_qos_reliability(buyItem(water),5000).
-has_qos_reliability(buyItem(bread),5000).
-has_qos_reliability(buyItem(butter),5000).
-has_qos_reliability(buyItem(meat),5000).
+has_qos_reliability(buyItem(laptop,webShop_A),5000).
+has_qos_reliability(buyItem(camera,webShop_A),5000).
+has_qos_reliability(buyItem(smart_phone,webShop_A),5000).
+has_qos_reliability(buyItem(desk,webShop_A),5000).
+has_qos_reliability(buyItem(chair,webShop_A),5000).
+has_qos_reliability(buyItem(coke,webShop_C),5000).
+has_qos_reliability(buyItem(beer,webShop_C),5000).
+has_qos_reliability(buyItem(water,webShop_C),5000).
+has_qos_reliability(buyItem(bread,webShop_C),5000).
+has_qos_reliability(buyItem(butter,webShop_C),5000).
+has_qos_reliability(buyItem(meat,webShop_C),5000).
 
 has_qos_reliability(getPrice(laptop),5000).
 has_qos_reliability(getPrice(camera),5000).
@@ -812,17 +812,17 @@ has_qos_availability(removeFromCart(meat),1000).
 has_qos_availability(checkout(webShopTypeA),1000).
 has_qos_availability(checkout(webShopTypeB),1000).
 
-has_qos_availability(buyItem(laptop),1000).
-has_qos_availability(buyItem(camera),1000).
-has_qos_availability(buyItem(smart_phone),1000).
-has_qos_availability(buyItem(desk),1000).
-has_qos_availability(buyItem(chair),1000).
-has_qos_availability(buyItem(coke),1000).
-has_qos_availability(buyItem(beer),1000).
-has_qos_availability(buyItem(water),1000).
-has_qos_availability(buyItem(bread),1000).
-has_qos_availability(buyItem(butter),1000).
-has_qos_availability(buyItem(meat),1000).
+has_qos_availability(buyItem(laptop,webShop_A),1000).
+has_qos_availability(buyItem(camera,webShop_A),1000).
+has_qos_availability(buyItem(smart_phone,webShop_A),1000).
+has_qos_availability(buyItem(desk,webShop_A),1000).
+has_qos_availability(buyItem(chair,webShop_A),1000).
+has_qos_availability(buyItem(coke,webShop_C),1000).
+has_qos_availability(buyItem(beer,webShop_C),1000).
+has_qos_availability(buyItem(water,webShop_C),1000).
+has_qos_availability(buyItem(bread,webShop_C),1000).
+has_qos_availability(buyItem(butter,webShop_C),1000).
+has_qos_availability(buyItem(meat,webShop_C),1000).
 
 has_qos_availability(getPrice(laptop),1000).
 has_qos_availability(getPrice(camera),1000).
