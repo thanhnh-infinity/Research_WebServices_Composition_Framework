@@ -45,12 +45,16 @@ class(food).
 class(electrical_device).
 class(beverage).
 class(furniture).
+class(book).
+class(margazine).
 
 subClass(item,shopping_thing).
 subClass(food,item).
 subClass(electrical_device,item).
 subClass(beverage,item).
 subClass(furniture,item).
+subClass(book,item).
+subClass(margazine,item).
 
 class(laptop).
 class(smart_phone).
@@ -65,12 +69,26 @@ class(bread).
 class(butter).
 class(meat).
 
+class(ai_book).
+class(programming_book).
+class(os_book).
+class(vogue_magazine).
+class(time_magazine).
+class(natural_maganize).
+
 subClass(coke,beverage).
 subClass(beer,beverage).
 subClass(water,beverage).
 subClass(meat,food).
 subClass(bread,food).
 subClass(butter,food).
+
+subClass(ai_book,book).
+subClass(programming_book,book).
+subClass(os_book,book).
+subClass(vogue_magazine,magazine).
+subClass(time_magazine,magazine).
+subClass(natural_maganize,magazine).
 
 subClass(laptop,electrical_device).
 subClass(smart_phone,electrical_device).
@@ -82,11 +100,13 @@ class(organization).
 class(webShop).
 class(webShopTypeA).
 class(webShopTypeB).
+class(webShopTypeC).
 
 subClass(organization,shopping_thing).
 subClass(webShop,organization).
 subClass(webShopTypeA,webShop).
 subClass(webShopTypeB,webShop).
+subClass(webShopTypeC,webShop).
 
 
 class(list_of_items).
@@ -96,11 +116,17 @@ class(list_electrical_device_items).
 class(list_food_items).
 class(list_beverage_items).
 class(list_furniture_items).
+class(list_book_items).
+class(list_magazine_items).
+class(list_items_in_shop).
 
 subClass(list_electrical_device_items,list_of_items).
 subCLass(list_food_items,list_of_items).
 subClass(list_beverage_items,list_of_items).
 subClass(list_furniture_items,list_of_items).
+subClass(list_book_items,list_of_items).
+subClass(list_magazine_items,list_of_items).
+subClass(list_items_in_shop,list_of_items).
 
 
 %------------ DATA FORMAT - STATUS SHOPPING CART ----------------------%
@@ -121,6 +147,9 @@ class(in_items_list(list_electrical_device_items)).
 class(in_items_list(list_beverage_items)).
 class(in_items_list(list_furniture_items)).
 class(in_items_list(list_food_items)).
+class(in_items_list(list_book_items)).
+class(in_items_list(list_magazine_items)).
+class(in_items_list(list_items_in_shop)).
 
 subClass(on_cart(webShop_A),on_cart).
 subClass(on_cart(webShop_B),on_cart).
@@ -137,12 +166,18 @@ itemInList(smart_phone,list_electrical_device_items).
 itemInList(camera,list_electrical_device_items).
 itemInList(desk,list_furniture_items).
 itemInList(chair,list_furniture_items).
-itemInList(coke,list_beverage_items).
-itemInList(beer,list_beverage_items).
-itemInList(water,list_beverage_items).
-itemInList(meat,list_food_items).
-itemInList(bread,list_food_items).
-itemInList(butter,list_food_items).
+itemInList(coke,list_items_in_shop).
+itemInList(beer,list_items_in_shop).
+itemInList(water,list_items_in_shop).
+itemInList(meat,list_items_in_shop).
+itemInList(bread,list_items_in_shop).
+itemInList(butter,list_items_in_shop).
+itemInList(ai_book,list_book_items).
+itemInList(programming_book,list_book_items).
+itemInList(os_book,list_book_items).
+itemInList(time_magazine,list_magazine_items).
+itemInList(vogue_magazine,list_magazine_items).
+itemInList(natural_maganize,list_magazine_items).
 
 %=======================================================================
 %PART 2 : Define classes + instances are defined Operation
@@ -177,18 +212,20 @@ subClass(item_status_operation,shopping_operation).
 instance(getItemsList(webShopTypeA)).
 instance(getItemsList(webShopTypeB)).
 
+instance(getList(webShopTypeC)).
+
 instance(addToCart(laptop)).
 instance(addToCart(camera)).
 instance(addToCart(smart_phone)).
 instance(addToCart(desk)).
 instance(addToCart(chair)).
 
-instance(addToCart(coke)).
-instance(addToCart(beer)).
-instance(addToCart(water)).
-instance(addToCart(bread)).
-instance(addToCart(butter)).
-instance(addToCart(meat)).
+instance(addToCart(ai_book)).
+instance(addToCart(programming_book)).
+instance(addToCart(os_book)).
+instance(addToCart(time_magazine)).
+instance(addToCart(natural_maganize)).
+instance(addToCart(vogue_magazine)).
 
 instance(removeFromCart(laptop)).
 instance(removeFromCart(camera)).
@@ -196,12 +233,12 @@ instance(removeFromCart(smart_phone)).
 instance(removeFromCart(desk)).
 instance(removeFromCart(chair)).
 
-instance(removeFromCart(coke)).
-instance(removeFromCart(beer)).
-instance(removeFromCart(water)).
-instance(removeFromCart(bread)).
-instance(removeFromCart(butter)).
-instance(removeFromCart(meat)).
+instance(removeFromCart(ai_book)).
+instance(removeFromCart(programming_book)).
+instance(removeFromCart(os_book)).
+instance(removeFromCart(time_magazine)).
+instance(removeFromCart(natural_maganize)).
+instance(removeFromCart(vogue_magazine)).
 
 instance(checkout(webShopTypeA)).
 instance(checkout(webShopTypeB)).
@@ -249,8 +286,16 @@ instance(checkAvailability(bread)).
 instance(checkAvailability(butter)).
 instance(checkAvailability(meat)).
 
+instance(checkAvailability(ai_book)).
+instance(checkAvailability(programming_book)).
+instance(checkAvailability(natural_maganize)).
+instance(checkAvailability(os_book)).
+instance(checkAvailability(time_magazine)).
+instance(checkAvailability(vogue_magazine)).
+
 isInstanceOf_immediate(getItemsList(webShopTypeB),get_item_list_operation).
 isInstanceOf_immediate(getItemsList(webShopTypeA),get_item_list_operation).
+isInstanceOf_immediate(getList(webShopTypeC),get_item_list_operation).
 
 isInstanceOf_immediate(addToCart(laptop),add_to_cart_operation).
 isInstanceOf_immediate(addToCart(camera),add_to_cart_operation).
@@ -258,12 +303,12 @@ isInstanceOf_immediate(addToCart(smart_phone),add_to_cart_operation).
 isInstanceOf_immediate(addToCart(desk),add_to_cart_operation).
 isInstanceOf_immediate(addToCart(chair),add_to_cart_operation).
 
-isInstanceOf_immediate(addToCart(coke),add_to_cart_operation).
-isInstanceOf_immediate(addToCart(beer),add_to_cart_operation).
-isInstanceOf_immediate(addToCart(water),add_to_cart_operation).
-isInstanceOf_immediate(addToCart(bread),add_to_cart_operation).
-isInstanceOf_immediate(addToCart(butter),add_to_cart_operation).
-isInstanceOf_immediate(addToCart(meat),add_to_cart_operation).
+isInstanceOf_immediate(addToCart(ai_book),add_to_cart_operation).
+isInstanceOf_immediate(addToCart(programming_book),add_to_cart_operation).
+isInstanceOf_immediate(addToCart(os_book),add_to_cart_operation).
+isInstanceOf_immediate(addToCart(time_magazine),add_to_cart_operation).
+isInstanceOf_immediate(addToCart(vogue_magazine),add_to_cart_operation).
+isInstanceOf_immediate(addToCart(natural_maganize),add_to_cart_operation).
 
 isInstanceOf_immediate(removeFromCart(laptop),remove_from_cart_operation).
 isInstanceOf_immediate(removeFromCart(camera),remove_from_cart_operation).
@@ -271,12 +316,12 @@ isInstanceOf_immediate(removeFromCart(smart_phone),remove_from_cart_operation).
 isInstanceOf_immediate(removeFromCart(desk),remove_from_cart_operation).
 isInstanceOf_immediate(removeFromCart(chair),remove_from_cart_operation).
 
-isInstanceOf_immediate(removeFromCart(coke),remove_from_cart_operation).
-isInstanceOf_immediate(removeFromCart(beer),remove_from_cart_operation).
-isInstanceOf_immediate(removeFromCart(water),remove_from_cart_operation).
-isInstanceOf_immediate(removeFromCart(bread),remove_from_cart_operation).
-isInstanceOf_immediate(removeFromCart(butter),remove_from_cart_operation).
-isInstanceOf_immediate(removeFromCart(meat),remove_from_cart_operation).
+isInstanceOf_immediate(removeFromCart(ai_book),remove_from_cart_operation).
+isInstanceOf_immediate(removeFromCart(programming_book),remove_from_cart_operation).
+isInstanceOf_immediate(removeFromCart(os_book),remove_from_cart_operation).
+isInstanceOf_immediate(removeFromCart(time_magazine),remove_from_cart_operation).
+isInstanceOf_immediate(removeFromCart(vogue_magazine),remove_from_cart_operation).
+isInstanceOf_immediate(removeFromCart(natural_maganize),remove_from_cart_operation).
 
 isInstanceOf_immediate(checkout(webShopTypeA),checkout_operation).
 isInstanceOf_immediate(checkout(webShopTypeB),checkout_operation).
@@ -291,8 +336,8 @@ isInstanceOf_immediate(buyItem(coke),buy_item_operation).
 isInstanceOf_immediate(buyItem(beer),buy_item_operation).
 isInstanceOf_immediate(buyItem(water),buy_item_operation).
 isInstanceOf_immediate(buyItem(bread),buy_item_operation).
-isInstanceOf_immediate(buyItem(butter),buy_item_operation).
 isInstanceOf_immediate(buyItem(meat),buy_item_operation).
+isInstanceOf_immediate(buyItem(butter),buy_item_operation).
 
 isInstanceOf_immediate(getPrice(laptop),get_price_operation).
 isInstanceOf_immediate(getPrice(camera),get_price_operation).
@@ -323,6 +368,13 @@ isInstanceOf_immediate(checkAvailability(bread),item_status_operation).
 isInstanceOf_immediate(checkAvailability(butter),item_status_operation).
 isInstanceOf_immediate(checkAvailability(meat),item_status_operation).
 
+isInstanceOf_immediate(checkAvailability(ai_book),item_status_operation).
+isInstanceOf_immediate(checkAvailability(programming_book),item_status_operation).
+isInstanceOf_immediate(checkAvailability(os_book),item_status_operation).
+isInstanceOf_immediate(checkAvailability(time_magazine),item_status_operation).
+isInstanceOf_immediate(checkAvailability(vogue_magazine),item_status_operation).
+isInstanceOf_immediate(checkAvailability(natural_maganize),item_status_operation).
+
 %========================================================================
 % PART 4.1 :  Define hierarchy classes of DATA FORMAT
 %           Define which instance operation has DATA FORMAT of INPUT/Output
@@ -339,10 +391,16 @@ instance_operation_has_output_has_data_format(getItemsList(webShopTypeA),list_fu
 
 instance_has_input(getItemsList(webShopTypeB),shop_B,webShopTypeB).
 instance_operation_has_input_has_data_format(getItemsList(webShopTypeB),webShopTypeB,open).
-instance_has_output(getItemsList(webShopTypeB),list_1,list_beverage_items).
-instance_has_output(getItemsList(webShopTypeB),list_2,list_food_items).
-instance_operation_has_output_has_data_format(getItemsList(webShopTypeB),list_beverage_items,list_of_items).
-instance_operation_has_output_has_data_format(getItemsList(webShopTypeB),list_food_items,list_of_items).
+instance_has_output(getItemsList(webShopTypeB),list_1,list_book_items).
+instance_has_output(getItemsList(webShopTypeB),list_2,list_magazine_items).
+instance_operation_has_output_has_data_format(getItemsList(webShopTypeB),list_book_items,list_of_items).
+instance_operation_has_output_has_data_format(getItemsList(webShopTypeB),list_magazine_items,list_of_items).
+
+instance_has_input(getList(webShopTypeC),shop_C,webShopTypeC).
+instance_operation_has_input_has_data_format(getList(webShopTypeC),webShopTypeC,open).
+instance_has_output(getList(webShopTypeC),list_1,list_items_in_shop).
+instance_operation_has_output_has_data_format(getList(webShopTypeC),list_items_in_shop,list_of_items).
+
 
 % Add to Cart Operation
 
@@ -381,47 +439,47 @@ instance_has_output(addToCart(chair),cart_1,cart_web_shop_A).
 instance_operation_has_output_has_data_format(addToCart(chair),chair,on_cart(webShop_A)).
 instance_operation_has_output_has_data_format(addToCart(chair),cart_web_shop_A,not_empty).
 
-instance_has_input(addToCart(bread),list_1,list_food_items).
-instance_operation_has_input_has_data_format(addToCart(bread),list_food_items,list_of_items).
-instance_has_output(addToCart(bread),bread_1,bread).
-instance_has_output(addToCart(bread),cart_1,cart_web_shop_B).
-instance_operation_has_output_has_data_format(addToCart(bread),bread,on_cart(webShop_B)).
-instance_operation_has_output_has_data_format(addToCart(bread),cart_web_shop_B,not_empty).
+instance_has_input(addToCart(ai_book),list_1,list_book_items).
+instance_operation_has_input_has_data_format(addToCart(ai_book),list_book_items,list_of_items).
+instance_has_output(addToCart(ai_book),ai_book_1,ai_book).
+instance_has_output(addToCart(ai_book),cart_1,cart_web_shop_B).
+instance_operation_has_output_has_data_format(addToCart(ai_book),ai_book,on_cart(webShop_B)).
+instance_operation_has_output_has_data_format(addToCart(ai_book),cart_web_shop_B,not_empty).
 
-instance_has_input(addToCart(butter),list_1,list_food_items).
-instance_operation_has_input_has_data_format(addToCart(butter),list_food_items,list_of_items).
-instance_has_output(addToCart(butter),butter_1,butter).
-instance_has_output(addToCart(butter),cart_1,cart_web_shop_B).
-instance_operation_has_output_has_data_format(addToCart(butter),butter,on_cart(webShop_B)).
-instance_operation_has_output_has_data_format(addToCart(butter),cart_web_shop_B,not_empty).
+instance_has_input(addToCart(programming_book),list_1,list_book_items).
+instance_operation_has_input_has_data_format(addToCart(programming_book),list_book_items,list_of_items).
+instance_has_output(addToCart(programming_book),programming_book_1,programming_book).
+instance_has_output(addToCart(programming_book),cart_1,cart_web_shop_B).
+instance_operation_has_output_has_data_format(addToCart(programming_book),programming_book,on_cart(webShop_B)).
+instance_operation_has_output_has_data_format(addToCart(programming_book),cart_web_shop_B,not_empty).
 
-instance_has_input(addToCart(meat),list_1,list_food_items).
-instance_operation_has_input_has_data_format(addToCart(meat),list_food_items,list_of_items).
-instance_has_output(addToCart(meat),meat_1,meat).
-instance_has_output(addToCart(meat),cart_1,cart_web_shop_B).
-instance_operation_has_output_has_data_format(addToCart(meat),meat,on_cart(webShop_B)).
-instance_operation_has_output_has_data_format(addToCart(meat),cart_web_shop_B,not_empty).
+instance_has_input(addToCart(os_book),list_1,list_book_items).
+instance_operation_has_input_has_data_format(addToCart(os_book),list_book_items,list_of_items).
+instance_has_output(addToCart(os_book),os_book_1,os_book).
+instance_has_output(addToCart(os_book),cart_1,cart_web_shop_B).
+instance_operation_has_output_has_data_format(addToCart(os_book),os_book,on_cart(webShop_B)).
+instance_operation_has_output_has_data_format(addToCart(os_book),cart_web_shop_B,not_empty).
 
-instance_has_input(addToCart(coke),list_1,list_beverage_items).
-instance_operation_has_input_has_data_format(addToCart(coke),list_beverage_items,list_of_items).
-instance_has_output(addToCart(coke),coke_1,coke).
-instance_has_output(addToCart(coke),cart_1,cart_web_shop_B).
-instance_operation_has_output_has_data_format(addToCart(coke),coke,on_cart(webShop_B)).
-instance_operation_has_output_has_data_format(addToCart(coke),cart_web_shop_B,not_empty).
+instance_has_input(addToCart(time_magazine),list_1,list_magazine_items).
+instance_operation_has_input_has_data_format(addToCart(time_magazine),list_magazine_items,list_of_items).
+instance_has_output(addToCart(time_magazine),time_magazine_1,time_magazine).
+instance_has_output(addToCart(time_magazine),cart_1,cart_web_shop_B).
+instance_operation_has_output_has_data_format(addToCart(time_magazine),time_magazine,on_cart(webShop_B)).
+instance_operation_has_output_has_data_format(addToCart(time_magazine),cart_web_shop_B,not_empty).
 
-instance_has_input(addToCart(beer),list_1,list_beverage_items).
-instance_operation_has_input_has_data_format(addToCart(beer),list_beverage_items,list_of_items).
-instance_has_output(addToCart(beer),beer_1,beer).
-instance_has_output(addToCart(beer),cart_1,cart_web_shop_B).
-instance_operation_has_output_has_data_format(addToCart(beer),beer,on_cart(webShop_B)).
-instance_operation_has_output_has_data_format(addToCart(beer),cart_web_shop_B,not_empty).
+instance_has_input(addToCart(vogue_magazine),list_1,list_magazine_items).
+instance_operation_has_input_has_data_format(addToCart(vogue_magazine),list_magazine_items,list_of_items).
+instance_has_output(addToCart(vogue_magazine),time_magazine_1,vogue_magazine).
+instance_has_output(addToCart(vogue_magazine),cart_1,cart_web_shop_B).
+instance_operation_has_output_has_data_format(addToCart(vogue_magazine),vogue_magazine,on_cart(webShop_B)).
+instance_operation_has_output_has_data_format(addToCart(vogue_magazine),cart_web_shop_B,not_empty).
 
-instance_has_input(addToCart(water),list_1,list_beverage_items).
-instance_operation_has_input_has_data_format(addToCart(water),list_beverage_items,list_of_items).
-instance_has_output(addToCart(water),water_1,water).
-instance_has_output(addToCart(water),cart_1,cart_web_shop_B).
-instance_operation_has_output_has_data_format(addToCart(water),water,on_cart(webShop_B)).
-instance_operation_has_output_has_data_format(addToCart(water),cart_web_shop_B,not_empty).
+instance_has_input(addToCart(natural_maganize),list_1,list_magazine_items).
+instance_operation_has_input_has_data_format(addToCart(natural_maganize),list_magazine_items,list_of_items).
+instance_has_output(addToCart(natural_maganize),time_magazine_1,natural_maganize).
+instance_has_output(addToCart(natural_maganize),cart_1,cart_web_shop_B).
+instance_operation_has_output_has_data_format(addToCart(natural_maganize),natural_maganize,on_cart(webShop_B)).
+instance_operation_has_output_has_data_format(addToCart(natural_maganize),cart_web_shop_B,not_empty).
 
 % Check Out Operation
 
@@ -485,42 +543,42 @@ instance_operation_has_output_has_data_format(buyItem(chair),chair,possess(clien
 
 instance_has_input(buyItem(beer),beer_1,beer).
 instance_has_input(buyItem(beer),card_1,credit_card).
-instance_operation_has_input_has_data_format(buyItem(beer),beer,in_items_list(list_beverage_items)).
+instance_operation_has_input_has_data_format(buyItem(beer),beer,in_items_list(list_items_in_shop)).
 instance_operation_has_input_has_data_format(buyItem(beer),credit_card,enough_account_balance).
 instance_has_output(buyItem(beer),beer_1,beer).
 instance_operation_has_output_has_data_format(buyItem(beer),beer,possess(client)).
 
 instance_has_input(buyItem(coke),coke_1,coke).
 instance_has_input(buyItem(coke),card_1,credit_card).
-instance_operation_has_input_has_data_format(buyItem(coke),coke,in_items_list(list_beverage_items)).
+instance_operation_has_input_has_data_format(buyItem(coke),coke,in_items_list(list_items_in_shop)).
 instance_operation_has_input_has_data_format(buyItem(coke),credit_card,enough_account_balance).
 instance_has_output(buyItem(coke),coke_1,coke).
 instance_operation_has_output_has_data_format(buyItem(coke),coke,possess(client)).
 
 instance_has_input(buyItem(water),water_1,water).
 instance_has_input(buyItem(water),card_1,credit_card).
-instance_operation_has_input_has_data_format(buyItem(water),water,in_items_list(list_beverage_items)).
+instance_operation_has_input_has_data_format(buyItem(water),water,in_items_list(list_items_in_shop)).
 instance_operation_has_input_has_data_format(buyItem(water),credit_card,enough_account_balance).
 instance_has_output(buyItem(water),water_1,water).
 instance_operation_has_output_has_data_format(buyItem(water),water,possess(client)).
 
 instance_has_input(buyItem(bread),bread_1,bread).
 instance_has_input(buyItem(bread),card_1,credit_card).
-instance_operation_has_input_has_data_format(buyItem(bread),bread,in_items_list(list_food_items)).
+instance_operation_has_input_has_data_format(buyItem(bread),bread,in_items_list(list_items_in_shop)).
 instance_operation_has_input_has_data_format(buyItem(bread),credit_card,enough_account_balance).
 instance_has_output(buyItem(bread),bread_1,bread).
 instance_operation_has_output_has_data_format(buyItem(bread),bread,possess(client)).
 
 instance_has_input(buyItem(meat),meat_1,meat).
 instance_has_input(buyItem(meat),card_1,credit_card).
-instance_operation_has_input_has_data_format(buyItem(meat),meat,in_items_list(list_food_items)).
+instance_operation_has_input_has_data_format(buyItem(meat),meat,in_items_list(list_items_in_shop)).
 instance_operation_has_input_has_data_format(buyItem(meat),credit_card,enough_account_balance).
 instance_has_output(buyItem(meat),meat_1,meat).
 instance_operation_has_output_has_data_format(buyItem(meat),meat,possess(client)).
 
 instance_has_input(buyItem(butter),butter_1,butter).
 instance_has_input(buyItem(butter),card_1,credit_card).
-instance_operation_has_input_has_data_format(buyItem(butter),butter,in_items_list(list_food_items)).
+instance_operation_has_input_has_data_format(buyItem(butter),butter,in_items_list(list_items_in_shop)).
 instance_operation_has_input_has_data_format(buyItem(butter),credit_card,enough_account_balance).
 instance_has_output(buyItem(butter),butter_1,butter).
 instance_operation_has_output_has_data_format(buyItem(butter),butter,possess(client)).
@@ -530,6 +588,7 @@ instance_operation_has_output_has_data_format(buyItem(butter),butter,possess(cli
 exists(Item,possess(client),I) :- exists(cart_web_shop_A,paid,I), exists(Item,on_cart(webShop_A),J), J <= I.
 exists(Item,possess(client),I) :- exists(cart_web_shop_B,paid,I), exists(Item,on_cart(webShop_B),J), J <= I.
 
+
 exists(X,in_items_list(list_electrical_device_items),I):- exists(list_electrical_device_items,list_of_items,I), itemInList(X,list_electrical_device_items).
 
 exists(X,in_items_list(list_furniture_items),I):- exists(list_furniture_items,list_of_items,I), itemInList(X,list_furniture_items).
@@ -537,6 +596,12 @@ exists(X,in_items_list(list_furniture_items),I):- exists(list_furniture_items,li
 exists(X,in_items_list(list_food_items),I):- exists(list_food_items,list_of_items,I), itemInList(X,list_food_items).
 
 exists(X,in_items_list(list_beverage_items),I):- exists(list_beverage_items,list_of_items,I), itemInList(X,list_beverage_items).
+
+exists(X,in_items_list(list_book_items),I):- exists(list_book_items,list_of_items,I), itemInList(X,list_book_items).
+
+exists(X,in_items_list(list_magazine_items),I):- exists(list_magazine_items,list_of_items,I), itemInList(X,list_magazine_items).
+
+exists(X,in_items_list(list_items_in_shop),I):- exists(list_items_in_shop,list_of_items,I), itemInList(X,list_items_in_shop).
 
 
 %=======================================================================
