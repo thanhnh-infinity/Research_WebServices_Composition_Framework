@@ -66,12 +66,12 @@ pi(Y',1) :- occur(Y',T3), e_com(_,_,Y',T3).
 score_g(X) :- X = #sum{V_Y',Y' : pi(Y',V_Y')}.
 #maximize{X : score_g(X)}.
 
-
 %--- Detect time to start avoiding fail service in new workflow
 %----- Detect a service Y is occur in new workflow
 %----- If service Y is identified as detected Fail service
 %----- AND service Y is mapped (exists mapping function e_com) with a service (failed identify) in G_{execute}
 %----- THEN : Y is determined that Y is fail service BUT is executed successfully in G_{execute}
+
 fail_executed_done(Fail,T) :- fail_service(Fail,Time_Fail),
                               occur(Y,T),
                               Y = Fail,
