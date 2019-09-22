@@ -48,7 +48,8 @@ def get_CurrentModifying_Workflow(prg):
   try:
       if (len(old_wf) <= 0):
           #print "READ ONLY ONE"
-          folder = str(prg.get_const("folder").string)
+          #folder = str(prg.get_const("folder").string)
+          folder = str(prg.get_const("folder"))
           original_workflowfile_name = os.path.join(os.getcwd(),"ASP_Planning","states",folder,"original_workflow_data.json")
           with open(original_workflowfile_name) as f:
                content = f.readlines()

@@ -56,6 +56,7 @@ class Interact_Planning_Engine(object):
     #FULL_PATH_CLINGO_EXECUTATBLE = "clingo-python"
     FULL_PATH_CLINGCON_EXECUTATBLE = "clingcon-3.3.0"
     FULL_PATH_CLINGO_EXECUTATBLE = "clingo"
+    #FULL_PATH_CLINGO_EXECUTATBLE = "clingo-5.2.1"
    
 
     # Function
@@ -761,7 +762,8 @@ class Interact_Planning_Engine(object):
             if (engine == 2):
                 print(DEFAULT_STEP)
                 if ("phylotastic_GetPhylogeneticTree_PhyloT_POST" in json_inclusion_re):
-                      DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_9.lp")
+                    DEFAULT_STEP =  os.path.join(os.getcwd(),"ASP_Planning" ,"step","step_9.lp")
+                
                 planing_data = OWLEngine.run_re_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Re_Composite_S1_OnModel.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"re_composite_preference.lp"),folder_name,DEFAULT_STEP,str(number_of_models),engine)
             
                 print("--DELETE Temp Input Folder and Output Folder Rosetta Model")

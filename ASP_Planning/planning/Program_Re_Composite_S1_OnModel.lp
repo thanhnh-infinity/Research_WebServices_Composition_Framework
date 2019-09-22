@@ -44,20 +44,26 @@ def build_no_op_rule_for_predicate_With_Active(answer_set_symbols,predicate_name
     return contrains_distince_wf_rule %(component_rule,index)
 #-------------FOR RE PLANNING-------------------------
 def sim_matching(WF_1,WF_2):
+  print("Vao sim matching")
   return similarity_matching.sim_workflows(WF_1,WF_2,"CLINGO_MODELS")
   #return randint(1000,2000) 
 def get_CurrentModifying_Workflow(prg,old_wf):
   try:
       if (len(old_wf) <= 0):
           print("READ ONLY ONE")
-          folder = str(prg.get_const("folder").string)
+          # For <= clingo 5.2
+          # folder = str(prg.get_const("folder").string)
+          # For >= clingo 5.4
+          folder = str(prg.get_const("folder"))
+          #print("Folder : " + str(folder))
           original_workflowfile_name = os.path.join(os.getcwd(),"ASP_Planning","states",folder,"original_workflow_data.json")
           with open(original_workflowfile_name) as f:
                content = f.readlines()
           old_wf = [x.strip() for x in content]
           print(old_wf)
       return old_wf
-  except:
+  except Exception as inst:
+      print(inst)
       return []
 #---------------------------------------------------------- 
 def main(prg):
@@ -95,12 +101,17 @@ def main(prg):
                 global OLD_WORKFLOW
             
                 OLD_WORKFLOW = get_CurrentModifying_Workflow(prg,OLD_WORKFLOW) 
-            
-
+                #print(OLD_WORKFLOW)
                 new_workflow = []
                 for atom in clingo_model.symbols(shown=True):
                     new_workflow.append(atom)
+
+
                 sim_index = sim_matching(OLD_WORKFLOW,new_workflow)
+                
+                #print("Ra khoi Sim Matching")
+                #print(sim_index)
+                
                 current_highest_sim = GLOBAL_HIGHEST_SIM_INDEX
                 if (sim_index > current_highest_sim):
                    GLOBAL_HIGHEST_SIM_INDEX = sim_index
@@ -108,11 +119,11 @@ def main(prg):
                 
                 #print "New : "
                 #print new_workflow 
-                #print "current sim index : " + str(sim_index)
-                #print "\n=================================================="    
+                #print("current sim index : " + str(sim_index))
+                #print("\n==================================================")    
             except Exception as inst:
                 #print("Error : ")
-                #print(inst)
+                print(inst)
                 pass
         def load_asp(prg):
             prg.load(os.path.join(os.getcwd(),"ASP_Planning","planning","single_level_planning_Working.lp"))

@@ -1,5 +1,4 @@
 import json
-
 WEIGHT_QoS_DATA = {
   "response_time" : 0.4,
   "throughput" : 0.3,
@@ -12,3 +11,5 @@ WEIGHT_SIMILARITY_NODES = {
   "input_output" : 0.2,
   "service_description" : 0.1 
 }
+
+

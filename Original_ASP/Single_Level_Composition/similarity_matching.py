@@ -2,7 +2,10 @@ import nltk
 import string
 import os
 import json
-from sets import Set
+try:
+    from sets import Set
+except:
+    pass
 
 from sklearn.feature_extraction.text import TfidfVectorizer
 from nltk.stem.porter import PorterStemmer
@@ -202,7 +205,7 @@ def distNodes_Ontology(Service_Obj_1, Service_Obj_2):
 
     if (ontServiceName_1.strip().upper() == ontServiceName_2.strip().upper()):
         return float(0)    
-
+        
     # Find class of service from service name
     ontClassName_1 = findClassOfInstance(ontServiceName_1)
     ontClassName_2 = findClassOfInstance(ontServiceName_2)
@@ -222,6 +225,7 @@ def distNodes_Ontology(Service_Obj_1, Service_Obj_2):
 
     shortestPathOverLCA = graph.find_shortest_path(graph.SERVICE_CLASSES_GRAPH,ontClassName_1,ontClassName_2)
     
+    #print(shortestPathOverLCA)
     if (not shortestPathOverLCA or shortestPathOverLCA is None or len(shortestPathOverLCA) <= 0):
         return float(9999)
 
@@ -262,6 +266,10 @@ def simNodes_workflow(WF_JSON_1, WF_JSON_2):
 def simEdges_workflow(WF_JSON_1, WF_JSON_2):
     list_edges_1 = generate_EdgesCollection_FromWF(WF_JSON_1)
     list_edges_2 = generate_EdgesCollection_FromWF(WF_JSON_2)
+
+    #print("Edge 2")
+    #print(list_edges_1)
+    #print(list_edges_2)
     
     number_edges_1 = len(list_edges_1) if (list_edges_1 is not None) else 0
     number_edges_2 = len(list_edges_2) if (list_edges_2 is not None) else 0
@@ -305,7 +313,7 @@ def generate_EdgesCollection_FromWF(WF_JSON):
                     #set_edges.add(edge_label)
         return list_edges           
     else:
-        return None
+        return []
 
 
 def simEdges(edge_1, edge_2):
@@ -344,19 +352,24 @@ def generateEdgeLabel(edgeJSON):
 ############################################
 def sim_topologies(WF_JSON_1, WF_JSON_2):
     dist_topology = graph.distance_topology(WF_JSON_1,WF_JSON_2)
-    print dist_topology
+    #print dist_topology
     return 1 / (1 + float(dist_topology))
 ############################################
 ####### MAIN ###############################
 ############################################
 def sim_workflows_graphStructure(WF_JSON_1,WF_JSON_2):
+    
     JSON_WF_1 = json.loads(WF_JSON_1)
     JSON_WF_2 = json.loads(WF_JSON_2)
 
-    #print "Node sim : " + str(simNodes_workflow(JSON_WF_1,JSON_WF_2))
-    #print "Topo : " + str(sim_topologies(JSON_WF_1,JSON_WF_2))
+    #print("FUCK")
+    print("Node sim : " + str(simNodes_workflow(JSON_WF_1,JSON_WF_2)))
+    print("Topo : " + str(sim_topologies(JSON_WF_1,JSON_WF_2)))
+    print("Edge :" + str(simEdges_workflow(JSON_WF_1,JSON_WF_2)))
+    
 
-    return 0.45*simNodes_workflow(JSON_WF_1,JSON_WF_2) + 0.35*simEdges_workflow(JSON_WF_1,JSON_WF_2) + 0.2*sim_topologies(JSON_WF_1,JSON_WF_2)
+    value = 0.45*simNodes_workflow(JSON_WF_1,JSON_WF_2) + 0.35*simEdges_workflow(JSON_WF_1,JSON_WF_2) + 0.2*sim_topologies(JSON_WF_1,JSON_WF_2)
+    return value
 def sim_workflows(WF_1,WF_2,type):
     if (type is None or not type):
         return None
@@ -364,10 +377,11 @@ def sim_workflows(WF_1,WF_2,type):
         if ("CLINGO_MODELS" in type):
             WF_JSON_1 =  convert_From_ClingoModels_toBasicGraphStructure(WF_1)
             WF_JSON_2 =  convert_From_ClingoModels_toBasicGraphStructure(WF_2)
-
-            #print WF_JSON_1
-            #print "ThanhNH"
-            #print WF_JSON_2
+            #print(WF_1)
+            #print("Thanh NH 1")
+            #print(WF_JSON_1)
+            #print("ThanhNH 2")
+            #print(WF_JSON_2)
 
             return sim_workflows_graphStructure(WF_JSON_1,WF_JSON_2) 
         elif ("WF_JSON_GRAPH_STRUCTURE" in type):
@@ -381,7 +395,7 @@ def convert_From_ClingoModels_toBasicGraphStructure(Clingo_Models_WF):
     new_list = []
     for item in Clingo_Models_WF:
         new_list.append(str(item))
-    return json.dumps(composite_response.read_a_full_workflow_detail(new_list))
+    return json.dumps(composite_response.read_a_full_workflow_detail(new_list)[0])
 
 '''
 for i in range(0,3):

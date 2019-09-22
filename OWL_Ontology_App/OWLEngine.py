@@ -193,8 +193,9 @@ def run_re_planning_engine(path_to_clingo,path_to_main_base,path_to_initial,path
         #print path_to_initial
         #print path_to_goal
         #print path_to_preference
-        #specify_id = "A" + specify_id
-        #print specify_id
+        specify_id = "A" + specify_id
+        print(specify_id)
+        print(engine)
         if (engine == 2):
             p = subprocess.Popen([path_to_clingo, '--outf=3', path_to_main_base,path_to_initial,path_to_goal,path_to_preference,'-c folder="' + specify_id +'"',default_step], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             lines = []
@@ -210,6 +211,7 @@ def run_re_planning_engine(path_to_clingo,path_to_main_base,path_to_initial,path
                 if ("====START-RESULT-THE-BEST-MATCH=====" in str(line)):
                     if ("END-RESULT-THE-BEST-MATCH" in str(lines[i+2])):
                         data = lines[i+1]
+            print("done 2")
             return data
         elif (engine == 1):
             #print "Vao day nao"
@@ -219,6 +221,7 @@ def run_re_planning_engine(path_to_clingo,path_to_main_base,path_to_initial,path
             #print out
             #print "------"
             print(err)
+            print("done 1")
             return out    
         #out,err = p.communicate()
         #print err

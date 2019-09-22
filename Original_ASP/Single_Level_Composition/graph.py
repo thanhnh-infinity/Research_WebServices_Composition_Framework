@@ -108,9 +108,11 @@ SERVICE_CLASSES_GRAPH = {
                                 'phylogeny_based_extraction' : ['tree_extraction_operation'],
                                 'gene_based_extraction' : ['tree_extraction_operation'],
                                 'taxonomy_based_extraction' : ['tree_extraction_operation'],
-                'tree_information' : ['tree_operation','tree_support_studies'],
+                'tree_information' : ['tree_operation','tree_support_studies','tree_metadata'],
                           'tree_support_studies' : ['tree_information','tree_publifications'],
                                 'tree_publifications' : ['tree_support_studies'],
+                          'tree_metadata' : ['tree_information','tree_medatadata_chronogram'],
+                                'tree_medatadata_chronogram' : ['tree_metadata'],      
                 'tree_comparison' : ['tree_operation','branch_length_comparison_operation','symmetric_comparison_operation'],
                           'branch_length_comparison_operation' : ['tree_comparison'],
                           'symmetric_comparison_operation' : ['tree_comparison'],
@@ -128,6 +130,8 @@ INSTANCE_IN_CLASS_MAP = {
     "phylotastic_ResolvedScientificNames_GNR_TNRS_POST":"names_resolution_operation",
     "phylotastic_ResolvedScientificNames_OT_TNRS_GET":"names_resolution_operation",
     "phylotastic_ResolvedScientificNames_OT_TNRS_POST":"names_resolution_operation",
+    "phylotastic_ResolvedScientificNames_FC":"names_resolution_operation",
+
     "phylotastic_GetAllSpeciesFromTaxon_OT_GET":"taxon_to_species_operation",
     "phylotastic_GetInformationURLsOfSpecies_EOL_POST":"species_url_operation",
     "phylotastic_GetInformationURLsOfSpecies_EOL_GET":"species_url_operation",
@@ -137,22 +141,34 @@ INSTANCE_IN_CLASS_MAP = {
     "phylotastic_FindScientificNamesFromFreeText_GNRD_GET":"names_extraction_text",
     "phylotastic_GetSpeciesOfTaxon_Genome_NCBI_GET":"taxon_to_species_by_genome",
     "phylotastic_GetAllSpeciesFromTaxon_Country_OT_GET":"taxon_to_species_by_country",
+
     "phylotastic_GetPhylogeneticTree_OT_GET":"taxonomy_based_extraction",
     "phylotastic_GetPhylogeneticTree_OT_POST":"taxonomy_based_extraction",
     "phylotastic_GetPhylogeneticTree_Phylomatic_GET":"phylogeny_based_extraction",
     "phylotastic_GetPhylogeneticTree_Phylomatic_POST":"phylogeny_based_extraction",
     "phylotastic_GetPhylogeneticTree_PhyloT_GET":"taxonomy_based_extraction",
     "phylotastic_GetPhylogeneticTree_PhyloT_POST":"taxonomy_based_extraction",
+    "phylotastic_GetPhylogeneticTree_FC":"phylogeny_based_extraction",
+
+
     "phylotastic_ComparePhylogeneticTrees_Symmetric_POST":"symmetric_comparison_operation",
     "phylotastic_GetChronograms_ScaledSpeciesTree_DateLife_POST":"species_tree_scaling",
+    "phylotastic_GetMetadata_Chronogram_DateLife_POST":"tree_metadata_chronogram",
     "phylotastic_GetSpeciesScientificNameFromCommonName_NCBI_GET":"common_name_to_scientific_name",
+
     "google_ConvertCountryCodeToName_GET":"country_code_to_name",
     "openTree_GetTaxonomyNameFromSciName_GET":"scientific_name_to_taxonomy",
+
     "phylotastic_FindScientificNamesFromWeb_CS_NMSU_GET":"names_extraction_web",
+    "phylotastic_FindScientificNamesFromWeb_FC":"names_extraction_web",
+
     "phylotastic_ExtractSpeciesNames_From_Gene_Tree_GET":"names_extraction_tree",
+
     "phylotastic_GetReconciliationTree_GET":"tree_reconciliation",
     "phylotastic_GenerateGeneTree_From_Genes":"gene_based_extraction",
     "phylotastic_GeneTree_Scaling":"gene_tree_scaling",
+    "phylotastic_CompareTrees_Sym_Dendropy_POST" : "symmetric_comparison_operation",
+    "phylotastic_CompareTrees_BL_Dendropy_POST":"branch_length_comparison_operation",
 
     "convert_df_text_format_raw_to_plain":"text_conversion",
 
@@ -345,7 +361,10 @@ def find_shortest_path(graph, start, end, path=[]):
         path = path + [start]
         if start == end:
             return path
-        if not graph.has_key(start):
+        # For python <= 2    
+        # if not graph.has_key(start):
+        # For python >= 3
+        if start not in graph:
             return None
         shortest = None
         for node in graph[start]:
