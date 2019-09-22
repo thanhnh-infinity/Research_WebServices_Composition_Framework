@@ -184,7 +184,7 @@ def distNodes_Ontology_RawClingo(node_1,index_1,node_2,index_2):
         return float(0)    
 
     shortestPathOverLCA = graph.find_shortest_path(graph.SERVICE_CLASSES_GRAPH,ontClassName_1,ontClassName_2)
-    
+    #print(shortestPathOverLCA)
     if (not shortestPathOverLCA or shortestPathOverLCA is None or len(shortestPathOverLCA) <= 0):
         return float(9999)
 

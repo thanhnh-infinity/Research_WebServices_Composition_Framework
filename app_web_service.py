@@ -62,7 +62,8 @@ class Interact_Planning_Engine(object):
     # Function
     def prepareDistinguish_Input_Output_Folder_PerEachProcess(self):
         current = time.time()
-        current = "R" + str(current)
+        current = "r" + str(current)
+        current = current.replace(".","_")
         states_file_directory = os.path.join(os.getcwd(),"ASP_Planning","states","%s" % str(current))
         if not os.path.exists(states_file_directory):
             os.makedirs(states_file_directory)

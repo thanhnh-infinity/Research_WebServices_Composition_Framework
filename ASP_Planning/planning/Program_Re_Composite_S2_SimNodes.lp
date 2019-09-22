@@ -34,6 +34,7 @@ def build_no_op_rule_for_predicate_With_Active(answer_set_symbols,predicate_name
 def calculate_sim_matching_WF(WF_1,WF_2):
   return randint(0,200)
 def calculate_sim_between_2_nodes(occur_node_1,index_1,occur_node_2,index_2):
+  #print("ABC")
   return similarity_matching.sim_between_2_nodes_raw_clingo(occur_node_1,index_1,occur_node_2,index_2)
   #return randint(0,100)
 
@@ -50,6 +51,7 @@ def get_CurrentModifying_Workflow(prg):
           #print "READ ONLY ONE"
           #folder = str(prg.get_const("folder").string)
           folder = str(prg.get_const("folder"))
+          #print(folder)
           original_workflowfile_name = os.path.join(os.getcwd(),"ASP_Planning","states",folder,"original_workflow_data.json")
           with open(original_workflowfile_name) as f:
                content = f.readlines()
@@ -111,9 +113,11 @@ def main(prg):
         #print("---Time : %s ms" %(str(t1 - t0)))
         
         # Add SIMILARITY INDEX RULE to active Internal Optimization
+        # print("ADD");
         prg.add("similarity_index_calculation", [], str_group_sim_nodes_rules)
         
-        #print("---Start grounding --> SimCal Program ---")    
+        #print("---Start grounding --> SimCal Program ---") 
+        # print("Ground")
         prg.ground([("similarity_index_calculation", [])])
         #print("---End grounding --> SimCal Program ---")    
 
@@ -164,10 +168,10 @@ def main(prg):
     def re_composition_with_preference(prg):
         #print("--> Start Re-Composition : \n")
         str_group_sim_nodes_rules = build_up_group_similarity_nodes_rules_C1(prg)
-      
-        #print "\n"
-        #print str_group_sim_nodes_rules
-        #print "\n"
+        
+        #print("\n")
+        #print(str_group_sim_nodes_rules)
+        #print("\n")
 
         #print("---->Original Planning + New Preference : START------")
         run_original_planning_with_sim_index(prg,str_group_sim_nodes_rules)

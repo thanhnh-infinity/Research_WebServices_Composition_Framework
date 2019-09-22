@@ -197,14 +197,31 @@ def run_re_planning_engine(path_to_clingo,path_to_main_base,path_to_initial,path
         #print(specify_id)
         #print(engine)
         if (engine == 2):
+            print("Command : " + path_to_clingo + " --outf=3" + " " + path_to_main_base + " " + path_to_initial + " " + path_to_preference + " -c folder=" + specify_id + " " + default_step)
             p = subprocess.Popen([path_to_clingo, '--outf=3', path_to_main_base,path_to_initial,path_to_goal,path_to_preference,'-c folder="' + specify_id +'"',default_step], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            print("vao day")
+            #out, err = p.communicate()
+            #print(out)
             lines = []
             data = ""
-            with p.stdout:
-                for line in iter(p.stdout.readline, b''):
-                    lines.append(line)        
-            p.wait()
-
+            
+            if sys.version_info[0] < 3:
+                with p.stdout:
+                    for line in iter(p.stdout.readline,''):
+                        lines.append(line)
+                        if ("END-RESULT-THE-BEST-MATCH" in line):
+                            break
+                        #if (not line):
+                            #break
+                #print("Break")   
+            else:
+                with p.stdout:
+                    for line in iter(p.stdout.readline, b''):
+                        lines.append(line) 
+            
+            #print("Tai sao ??????")
+            #lines = out.splitlines()
+            #p.wait()
             for i in range(0,len(lines)):
                 line = lines[i]
                 #print "THANH:" + line
@@ -215,6 +232,7 @@ def run_re_planning_engine(path_to_clingo,path_to_main_base,path_to_initial,path
             return data
         elif (engine == 1):
             #print "Vao day nao"
+            print("Command : " + path_to_clingo + " --outf=2" + " " + path_to_main_base + " " + path_to_initial + " " + path_to_preference + " -c folder=" + specify_id + " " + default_step)
             p = subprocess.Popen([path_to_clingo, '--outf=2', path_to_main_base,path_to_initial,path_to_goal,path_to_preference,'-c folder="' + specify_id +'"',default_step], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             out, err = p.communicate()
             #print "Thanh Nguyen"
