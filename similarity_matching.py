@@ -363,11 +363,10 @@ def sim_workflows_graphStructure(WF_JSON_1,WF_JSON_2):
     JSON_WF_2 = json.loads(WF_JSON_2)
 
     #print("FUCK")
-    print("Node sim : " + str(simNodes_workflow(JSON_WF_1,JSON_WF_2)))
-    print("Topo : " + str(sim_topologies(JSON_WF_1,JSON_WF_2)))
-    print("Edge :" + str(simEdges_workflow(JSON_WF_1,JSON_WF_2)))
+    #print("Node sim : " + str(simNodes_workflow(JSON_WF_1,JSON_WF_2)))
+    #print("Topo : " + str(sim_topologies(JSON_WF_1,JSON_WF_2)))
+    #print("Edge :" + str(simEdges_workflow(JSON_WF_1,JSON_WF_2)))
     
-
     value = 0.45*simNodes_workflow(JSON_WF_1,JSON_WF_2) + 0.35*simEdges_workflow(JSON_WF_1,JSON_WF_2) + 0.2*sim_topologies(JSON_WF_1,JSON_WF_2)
     return value
 def sim_workflows(WF_1,WF_2,type):
