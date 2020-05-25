@@ -1,3 +1,4 @@
+#!/usr/bin/env python3.8
 import cherrypy
 from OWL_Ontology_App import OWLEngine
 import composite_response
@@ -226,7 +227,7 @@ class Interact_Planning_Engine(object):
         # Step 2.1 : Write input/output to ASP files
         folder_name = self.prepareDistinguish_Input_Output_Folder_PerEachProcess()
         #print folder_name
-        fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),"wb")
+        fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),"a")
         print("---Create Initial State--")
         fo.write("%------------------------------------------------------------------------\n")
         fo.write("% INPUT PART : Initial State\n")
@@ -238,8 +239,8 @@ class Interact_Planning_Engine(object):
         fo.write("%------------------------------------------------------------------------\n")
         fo.close()
 
-        fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"), "wb")
-        print("---Create Goal State--")
+        fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"), "a")
+        print("---Create Goal State---")
         fo.write("%------------------------------------------------------------------------\n")
         fo.write("% GOAL State\n")
         fo.write("%------------------------------------------------------------------------\n")
@@ -335,7 +336,7 @@ class Interact_Planning_Engine(object):
 
             planing_data = OWLEngine.run_planning_engine(self.FULL_PATH_CLINGO_EXECUTATBLE,os.path.join(self.FULL_PATH_PLANNING_ENGINE_MODEL, "Program_Composite.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"),os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"composite_preference.lp"),DEFAULT_STEP,str(1))
             
-            
+            '''
             print("--DELETE Temp Input Folder and Output Folder Rosetta Model")
             delete_path = os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name)
             if (os.path.exists(delete_path)):
@@ -343,7 +344,7 @@ class Interact_Planning_Engine(object):
                     shutil.rmtree(delete_path)
                 except OSError:
                     pass
-        
+            ''' 
 
             json_planning_data = json.loads(planing_data)
             model_result = str(json_planning_data["Result"])
