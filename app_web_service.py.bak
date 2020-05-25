@@ -228,14 +228,8 @@ class Interact_Planning_Engine(object):
         # Step 2.1 : Write input/output to ASP files
         folder_name = self.prepareDistinguish_Input_Output_Folder_PerEachProcess()
         #print folder_name
-
-        if sys.version_info[0] < 3:
-            fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),"wb")
-        else:
-            fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),"w")
-
-
-        print("---Create Initial State---")
+        fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),"wb")
+        print("---Create Initial State--")
         fo.write("%------------------------------------------------------------------------\n")
         fo.write("% INPUT PART : Initial State\n")
         fo.write("%------------------------------------------------------------------------\n")
@@ -246,11 +240,7 @@ class Interact_Planning_Engine(object):
         fo.write("%------------------------------------------------------------------------\n")
         fo.close()
 
-        if sys.version_info[0] < 3:
-            fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"), "wb")
-        else:
-            fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"), "w")
-
+        fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"), "wb")
         print("---Create Goal State--")
         fo.write("%------------------------------------------------------------------------\n")
         fo.write("% GOAL State\n")
@@ -281,10 +271,7 @@ class Interact_Planning_Engine(object):
         fo.close()
 
         # Step 2.2 : Write avoidance/inclusion/insertion to ASP files
-        if sys.version_info[0] < 3:
-            fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"composite_preference.lp"),"wb")
-        else:
-            fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"composite_preference.lp"),"w")
+        fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"composite_preference.lp"),"wb")
         print("---Create Preferences and Constraint From--")
         if (isAvoidance):
             fo.write("%------------------------------------------------------------------------\n")
@@ -358,7 +345,7 @@ class Interact_Planning_Engine(object):
                     shutil.rmtree(delete_path)
                 except OSError:
                     pass
-                 
+        
 
             json_planning_data = json.loads(planing_data)
             model_result = str(json_planning_data["Result"])
@@ -653,12 +640,7 @@ class Interact_Planning_Engine(object):
         #print folder_name
         #folder_name = "R" + str(folder_name)
 
-        if sys.version_info[0] < 3:
-            fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),"wb")
-        else:
-            fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),"w")
-
-        
+        fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),"wb")
         print("---Create Initial State--")
         fo.write("%------------------------------------------------------------------------\n")
         fo.write("% INPUT PART : Initial State\n")
@@ -670,12 +652,7 @@ class Interact_Planning_Engine(object):
         fo.write("%------------------------------------------------------------------------\n")
         fo.close()
 
-
-        if sys.version_info[0] < 3:
-            fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"), "wb")
-        else:
-            fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"), "w")
-
+        fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"), "wb")
         print("---Create Goal State--")
         fo.write("%------------------------------------------------------------------------\n")
         fo.write("% GOAL State\n")
@@ -707,11 +684,7 @@ class Interact_Planning_Engine(object):
         #========================================================================================================= 
 
         # Step 2.2 : Write avoidance/inclusion/insertion to ASP files
-        if sys.version_info[0] < 3:
-            fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"re_composite_preference.lp"),"wb")
-        else:
-            fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"re_composite_preference.lp"),"w")
-
+        fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"re_composite_preference.lp"),"wb")
         print("---Create Preferences and Constraint From--")
         if (isAvoidance):
             fo.write("%------------------------------------------------------------------------\n")
@@ -1200,13 +1173,8 @@ class Interact_Planning_Engine(object):
         else:
             # Step 2.1 : Write input/output to ASP files
             folder_name = self.prepareDistinguish_Input_Output_Folder_PerEachProcess()
-            
-            if sys.version_info[0] < 3:
-                fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),"wb")
-            else:
-                fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),"w")
-
-            print(("---Recovery process : Create Initial State-- Engine : %s" %(str(engine))))
+            fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"initial_state_base.lp"),"wb")
+            print("---Recovery process : Create Initial State-- Engine : %s" %(str(engine)))
             fo.write("%------------------------------------------------------------------------\n")
             fo.write("% Recovery process INPUT PART : Initial State\n")
             fo.write("%------------------------------------------------------------------------\n")
@@ -1217,12 +1185,8 @@ class Interact_Planning_Engine(object):
             fo.write("%------------------------------------------------------------------------\n")
             fo.close()
 
-            if sys.version_info[0] < 3:
-                fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"), "wb")
-            else:
-                fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"), "w")
-
-            print(("---Recovery process : Create Goal State---- Engine : %s" %(str(engine))))
+            fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"goal_state_base.lp"), "wb")
+            print("---Recovery process : Create Goal State---- Engine : %s" %(str(engine)))
             fo.write("%------------------------------------------------------------------------\n")
             fo.write("% Recovery process : GOAL State\n")
             fo.write("%------------------------------------------------------------------------\n")
@@ -1257,11 +1221,7 @@ class Interact_Planning_Engine(object):
 
                 if (engine == 1 or engine == 2 or engine == 3):
                     original_workflow_removed = [str(i) for i in json_original_workflows]
-                    if sys.version_info[0] < 3:
-                        fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"failure_detection.lp"),"wb")
-                    else:
-                        fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"failure_detection.lp"),"w")
-
+                    fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"failure_detection.lp"),"wb")
                     fo.write("%--------------------------------------------------------------------\n")
                     fo.write("fail_service(%s,%s).\n" %(str(fail_service_ID),str(fail_Index)))
                     fo.write("%--------------------------------------------------------------------\n")
@@ -1281,11 +1241,8 @@ class Interact_Planning_Engine(object):
                 elif (engine == 4):
                     print("Doing resource_generated(.)")
                     # Generate added_intial_state_base.lp
-                    if sys.version_info[0] < 3:
-                        fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"sup_init_generated_resource_failure_detection.lp"),"wb")
-                    else:
-                        fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"sup_init_generated_resource_failure_detection.lp"),"w")
-                    print(("---Recovery process : Supplimental Initial State & Failure Detection -- Engine : %s" %(str(engine))))
+                    fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"sup_init_generated_resource_failure_detection.lp"),"wb")
+                    print("---Recovery process : Supplimental Initial State & Failure Detection -- Engine : %s" %(str(engine)))
                     fo.write("%------------------------------------------------------------------------\n")
                     fo.write("% Recovery process Added Resource : Supplimental Initial State & Failure Detection \n")
                     fo.write("%------------------------------------------------------------------------\n")

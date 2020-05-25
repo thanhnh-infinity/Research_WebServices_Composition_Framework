@@ -244,9 +244,18 @@ def process_a_plan_json_from_raw(big_list_answer_sets,json_in,json_planning_data
                 d['info']['project'] = solver
                 d['info']['step_quantity'] = len(array_plan)
                 #print workflow[0]["Sim_Index"]
-                if (workflow[0].has_key("Sim_Index")):
-                    if(workflow[0]["Sim_Index"] is not None):
-                            d['info']['sim_index'] = workflow[0]["Sim_Index"]
+                ''' Remove for Python3 compatible
+                if sys.version_info[0] < 3:
+                    if (workflow[0].has_key("Sim_Index")):
+                        if(workflow[0]["Sim_Index"] is not None):
+                                d['info']['sim_index'] = workflow[0]["Sim_Index"]
+                else:
+                    if Sim_Index in workflow[0]:
+                '''
+                #if (workflow[0].has_key("Sim_Index")):
+                if ("Sim_Index" in workflow[0]):
+                        if(workflow[0]["Sim_Index"] is not None):
+                                d['info']['sim_index'] = workflow[0]["Sim_Index"]
     
                 if (qos):
                     d['info']['quality_attributes']['qos']['score_qos'] = score_qos_workflow

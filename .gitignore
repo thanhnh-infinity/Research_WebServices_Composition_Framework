@@ -4,3 +4,5 @@ bin
 develop-eggs
 *.pyc
 classes/*.pyc
+classes/*/*.pyc
+*/*.pyc
