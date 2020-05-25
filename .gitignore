@@ -6,3 +6,4 @@ develop-eggs
 classes/*.pyc
 classes/*/*.pyc
 */*.pyc
+__pycache__/*.pyc

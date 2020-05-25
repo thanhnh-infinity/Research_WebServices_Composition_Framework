@@ -199,9 +199,13 @@ def run_re_planning_engine(path_to_clingo,path_to_main_base,path_to_initial,path
         if (engine == 2):
             print("Command : " + path_to_clingo + " --outf=3" + " " + path_to_main_base + " " + path_to_initial + " " + path_to_preference + " -c folder=" + specify_id + " " + default_step)
             p = subprocess.Popen([path_to_clingo, '--outf=3', path_to_main_base,path_to_initial,path_to_goal,path_to_preference,'-c folder="' + specify_id +'"',default_step], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            print("vao day")
+
+
+            #print("vao day")
             #out, err = p.communicate()
-            #print(out)
+            #print(err)
+
+
             lines = []
             data = ""
             

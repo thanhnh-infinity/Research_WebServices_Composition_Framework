@@ -804,8 +804,16 @@ class Interact_Planning_Engine(object):
                         shutil.rmtree(delete_path)
                     except OSError:
                         pass
-                  
-                json_planning_data = json.loads(planing_data)
+                
+
+
+                try:
+                    json_planning_data = json.loads(planing_data)
+                except ValueError as err:
+                    print("JSON error")
+                    return return_response_error(400,"error","engine error","JSON") 
+
+
                 if (len(json_planning_data['workflows_list']) > 0):
                         BIG_LIST_ANSWER_SETS = []
                         for i in range(0,len(json_planning_data['workflows_list'])):
@@ -849,7 +857,14 @@ class Interact_Planning_Engine(object):
                         pass
                 
 
-                json_planning_data = json.loads(planing_data)
+                #json_planning_data = json.loads(planing_data)
+
+                try:
+                    json_planning_data = json.loads(planing_data)
+                except ValueError as err:
+                    print("JSON error")
+                    return return_response_error(400,"error","engine error","JSON")
+
                 model_result = str(json_planning_data["Result"])
                 model_number = json_planning_data["Models"]["Number"]
                 # Case 1 : Run without Optimization &maximize or &minimize
@@ -947,7 +962,14 @@ class Interact_Planning_Engine(object):
                         pass
                 
 
-                json_planning_data = json.loads(planing_data)
+                #json_planning_data = json.loads(planing_data)
+
+                try:
+                    json_planning_data = json.loads(planing_data)
+                except ValueError as err:
+                    print("JSON error")
+                    return return_response_error(400,"error","engine error","JSON")
+
                 model_result = str(json_planning_data["Result"])
                 model_number = json_planning_data["Models"]["Number"]
 
@@ -988,7 +1010,14 @@ class Interact_Planning_Engine(object):
                 
 
                 # Step 4 : Read planning data
-                json_planning_data = json.loads(planing_data)
+                #json_planning_data = json.loads(planing_data)
+
+                try:
+                    json_planning_data = json.loads(planing_data)
+                except ValueError as err:
+                    print("JSON error")
+                    return return_response_error(400,"error","engine error","JSON")
+
                 model_result = str(json_planning_data["Result"])
                 model_number = json_planning_data["Models"]["Number"]
 
@@ -1030,7 +1059,14 @@ class Interact_Planning_Engine(object):
                         pass
                 
 
-                json_planning_data = json.loads(planing_data)
+                #json_planning_data = json.loads(planing_data)
+
+                try:
+                    json_planning_data = json.loads(planing_data)
+                except ValueError as err:
+                    print("JSON error")
+                    return return_response_error(400,"error","engine error","JSON")
+
                 model_result = str(json_planning_data["Result"])
                 model_number = json_planning_data["Models"]["Number"]
                 # Case 1 : Run without Optimization &maximize or &minimize
