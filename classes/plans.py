@@ -40,11 +40,11 @@ class Abtract_Planning:
         print("--Abtract Plan(s) : ")
         print("--------------------------------------------------------")
         step = 1
-        if (type is "simple"):
+        if (type == "simple"):
             for service in self.abtract_planning:
                 print("%s : %s" %(str(step), service.print_simple()))
                 step = step + 1
-        elif (type is "with_match_data"):
+        elif (type == "with_match_data"):
             for service in self.abtract_planning:
                 print("%s : %s" %(str(step), service.print_with_match()))
                 step = step + 1
