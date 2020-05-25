@@ -51,7 +51,7 @@ key(T,T1) :- possible_match(A,I,DF_I,T,O,DF_O,T1).
                step(I),
                operation(A).
 
-% Basic part : generate a possible sequence of operations and records the effects of operations,
+% Basic part : generate a possible sequence of operations and records the effects of operations,
 1{ occur(A,T): operation(A)}1 :- step(T), not goal(T), T <= n.
 :- occur(A,T), not executable(A,T).
 exists(O,DF_O,T+1) :- occur(A,T), 

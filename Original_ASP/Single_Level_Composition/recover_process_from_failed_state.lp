@@ -18,8 +18,8 @@
 #include "./usercase/failed_state_N/0/domain.lp".
 
 % For Shopping Domain
-#include "./usercase/shopping/0/failure_fail_state.lp".
-#include "./usercase/shopping/0/domain.lp".
+%#include "./usercase/shopping/0/failure_fail_state.lp".
+%#include "./usercase/shopping/0/domain.lp".
 
 
 %%%%%%%%%% LOGIC FOR RECOVERY PROCESS - FORMALIZATION %%%%%%%%%%%%%%%%

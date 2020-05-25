@@ -1,3 +1,5 @@
+#include "./ontology_Web_shopping_domain.lp".
+
 %=======================================================================
 %PART 1 : Define classes that are used from CDAO ontology
 %=======================================================================
