@@ -778,7 +778,10 @@ class Interact_Planning_Engine(object):
         if ("NORMAL" in kindToRun):    
             if (isOriginalWorkflow):
                 original_workflow_removed = [str(i) for i in json_original_workflows]
-                fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"original_workflow_data.json"),"wb")
+                if sys.version_info[0] < 3:
+                    fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"original_workflow_data.json"),"wb")
+                else:
+                    fo = open(os.path.join(self.FULL_PATH_PLANNING_STATES_FOLDER, folder_name ,"original_workflow_data.json"),"w")
                 for item in original_workflow_removed:
                     fo.write(item)
                     fo.write("\n")
