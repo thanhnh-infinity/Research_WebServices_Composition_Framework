@@ -7,6 +7,7 @@ import os
 import collections
 import subprocess
 import json
+from sys import platform
 
 #CDAO_PHYLOTASTIC_ONT = ontospy.Ontospy(Global_Parameters.GLOBAL_CDAO_PHYLOTASTIC_ONTOLOGY_URL)
 #PHYLO_METHODS_ONT = ontospy.Ontospy(Global_Parameters.GLOBAL_PHYLO_METHODS_ONTOLOGY_URL)
@@ -219,9 +220,21 @@ def run_re_planning_engine(path_to_clingo,path_to_main_base,path_to_initial,path
                             #break
                 #print("Break")   
             else:
-                with p.stdout:
-                    for line in iter(p.stdout.readline, b''):
-                        lines.append(line) 
+                if platform == "linux" or platform == "linux2":
+                    with p.stdout:
+                        for line in iter(p.stdout.readline, b''):
+                            lines.append(line) 
+                elif platform == "darwin":
+                    print("vao day DARWIN")
+                    out, err = p.communicate()
+                    print(err)
+                    lines = out.splitlines()
+                    print(lines)
+                    p.wait()
+                else:
+                    with p.stdout:
+                        for line in iter(p.stdout.readline, b''):
+                            lines.append(line) 
             
             #print("Tai sao ??????")
             #lines = out.splitlines()

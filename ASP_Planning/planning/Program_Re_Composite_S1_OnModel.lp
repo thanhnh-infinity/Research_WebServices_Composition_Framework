@@ -11,6 +11,7 @@ import os
 import json
 import collections
 from pprint import pprint
+from sys import platform
 #----------------------------------------------------------    
 GLOBAL_BEST_MATCH_WORKFLOW = []
 GLOBAL_HIGHEST_SIM_INDEX = -9999999
@@ -54,8 +55,15 @@ def get_CurrentModifying_Workflow(prg,old_wf):
           # For <= clingo 5.2
           # folder = str(prg.get_const("folder").string)
           # For >= clingo 5.4
-          folder = str(prg.get_const("folder"))
-          #print("Folder : " + str(folder))
+          print(platform)
+          
+          if platform == "linux" or platform == "linux2":
+              folder = str(prg.get_const("folder"))
+          elif platform == "darwin":
+              folder =  str(prg.get_const("folder")).replace('"','')
+          
+          #folder = str(prg.get_const("folder")).replace('\"','')
+          print("Folder : " + str(folder))
           original_workflowfile_name = os.path.join(os.getcwd(),"ASP_Planning","states",folder,"original_workflow_data.json")
           with open(original_workflowfile_name) as f:
                content = f.readlines()
