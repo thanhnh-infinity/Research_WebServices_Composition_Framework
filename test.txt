@@ -11,3 +11,6 @@ occur(convert_species_tree_format_NMSU_to_NewickTree,7)
 semantisscholar.org
 
 planning repair ; plan dianostic ; plan library
+
+
+DONE WITH NMSU --> START EC.AI
